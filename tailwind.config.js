@@ -5,6 +5,9 @@ module.exports = {
   ],
   darkMode: "class",
   theme: {
+    container: {
+      center: true
+    },
     fontFamily: {
       sans: [
         "Inter var, Noto Sans TC",
@@ -12,6 +15,10 @@ module.exports = {
       ],
     },
     extend: {
+      colors: {
+        'dark-green': '#1e4040',
+        "light-green": "#71d99e"
+      },
       flexBasis: {
         '1/7': '14.2857143%',
         '2/7': '28.5714286%',

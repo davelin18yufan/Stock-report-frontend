@@ -30,3 +30,29 @@ body {
   scrollbar-width: none;
   /* Firefox */
 }
+
+@layer components{
+  .link {
+      @apply underline text-[#283f73] cursor-pointer;
+  }
+
+  .inputDefault {
+    @apply bg-inherit border-b-2 border-black w-full text-lg
+  }
+
+  .inputDefault:hover{
+    @apply border-b-light-green
+  }
+
+  .inputDefault:focus {
+    @apply outline-none border-b-light-green z-10
+  }
+
+  .btn {
+    @apply rounded-3xl bg-dark-green text-light-green py-3
+  }
+
+  .btn:hover {
+    @apply bg-[#247c7c] tracking-widest
+  }
+}
