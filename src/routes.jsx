@@ -1,5 +1,6 @@
 import HomePage from "./pages/home"
 import Login from "./pages/login"
+import Register from "./pages/register"
 
 const routes = [
     {
@@ -12,11 +13,11 @@ const routes = [
         element: <Login />,
         children: []
     },
-    // {
-    //     path: "/register",
-    //     element: <Register />,
-    //     children: []
-    // },
+    {
+        path: "/register",
+        element: <Register />,
+        children: []
+    },
     // {
     //     path: "/setting",
     //     element: <Setting />,

@@ -29,6 +29,7 @@ module.exports = {
       },
       backgroundImage: {
         'main': "url('../public/images/main.png')",
+        'login': "url('../src/assets/images/bg-stocks.jpeg')"
       },
     },
   },
