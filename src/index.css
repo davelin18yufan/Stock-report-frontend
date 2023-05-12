@@ -33,7 +33,7 @@ body {
 
 @layer components{
   .link {
-      @apply underline text-[#283f73] cursor-pointer;
+      @apply underline text-[#283f73] cursor-pointer
   }
 
   .inputDefault {
