@@ -1,6 +1,6 @@
 export const AuthContainer = ({children}) => {
   return (
-    <div className=" h-full bg-login bg-cover bg-no-repeat py-5 sm:pt-[70px] sm:h-screen">
+    <div className=" h-full bg-login bg-cover bg-no-repeat py-5 sm:pt-[90px] sm:h-screen">
       <div className="w-1/2 mx-auto lg:max-w-[500px] bg-white bg-opacity-80 rounded-lg py-3">
         {children}
       </div>
