@@ -2,6 +2,7 @@ import HomePage from "./pages/home"
 import Login from "./pages/login"
 import Register from "./pages/register"
 import MainPage from "./pages/main"
+import StockPage from "./pages/stock"
 
 const routes = [
     {
@@ -27,6 +28,11 @@ const routes = [
     {
         path: "/main",
         element: <MainPage />,
+        children: []
+    },
+    {
+        path: "/stock",
+        element: <StockPage />,
         children: []
     },
     // {
