@@ -2,10 +2,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Modal from "../components/Modal"
 import { useState } from "react"
 import Tooltip from '@mui/material/Tooltip';
+import { useMainContext } from "../contexts/AuthContext"
 
-const Navbar = ({menuToggle, setMenuToggle}) => {
+const Navbar = () => {
   const [open, setOpen] = useState(false)
   const [modalOpened, setModalOpened] = useState(null)
+  const { menuToggle, setMenuToggle } = useMainContext()
+
   return (
     <nav className={`${menuToggle ? "scale-x-1" : "scale-x-0"} 
       sm:static sm:transform-none text-3xl space-y-16 shadow-lg navToggle bg-light-green sm:bg-[#FAFAFB]`} 
