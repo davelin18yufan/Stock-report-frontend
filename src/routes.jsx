@@ -1,6 +1,7 @@
 import HomePage from "./pages/home"
 import Login from "./pages/login"
 import Register from "./pages/register"
+import MainPage from "./pages/main"
 
 const routes = [
     {
@@ -23,11 +24,11 @@ const routes = [
     //     element: <Setting />,
     //     children: []
     // },
-    // {
-    //     path: "/home",
-    //     element: <Home />,
-    //     children: []
-    // },
+    {
+        path: "/main",
+        element: <MainPage />,
+        children: []
+    },
     // {
     //     path: "/user",
     //     element: <User />,

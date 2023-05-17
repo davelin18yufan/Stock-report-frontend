@@ -2,10 +2,11 @@ import { useRoutes } from 'react-router-dom';
 import routes from "./routes"
 import './App.css';
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faMagnifyingGlass, faBagShopping, faBars, faArrowDown} from "@fortawesome/free-solid-svg-icons";
+import { fas, faMagnifyingGlass, faBagShopping, faBars, faArrowDown} from "@fortawesome/free-solid-svg-icons";
+import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 
-// 
-library.add( faMagnifyingGlass, faBagShopping, faBars, faArrowDown);
+// import fontAwesome
+library.add( fas, faBookmark, faMagnifyingGlass, faBagShopping, faBars, faArrowDown);
 
 
 const App = () => {

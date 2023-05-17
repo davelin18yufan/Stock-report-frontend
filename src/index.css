@@ -6,6 +6,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -31,9 +35,61 @@ body {
   /* Firefox */
 }
 
+*:focus {
+  outline: none;
+}
+
+
+.navToggle {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 90px;
+  hegithy: 100%;
+  border-top-right-radius: 0.5rem; 
+  border-bottom-right-radius: 0.5rem; 
+  padding-left: 0.5rem; 
+  padding-right: 0.5rem; 
+  padding-top: 1rem;
+  z-index: 999;
+  text-align: center;
+  /*利用變形中的scale(x, y)來進行速度變化*/
+  transform-origin: left;
+  transition: transform .3s ease-out;
+}
+
+.nav-item{
+  cursor: pointer;  
+  /*加入第四個參數，0.15秒的延遲在執行*/
+  transition: opacity .2s ease-out .2s
+}
+
+.bg-card {
+  position: relative;
+  background-color: rgba(255,255,255,0.1);
+  border: 2px solid rgba(0,0,0,0.1);
+  transition: .4s;
+  cursor: pointer;
+}
+
+.bg-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(at 0px 0px, #10c2873a, transparent);
+  z-index: -1;
+  opacity: 0;
+  transition: .4s
+}
+
+
 @layer components{
   .link {
       @apply underline text-[#283f73] cursor-pointer
+  }
+
+  .linkImg {
+      @apply w-[30px] h-[30px] object-contain mx-auto sm:w-[50px] sm:h-[40px]
   }
 
   .inputDefault {
@@ -45,7 +101,7 @@ body {
   }
 
   .inputDefault:focus {
-    @apply outline-none border-b-light-green z-10
+    @apply border-b-light-green z-10
   }
 
   .btn {
@@ -55,4 +111,13 @@ body {
   .btn:hover {
     @apply bg-[#247c7c] tracking-widest
   }
+
+  .bg-card:is(:hover,:focus) {
+    @apply border-[rgba(255,255,255,0.2)]
+  }
+
+  .bg-card:before:is(:hover, :focus) {
+    @apply opacity-100
+  }
+
 }
