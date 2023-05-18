@@ -2,6 +2,8 @@ import HomePage from "./pages/home"
 import Login from "./pages/login"
 import Register from "./pages/register"
 import MainPage from "./pages/main"
+import StockPage from "./pages/stock"
+import SingleStockPage from "./pages/stock/singleStock"
 
 const routes = [
     {
@@ -27,6 +29,16 @@ const routes = [
     {
         path: "/main",
         element: <MainPage />,
+        children: []
+    },
+    {
+        path: "/stock",
+        element: <StockPage />,
+        children: []
+    },
+    {
+        path: "/stock/:id",
+        element: <SingleStockPage />,
         children: []
     },
     // {

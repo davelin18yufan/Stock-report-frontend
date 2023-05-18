@@ -17,7 +17,8 @@ module.exports = {
     extend: {
       colors: {
         'dark-green': '#1e4040',
-        "light-green": "#71d99e"
+        "light-green": '#71d99e',
+        'light-gray': '#FAFAFB'
       },
       flexBasis: {
         '1/7': '14.2857143%',

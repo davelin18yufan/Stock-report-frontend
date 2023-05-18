@@ -1,6 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useMainContext } from '../contexts/AuthContext'
 
-const Header = ({setMenuToggle, menuToggle}) => {
+const Header = () => {
+  const { menuToggle, setMenuToggle} = useMainContext()
   return(
     <header className="bg-dark-green text-light-green h-[70px] flex justify-between items-center">
       <h5 className="text-light-green text-4xl font-bold pl-8">
