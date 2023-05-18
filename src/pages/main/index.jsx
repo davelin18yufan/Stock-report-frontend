@@ -14,7 +14,7 @@ const MainPage = () => {
         <Header  />
         <div className="h-full flex flex-col sm:flex-row ">
           <Navbar />
-          <div className="sm:flex sm:flex-col lg:flex-row">
+          <div className="lg:flex">
             <MainSector currentTab={currentTab} setCurrentTab={setCurrentTab}/>
             <Side currentTab={currentTab}/>
           </div>
