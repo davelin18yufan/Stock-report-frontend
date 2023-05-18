@@ -4,6 +4,7 @@ import Register from "./pages/register"
 import MainPage from "./pages/main"
 import StockPage from "./pages/stock"
 import SingleStockPage from "./pages/stock/singleStock"
+import Setting from "./pages/setting"
 
 const routes = [
     {
@@ -21,24 +22,24 @@ const routes = [
         element: <Register />,
         children: []
     },
-    // {
-    //     path: "/setting",
-    //     element: <Setting />,
-    //     children: []
-    // },
+    {
+        path: "/setting",
+        element: <Setting />,
+        children: []
+    },
     {
         path: "/main",
         element: <MainPage />,
         children: []
     },
     {
-        path: "/stock",
-        element: <StockPage />,
+        path: "/stock/:id",
+        element: <SingleStockPage />,
         children: []
     },
     {
-        path: "/stock/:id",
-        element: <SingleStockPage />,
+        path: "/stock",
+        element: <StockPage />,
         children: []
     },
     // {

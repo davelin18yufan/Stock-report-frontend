@@ -109,7 +109,7 @@ body {
   }
 
   .btn:hover {
-    @apply bg-[#247c7c] tracking-widest
+    @apply bg-[#24727c] tracking-widest
   }
 
   .bg-card:is(:hover,:focus) {
