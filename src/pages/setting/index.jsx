@@ -12,7 +12,7 @@ const Setting = () => {
         <Header  />
         <div className="h-full flex flex-col sm:flex-row ">
           <Navbar />
-          <div className="w-1/2 py-4">
+          <div className="sm:w-1/2 py-4">
             <h2 className="text-center font-bold text-xl">個人資料設定</h2>
             <InputCard label="名稱 Name" placeholder="請輸入你Line群組裡的名稱" type="text" name="name" />
             <InputCard label="信箱 Email" placeholder="請輸入你的信箱" type="text" name="email"/>
