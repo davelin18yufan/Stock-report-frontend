@@ -1,11 +1,12 @@
 import {LogoTitle, InputCard, SubmitBtn, AuthContainer} from "../../components/AuthInput"
 import { useNavigate  } from "react-router-dom"
 
-const Login = () => {
+const AdminLogin = () => {
   const go = useNavigate()
+
   return (
-    <AuthContainer>
-        <LogoTitle title="登入 Stock Report"/>
+     <AuthContainer>
+        <LogoTitle title="登入管理者後台"/>
         
         <div className="w-full ">
           <InputCard label="帳號 Account" placeholder="請輸入你的信箱" type="text" name="email"/>
@@ -13,16 +14,14 @@ const Login = () => {
         </div>
 
         <div className="w-4/5 mx-auto">
-          <SubmitBtn submit="登入 Login"/>
+          <SubmitBtn submit="後台登入"/>
         </div>
 
-        <div className="w-4/5 mx-auto mt-4 flex ">
-          <p className="flex-1 text-end link" onClick={() => go("/register")}>註冊</p>
-          <span className="block px-[20px]">&#8729;</span>
-          <p className="link" onClick={() => go("/admin/login")}>後台登入</p>
+        <div className="w-4/5 text-end mt-4 mx-auto">
+          <p className="link" onClick={() => go("/login")}>回前台登入</p>
         </div>
     </AuthContainer>
   )
 }
 
-export default Login
+export default AdminLogin

@@ -5,6 +5,7 @@ import MainPage from "./pages/main"
 import StockPage from "./pages/stock"
 import SingleStockPage from "./pages/stock/singleStock"
 import Setting from "./pages/setting"
+import AdminLogin from "./pages/admin"
 
 const routes = [
     {
@@ -52,11 +53,11 @@ const routes = [
     //     element: <AdminHome />,
     //     children: []
     // },
-    // {
-    //     path: "/admin/login",
-    //     element: <AdminLogin />,
-    //     children: []
-    // },
+    {
+        path: "/admin/login",
+        element: <AdminLogin />,
+        children: []
+    },
     // {
     //     path: "/admin/users",
     //     element: <AdminUser />,
