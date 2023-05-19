@@ -3,48 +3,13 @@ import Footer from "../../../components/Footer"
 import { MainContainer } from "../../../components/MainContainer"
 import { MainContextProvider } from "../../../contexts/AuthContext"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useMainContext } from "../../../contexts/AuthContext"
-import Tooltip from '@mui/material/Tooltip';
+import AdminNavbar from "../AdminSidebar"
 
-
-const AdminNavbar = () => {
-  const { menuToggle, setMenuToggle } = useMainContext()
-
-  return (
-    <nav className={`${menuToggle ? "scale-x-1" : "scale-x-0"} 
-      sm:static sm:transform-none text-3xl space-y-16 shadow-lg navToggle bg-light-green sm:bg-light-gray`} 
-      onMouseEnter={() => setMenuToggle(true)} 
-      onMouseLeave={() => setMenuToggle(false)}>
-      <ul className="text-dark-green flex-col items-start space-y-8 ">
-        <li className={`${menuToggle? "opacity-100" : "opacity-0"} hover:text-green-700 nav-item sm:opacity-100`}>
-          <Tooltip title="活動清單" placement="right">
-            <FontAwesomeIcon icon="fa-solid fa-newspaper" />
-          </Tooltip>
-        </li>
-        <li className={`${menuToggle? "opacity-100" : "opacity-0"} hover:text-green-700 nav-item sm:opacity-100`}>
-          <Tooltip title="使用者清單" placement="right">
-            <FontAwesomeIcon icon="fa-solid fa-face-grimace" />
-          </Tooltip>
-        </li>
-        <li className={`${menuToggle? "opacity-100" : "opacity-0"} hover:text-green-700 nav-item sm:opacity-100`}>
-          <Tooltip title="設定" placement="right">
-            <FontAwesomeIcon icon="fa-solid fa-gear" />
-          </Tooltip>
-        </li>
-      </ul>
-      <div className={`${menuToggle? "opacity-100" : "opacity-0"} hover:text-green-700 nav-item sm:opacity-100 pb-2`}>
-        <Tooltip title="登出" placement="right">
-          <FontAwesomeIcon icon="fa-solid fa-right-from-bracket" />
-        </Tooltip>
-      </div>
-    </nav>
-  )
-}
 
 const UserCard = () => {
   return(
     <div className="w-[200px] h-[200px] relative break-all cursor-pointer border-1 rounded-lg " >
-      <div className="absolute inset-0 opacity-20 hover:opacity-80 rounded-lg w-full h-full">
+      <div className="absolute inset-0 opacity-20 hover:opacity-80 rounded-lg transparent w-full h-full">
         <img src={`https://loremflickr.com/320/320/headshot/?random=${Math.random() * 100}`} alt="user" className=""/>
       </div>
       <div className="py-8 px-6 rounded-[10px] ">
