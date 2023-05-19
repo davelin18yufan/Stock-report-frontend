@@ -30,7 +30,9 @@ module.exports = {
       },
       backgroundImage: {
         'main': "url('../public/images/main.png')",
-        'login': "url('../src/assets/images/bg-stocks.jpeg')"
+        'login': "url('../src/assets/images/bg-stocks.jpeg')",
+        'user': "url(../src/assets/images/person.png)",
+        'random': `url(https://loremflickr.com/320/320/headshot/?random=${Math.random() * 100})`
       },
     },
   },

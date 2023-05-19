@@ -6,7 +6,7 @@ import { useMainContext } from "../contexts/AuthContext"
 
 const Navbar = () => {
   const [open, setOpen] = useState(false)
-  const [modalOpened, setModalOpened] = useState(null)
+  const [ modalOpened, setModalOpened ] = useState(null)
   const { menuToggle, setMenuToggle } = useMainContext()
 
   return (
