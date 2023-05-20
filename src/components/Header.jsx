@@ -4,8 +4,8 @@ import { useMainContext } from '../contexts/AuthContext'
 const Header = () => {
   const { menuToggle, setMenuToggle} = useMainContext()
   return(
-    <header className="bg-dark-green text-light-green h-[70px] flex justify-between items-center">
-      <h5 className="text-light-green text-4xl font-bold pl-8">
+    <header className= "bg-dark-green dark:bg-slate-900 text-light-green dark:text-slate-200 h-[70px] flex justify-between items-center">
+      <h5 className="text-light-green dark:text-slate-400 text-4xl font-bold pl-8">
         LOGO
       </h5>
       <div className="h-full absolute left-1 top-4 sm:hidden" 

@@ -8,7 +8,7 @@ import AdminNavbar from "../AdminSidebar"
 
 const UserCard = () => {
   return(
-    <div className="w-[200px] h-[200px] relative break-all cursor-pointer border-1 rounded-lg " >
+    <div className="w-[200px] h-[200px] relative break-all cursor-pointer border-1 rounded-lg shadow-lg " >
       <div className="absolute inset-0 opacity-20 hover:opacity-80 rounded-lg transparent w-full h-full">
         <img src={`https://loremflickr.com/320/320/headshot/?random=${Math.random() * 100}`} alt="user" className=""/>
       </div>
@@ -24,7 +24,7 @@ const UserCard = () => {
         <div className="flex justify-center mt-2">
           <p className="text-[#6C757D] text-[14px]">
             貼文被收藏數
-            <span className="text-red-800">10</span>
+            <span className="text-red-800 dark:text-amber-200">10</span>
           </p>
         </div>
       </div>
@@ -37,9 +37,9 @@ const AdminUser = () => {
     <MainContextProvider>
       <MainContainer>
         <Header  />
-        <div className="h-screen flex flex-col sm:flex-row overflow-y-auto">
+        <div className="h-full flex flex-col sm:flex-row ">
           <AdminNavbar />
-          <div className="flex flex-wrap gap-4 p-4">
+          <div className="flex flex-wrap gap-4 p-4 dark:bg-slate-800 dark:text-white overflow-y-auto h-screen">
             <UserCard />
             <UserCard />
             <UserCard />
