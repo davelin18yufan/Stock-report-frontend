@@ -10,10 +10,10 @@ const Setting = () => {
     <MainContextProvider>
       <MainContainer>
         <Header  />
-        <div className="h-full flex flex-col sm:flex-row ">
+        <div className="h-full flex flex-col sm:flex-row dark:bg-slate-800">
           <Navbar />
-          <div className="sm:w-1/2 py-4">
-            <h2 className="text-center font-bold text-xl">個人資料設定</h2>
+          <div className="sm:w-1/2 py-4 ">
+            <h2 className="text-center font-bold text-xl dark:text-white">個人資料設定</h2>
             <InputCard label="名稱 Name" placeholder="請輸入你Line群組裡的名稱" type="text" name="name" />
             <InputCard label="信箱 Email" placeholder="請輸入你的信箱" type="text" name="email"/>
             <InputCard label="密碼 Password" placeholder="請輸入你的密碼" type="text" name="password"/>

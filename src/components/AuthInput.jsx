@@ -23,15 +23,15 @@ export const LogoTitle = ({title}) => {
 
 export const InputCard = ({label, placeholder, name, type }) => {
   return (
-    <div className="w-4/5 bg-[#F5F8FA] my-4 px-2.5 mx-auto">
-      <label className="block pb-0.5 text-dark-green">{label}</label>
-      <input type={type} name={name} placeholder={placeholder} className="inputDefault inputDefault:hover inputDefault:focus"></input>
+    <div className="w-4/5 bg-[#F5F8FA] my-4 px-2.5 mx-auto dark:bg-gray-700">
+      <label className="block pb-0.5 text-dark-green dark:text-neutral-300">{label}</label>
+      <input type={type} name={name} placeholder={placeholder} className="inputDefault inputDefault:hover inputDefault:focus dark:hover:border-sky-700 dark:focus:border-sky-700 dark:placeholder-gray-500/50"></input>
     </div>
   )
 }
 
 export const SubmitBtn = ({submit}) => {
   return (
-    <button className="w-full btn btn:hover">{submit}</button>
+    <button className="w-full btn btn:hover dark:bg-slate-400 dark:text-sky-700">{submit}</button>
   )
 }

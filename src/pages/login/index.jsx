@@ -19,7 +19,7 @@ const Login = () => {
         <div className="w-4/5 mx-auto mt-4 flex ">
           <p className="flex-1 text-end link" onClick={() => go("/register")}>註冊</p>
           <span className="block px-[20px]">&#8729;</span>
-          <p className="link" >後台登入 </p>
+          <p className="link" onClick={() => go("/admin/login")}>後台登入</p>
         </div>
     </AuthContainer>
   )
