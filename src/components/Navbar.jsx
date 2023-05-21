@@ -31,6 +31,11 @@ const Navbar = () => {
             <FontAwesomeIcon icon="fa-solid fa-house" />
           </Tooltip>
         </li>
+        <li className={`${menuToggle? "opacity-100" : "opacity-0"} hover:text-green-700 dark:hover:text-gray-500 nav-item sm:opacity-100`} onClick={() => go("/stock")}>
+          <Tooltip title="股票代號搜尋" placement="right">
+            <FontAwesomeIcon icon="fa-solid fa-magnifying-glass-dollar" />
+          </Tooltip>
+        </li>
         <li className={`${menuToggle? "opacity-100" : "opacity-0"} hover:text-green-700 dark:hover:text-gray-500 nav-item sm:opacity-100`} >
           <Tooltip title="個人頁面" placement="right">
             <FontAwesomeIcon icon="fa-solid fa-address-card" />

@@ -70,7 +70,7 @@ export const ReportCard = () => {
   return (
     <a className={`flex pl-6 pr-8 py-3 h-[160px] sm:h-[190px] bg-card dark:bg-slate-800`} href="#side">
       <div className="ml-2 flow-root ">
-        <h2 className="font-bold text-lg">What is Lorem Ipsum?</h2>
+        <h2 className="font-bold text-lg dark:text-neutral-300">What is Lorem Ipsum?</h2>
         <div className="flex space-x-16 pt-2 sm:space-x-28">
           <ul className="pl-4 font-normal list-disc text-sm text-[#6C757D] dark:text-amber-200">
             <li>上傳者： Dave</li>

@@ -1,7 +1,6 @@
 import Header from "../../../components/Header"
 import Footer from "../../../components/Footer"
 import { MainContainer } from "../../../components/MainContainer"
-import { MainContextProvider } from "../../../contexts/AuthContext"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import AdminNavbar from "../AdminSidebar"
 
@@ -34,33 +33,31 @@ const UserCard = () => {
 
 const AdminUser = () => {
   return (
-    <MainContextProvider>
-      <MainContainer>
-        <Header  />
-        <div className="h-full flex flex-col sm:flex-row ">
-          <AdminNavbar />
-          <div className="flex flex-wrap gap-4 p-4 dark:bg-slate-800 dark:text-white overflow-y-auto h-screen">
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-          </div>
+    <MainContainer>
+      <Header  />
+      <div className="h-full flex flex-col sm:flex-row ">
+        <AdminNavbar />
+        <div className="flex flex-wrap gap-4 p-4 dark:bg-slate-800 dark:text-white overflow-y-auto h-screen">
+          <UserCard />
+          <UserCard />
+          <UserCard />
+          <UserCard />
+          <UserCard />
+          <UserCard />
+          <UserCard />
+          <UserCard />
+          <UserCard />
+          <UserCard />
+          <UserCard />
+          <UserCard />
+          <UserCard />
+          <UserCard />
+          <UserCard />
+          <UserCard />
         </div>
-        <Footer />
-      </MainContainer>
-    </MainContextProvider>
+      </div>
+      <Footer />
+    </MainContainer>
   )
 }
 

@@ -1,7 +1,6 @@
 import Header from "../../../components/Header"
 import Footer from "../../../components/Footer"
 import { MainContainer } from "../../../components/MainContainer"
-import { MainContextProvider } from "../../../contexts/AuthContext"
 import AdminNavbar from "../AdminSidebar"
 import { useState } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -73,26 +72,24 @@ const AdminList = () => {
   const [currentTab, setCurrentTab] = useState("post")
 
   return (
-    <MainContextProvider>
-      <MainContainer>
-        <Header  />
-        <div className="h-screen flex flex-col sm:flex-row overflow-y-auto dark:bg-slate-800">
-          <AdminNavbar />
-          <div className="w-full">
-            <div className="flex p-2 text-gray-500 border-b-4 border-slate-400/25  dark:text-gray-500 dark:border-slate-300/80">
-              <button className="border-b-2 border-gray-500 focus:text-black focus:border-black dark:focus:text-white dark:focus:border-white" autoFocus onClick={() => setCurrentTab("post")}>貼文清單</button>
-              <button className="border-b-2 ml-3 border-gray-500 focus:text-black focus:border-black dark:focus:text-white dark:focus:border-white" onClick={() => setCurrentTab("report")}>報告清單</button>
-            </div>
-            <div >
-              {currentTab ==="post" ? <PostList /> : <ReportList />}
-              {currentTab ==="post" ? <PostList /> : <ReportList />}
-              {currentTab ==="post" ? <PostList /> : <ReportList />}
-            </div>
+    <MainContainer>
+      <Header  />
+      <div className="h-screen flex flex-col sm:flex-row overflow-y-auto dark:bg-slate-800">
+        <AdminNavbar />
+        <div className="w-full">
+          <div className="flex p-2 text-gray-500 border-b-4 border-slate-400/25  dark:text-gray-500 dark:border-slate-300/80">
+            <button className="border-b-2 border-gray-500 focus:text-black focus:border-black dark:focus:text-white dark:focus:border-white" autoFocus onClick={() => setCurrentTab("post")}>貼文清單</button>
+            <button className="border-b-2 ml-3 border-gray-500 focus:text-black focus:border-black dark:focus:text-white dark:focus:border-white" onClick={() => setCurrentTab("report")}>報告清單</button>
+          </div>
+          <div >
+            {currentTab ==="post" ? <PostList /> : <ReportList />}
+            {currentTab ==="post" ? <PostList /> : <ReportList />}
+            {currentTab ==="post" ? <PostList /> : <ReportList />}
           </div>
         </div>
-        <Footer />
-      </MainContainer>
-    </MainContextProvider>
+      </div>
+      <Footer />
+    </MainContainer>
   )
 }
 
