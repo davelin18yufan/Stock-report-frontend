@@ -1,4 +1,4 @@
-import { useMainContext } from "../contexts/AuthContext"
+import { useMainContext } from "../contexts/MainContext"
 export const MainContainer = ({children}) => {
   const { darkMode  } = useMainContext()
 

@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
-import { MainContextProvider } from './contexts/AuthContext';
+import { MainContextProvider } from './contexts/MainContext';
+import { AuthProvider } from './contexts/AuthContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root')
@@ -15,7 +16,9 @@ root.render(
   <React.StrictMode >
     <BrowserRouter basename={basename}>
       <MainContextProvider>
-        <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </MainContextProvider>
     </BrowserRouter>
   </React.StrictMode>

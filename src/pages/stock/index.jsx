@@ -32,7 +32,7 @@ const MainSector = () => {
     setSearchTerm(e.target.value)
   }
   return(
-    <div className="w-full h-full">
+    <div className="w-full h-full ">
       <SearchBar onSearch={handleSearch} value={searchTerm} setValue={setSearchTerm}/>
       <ul className="w-full p-2 flex flex-wrap overflow-y-auto">
         {filteredItem.map((item, index) => 
@@ -47,7 +47,7 @@ const StockPage = () => {
   return(
     <MainContainer>
       <Header />
-      <div className="h-full flex flex-col sm:flex-row  dark:bg-slate-800">
+      <div className="h-full flex flex-col sm:flex-row  dark:bg-slate-800 ">
         <Navbar />
         <MainSector />
       </div>
