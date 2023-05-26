@@ -1,28 +1,33 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useMainContext } from '../contexts/MainContext'
 
-export const UserImage = ({user}) => {
+export const UserImage = ({user, avatar}) => {
   return (
     <img 
-      src={`https://loremflickr.com/320/320/headshot/?random=${Math.random() * 100}`} alt={user} 
+      src={avatar} alt={user} 
       className="w-[50px] h-[50px] rounded-full "
       />
   )
 }
 
-export const PostCard = () => {
-
+export const PostCard = ({post}) => {
+  const { setPostCardId } = useMainContext()
+ 
   return(
-    <a className="flex pl-6 pr-8 py-3 h-[110px] sm:h-[140px] bg-card dark:bg-slate-800 " href="#side">
-      <UserImage user="Dave"/>
+    <a 
+      className="flex pl-6 pr-8 py-3 h-[110px] sm:h-[140px] bg-card dark:bg-slate-800 " 
+      href="#side" 
+      onClick={() => setPostCardId(post.id)}>
+      <UserImage user={post.User.name} avatar={post.User.avatar}/>
       <div className="ml-2 flow-root ">
         <div className="">
-          <p>Dave
+          <p>{post.User.name}
             <span className="text-[14px] text-[#6C757D] ml-2">
-              @davelin &#8729; 3小時前
+              &#8729; {post.updatedAt}
             </span>
           </p>
-          <h4 className="font-bold text-lg dark:text-white">What is Lorem Ipsum?</h4>
-          <p className="leading-[26px] text-md line-clamp-1 sm:line-clamp-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+          <h4 className="font-bold text-lg dark:text-white">{post.title}</h4>
+          <p className="leading-[26px] text-md line-clamp-1 sm:line-clamp-2">{post.post}</p>
         </div>
         <div className="absolute right-2 top-2">
           <FontAwesomeIcon icon="fa-regular fa-bookmark" />
@@ -33,27 +38,28 @@ export const PostCard = () => {
   )
 }
 
-export const PostSide = () => {
+export const PostSide = ({post}) => {
+  
   return(
-    <>
+    <div className="w-full">
       <div className="flex pl-6 pr-8 py-2">
-        <UserImage user="Dave" />
+        <UserImage user={post.User.name} avatar={post.User.avatar}/>
         <div className="ml-2 flow-root ">
-          <p>Dave</p>
+          <p>{post.User.name}</p>
           <p className="text-[#6C757D] slashed-zero">
-            2023/05/15 18:18 &#9786;
+            {post.updatedAt} &#9786;
           </p>
         </div>
       </div>
       <div className="px-6 pb-4">
-        <h3 className="font-bold text-xl dark:text-white">What is Lorem Ipsum?</h3>
+        <h3 className="font-bold text-xl dark:text-white">{post.title}</h3>
         <img 
-          src={`https://loremflickr.com/320/320/headshot/?random=${Math.random() * 100}`} 
+          src={post.image} 
           alt="post" 
           className="w-full max-w-[300px] sm:max-w-[400px] lg:max-w-[500px] object-contain my-3 mx-auto"/>
-        <p className="antialiased font-sans">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p className="antialiased font-sans w-full">{post.post}</p>
       </div>
-    </>
+    </div>
   )
 }
 
@@ -66,23 +72,22 @@ export const TargetCard = ({target}) => {
   )
 }
 
-export const ReportCard = () => {
+export const ReportCard = ({report}) => {
+  const { setReportCardId } = useMainContext()
   return (
-    <a className={`flex pl-6 pr-8 py-3 h-[160px] sm:h-[190px] bg-card dark:bg-slate-800`} href="#side">
+    <a className={`flex pl-6 pr-8 py-3 h-[160px] sm:h-[190px] bg-card dark:bg-slate-800`} href="#side"
+      onClick={() => setReportCardId(report.id)}>
       <div className="ml-2 flow-root ">
-        <h2 className="font-bold text-lg dark:text-neutral-300">What is Lorem Ipsum?</h2>
-        <div className="flex space-x-16 pt-2 sm:space-x-28">
+        <h2 className="font-bold text-lg dark:text-neutral-300 line-clamp-1">{report.title}</h2>
+        <div className="flex space-x-8 pt-2 sm:space-x-28">
           <ul className="pl-4 font-normal list-disc text-sm text-[#6C757D] dark:text-amber-200">
-            <li>上傳者： Dave</li>
-            <li>上傳日期： 2023/05/16</li>
-            <li>出版日期： 2023/05/16</li>
-            <li>出版作者： 兆豐投顧</li>
+            <li>上傳者： {report.user_name}</li>
+            <li>上傳日期： {report.createdAt}</li>
+            <li>出版日期： {report.publish_date}</li>
+            <li>出版作者： {report.from}</li>
           </ul>
-          <div className="h-[100px] flex flex-col flex-wrap">
-            <TargetCard target="半導體" />
-            <TargetCard target="台積電"/>
-            <TargetCard target="台積電"/>
-            <TargetCard target="台積電"/>
+          <div className="h-[100px] flex flex-col flex-wrap ">
+            <TargetCard target={report.stock_name} />
           </div>
         </div>
       </div>
@@ -90,17 +95,15 @@ export const ReportCard = () => {
   )
 }
 
-export const ReportSide = () => {
+export const ReportSide = ({title, stock, report}) => {
   return (
     <div className="px-6 py-4">
-      <h2 className="mb-4 font-bold text-xl dark:text-white">What is Lorem Ipsum?</h2>
+      <h2 className="mb-4 font-bold text-xl dark:text-white">{report.title}</h2>
       <div className=" flex flex-wrap py-2">
-        <TargetCard target="半導體" />
-        <TargetCard target="台積電"/>
-        <TargetCard target="台積電"/>
+        <TargetCard target={report.Stock.name} />
       </div>
       <div className="mt-4">
-        <p className="antialiased font-sans leading-6 text-[#333333] dark:text-neutral-300">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p className="antialiased font-sans leading-6 text-[#333333] dark:text-neutral-300">{report.report}</p>
       </div>
     </div>
   )

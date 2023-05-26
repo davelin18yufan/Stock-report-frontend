@@ -37,7 +37,7 @@ export const AuthProvider = ({children}) => {
   return(
     <AuthContext.Provider value={{
       isAuthenticated,
-      currentUser: payload && {id:payload.sub, name:payload.name},
+      currentUser: payload ,
       signUp: async (userInput) => {
         const { status } = await signUp({
           name: userInput.name,
@@ -56,7 +56,6 @@ export const AuthProvider = ({children}) => {
         })
         const tempPayload = jwt_decode(data.token)
         if(!tempPayload){
-          console.log(tempPayload)
           setPayload(null)
           setIsAuthenticated(false)
           return

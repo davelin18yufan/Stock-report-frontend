@@ -1,11 +1,12 @@
 import axios from "axios"
 
-const baseUrl = "http://35.236.159.81:3000/api"
+//const baseUrl = "http://35.236.159.81:3000/api"
+const baseUrl = "http://localhost:5000/api"
 
 const axiosInstance = axios.create({ baseUrl })
 axiosInstance.interceptors.request.use(
     (config) => {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('authToken');
       if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
       }

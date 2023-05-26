@@ -8,14 +8,15 @@ import React, { useState } from 'react'
 
 
 const MainPage = () => {
-  const [currentTab, setCurrentTab] = useState("post")
+  const [ currentTab, setCurrentTab ] = useState("post")
+  
   return (
     <MainContainer>
       <Header  />
       <div className="h-full flex flex-col sm:flex-row ">
         <Navbar />
-        <div className="lg:flex dark:bg-slate-800 dark:text-neutral-300">
-          <MainSector currentTab={currentTab} setCurrentTab={setCurrentTab}/>
+        <div className="lg:flex dark:bg-slate-800 dark:text-neutral-300 grow">
+          <MainSector currentTab={currentTab} setCurrentTab={setCurrentTab} />
           <Side currentTab={currentTab}/>
         </div>
       </div>

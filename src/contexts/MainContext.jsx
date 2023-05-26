@@ -7,8 +7,12 @@ export function useMainContext() {
 
 
 export const MainContextProvider = ({children}) => {
-  const [menuToggle, setMenuToggle] = useState(false)
-  const [ darkMode, setDarkMode ] = useState(false);
+  const [ menuToggle, setMenuToggle ] = useState(false)
+  const [ darkMode, setDarkMode ] = useState(false)
+  const [ postCardId, setPostCardId ] = useState(2)
+  const [ reportCardId, setReportCardId ] = useState(2)
+  const [ posts, setPosts ] = useState([])
+  const [ reports, setReports ] = useState([])
   useEffect(() => {
     // 检查本地存储中的主题值
     const savedTheme = localStorage.getItem('theme');
@@ -18,8 +22,21 @@ export const MainContextProvider = ({children}) => {
   }, []);
 
   return <>
-        <MainContext.Provider value={{menuToggle, setMenuToggle, darkMode, setDarkMode} }>
-            { children }
+        <MainContext.Provider value={{
+          menuToggle, 
+          setMenuToggle, 
+          darkMode, 
+          setDarkMode, 
+          postCardId, 
+          setPostCardId,
+          reportCardId, 
+          setReportCardId,
+          posts, 
+          setPosts,
+          reports, 
+          setReports
+        }}>
+          { children }
         </MainContext.Provider>
     </>
 }
