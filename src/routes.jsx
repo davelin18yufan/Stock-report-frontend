@@ -36,7 +36,7 @@ const routes = [
         children: []
     },
     {
-        path: "/stock/:id",
+        path: "/stock/:symbol",
         element: <SingleStockPage />,
         children: []
     },

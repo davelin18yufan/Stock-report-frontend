@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useMainContext } from '../contexts/MainContext'
+import { useEffect } from "react"
 
 export const UserImage = ({user, avatar}) => {
   return (
@@ -12,7 +13,11 @@ export const UserImage = ({user, avatar}) => {
 
 export const PostCard = ({post}) => {
   const { setPostCardId } = useMainContext()
- 
+  useEffect(() => {
+    return () => {
+      setPostCardId(null) // 離開頁面時設為 null
+    };
+  }, [setPostCardId])
   return(
     <a 
       className="flex pl-6 pr-8 py-3 h-[110px] sm:h-[140px] bg-card dark:bg-slate-800 " 
@@ -72,8 +77,13 @@ export const TargetCard = ({target}) => {
   )
 }
 
-export const ReportCard = ({report}) => {
+export const ReportCard = ({report, userName, stockName}) => {
   const { setReportCardId } = useMainContext()
+  useEffect(() => {
+    return () => {
+      setReportCardId(null) // 離開頁面時設為 null
+    };
+  }, [setReportCardId])
   return (
     <a className={`flex pl-6 pr-8 py-3 h-[160px] sm:h-[190px] bg-card dark:bg-slate-800`} href="#side"
       onClick={() => setReportCardId(report.id)}>
@@ -81,13 +91,13 @@ export const ReportCard = ({report}) => {
         <h2 className="font-bold text-lg dark:text-neutral-300 line-clamp-1">{report.title}</h2>
         <div className="flex space-x-8 pt-2 sm:space-x-28">
           <ul className="pl-4 font-normal list-disc text-sm text-[#6C757D] dark:text-amber-200">
-            <li>上傳者： {report.user_name}</li>
+            <li>上傳者： {userName}</li>
             <li>上傳日期： {report.createdAt}</li>
             <li>出版日期： {report.publish_date}</li>
             <li>出版作者： {report.from}</li>
           </ul>
           <div className="h-[100px] flex flex-col flex-wrap ">
-            <TargetCard target={report.stock_name} />
+            <TargetCard target={stockName} />
           </div>
         </div>
       </div>
@@ -95,7 +105,7 @@ export const ReportCard = ({report}) => {
   )
 }
 
-export const ReportSide = ({title, stock, report}) => {
+export const ReportSide = ({report}) => {
   return (
     <div className="px-6 py-4">
       <h2 className="mb-4 font-bold text-xl dark:text-white">{report.title}</h2>

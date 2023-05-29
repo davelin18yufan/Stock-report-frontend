@@ -61,6 +61,8 @@ export const MainSector = ({currentTab, setCurrentTab}) => {
             <ReportCard 
               report={item}
               key={item.id}
+              userName={item.user_name}
+              stockName={item.stock_name}
             />
           )
         }))}
@@ -73,6 +75,11 @@ export const Side = ({currentTab}) => {
   const [ post, setPost ] = useState(null)
   const [ report, setReport ] = useState(null)
   const { postCardId, reportCardId } = useMainContext()
+
+  // 確保它們只有在有值時為 true，沒有值時為 false。
+  const hasPostCardClicked = !!postCardId
+  const hasReportCardClicked = !!reportCardId 
+
   useEffect(() => {
     async function getPostAsync(){
       try{
@@ -95,14 +102,42 @@ export const Side = ({currentTab}) => {
         console.log(err)
       }
     }
+    if(currentTab === "post" && hasPostCardClicked){ // 被點擊了再拿資料
+      getPostAsync()
+    }
+    if(currentTab === "report" && hasReportCardClicked){
+      getSingleReportAsync()
+    }
+  }, [reportCardId, postCardId, currentTab, hasPostCardClicked, hasReportCardClicked])
 
-    getPostAsync()
-    getSingleReportAsync()
-  }, [reportCardId, postCardId])
+  // 沒被點擊先渲染預設畫面
+  if((currentTab === "post" && !hasPostCardClicked) || (currentTab === "report" && !hasReportCardClicked)){
+    return (
+      <aside className="basis-2/5 grow border-x-2 dark:bg-slate-800 dark:border-slate-300/25 scroll-smooth w-full h-screen overflow-y-auto" id="side">
+        <div className="shadow rounded-md p-4 max-w-sm w-full mx-auto">
+          <div className="animate-pulse flex space-x-4">
+            <div className="rounded-full bg-slate-200 h-10 w-10"></div>
+            <div className="flex-1 space-y-6 py-1">
+              <div className="h-2 bg-slate-200 rounded w-12"></div>
+              <div className="space-y-8">
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="h-2 bg-slate-200 rounded col-span-2"></div>
+                  <div className="h-2 bg-slate-200 rounded col-span-1"></div>
+                </div>
+                <div className="h-2 bg-slate-200 rounded"></div>
+                <div className="h-2 bg-slate-200 rounded"></div>
+                <div className="h-2 bg-slate-200 rounded"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+      )
+  }
   return (
-    <aside className="basis-2/5 grow border-2 dark:bg-slate-800 dark:border-slate-300/25 scroll-smooth w-full h-screen overflow-y-auto" id="side">
+    <aside className="basis-2/5 grow border-x-2 dark:bg-slate-800 dark:border-slate-300/25 scroll-smooth w-full h-screen overflow-y-auto" id="side">
         {currentTab === "post" && post && <PostSide post={post} /> }
-        {currentTab === "report" && <ReportSide report={report} /> }
+        {currentTab === "report" && report && <ReportSide report={report} /> }
     </aside>
   )
 }

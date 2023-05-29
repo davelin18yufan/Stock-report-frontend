@@ -9,8 +9,8 @@ export function useMainContext() {
 export const MainContextProvider = ({children}) => {
   const [ menuToggle, setMenuToggle ] = useState(false)
   const [ darkMode, setDarkMode ] = useState(false)
-  const [ postCardId, setPostCardId ] = useState(2)
-  const [ reportCardId, setReportCardId ] = useState(2)
+  const [ postCardId, setPostCardId ] = useState(null)
+  const [ reportCardId, setReportCardId ] = useState(null)
   const [ posts, setPosts ] = useState([])
   const [ reports, setReports ] = useState([])
   useEffect(() => {
