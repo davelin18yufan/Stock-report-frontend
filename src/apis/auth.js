@@ -24,8 +24,7 @@ export async function login(payload){
       email,
       password
     })
-    const { token } = data
-
+    const { token } = data.data
     if(token){
       return {
         success: true,
@@ -33,13 +32,14 @@ export async function login(payload){
       }
     }else {
       return {
+        success: false,
         ...data
       }
     }
     
   }catch(err){
     console.error("login failed", err)
-    return { success: false }
+    return { success: false, message: err.response}
   } 
 }
 
@@ -49,7 +49,7 @@ export async function signUp(payload){
     const { data } = await axiosInstance.post(`${baseUrl}/signup`, {
       name, email, password
     })
-    const { token } = data
+    const { token } = data.data
     if(token){
       return {
         success: true,
@@ -60,7 +60,7 @@ export async function signUp(payload){
     }
   }catch(err){
     console.error("signUp failed", err)
-    return {success: false}
+    return { success: false, message: err.response}
   }
 }
 

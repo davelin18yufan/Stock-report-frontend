@@ -15,6 +15,7 @@ module.exports = {
       ],
     },
     extend: {
+      scrollbar: ['dark'],
       colors: {
         'dark-green': '#1e4040',
         "light-green": '#71d99e',
@@ -34,6 +35,12 @@ module.exports = {
         'user': "url(../src/assets/images/person.png)",
         'random': `url(https://loremflickr.com/320/320/headshot/?random=${Math.random() * 100})`
       },
+    },
+  },
+  variants: {
+    extend: {
+      // 啟用 scrollbar 的變體
+      scrollbar: ['dark'],
     },
   },
   plugins: [

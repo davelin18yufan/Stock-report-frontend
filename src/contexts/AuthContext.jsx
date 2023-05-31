@@ -39,35 +39,40 @@ export const AuthProvider = ({children}) => {
       isAuthenticated,
       currentUser: payload ,
       signUp: async (userInput) => {
-        const { status } = await signUp({
+        const { status, message } = await signUp({
           name: userInput.name,
           email: userInput.email,
           password: userInput.password
         })
+        
         if(status === "success") {
           return { success: true }
         }
-        return { success: false}
+        return { success: false, message}
       },
       login: async (input) => {
-        const { status, data } = await login({
+        const { success, data, message } = await login({
           email: input.email,
           password: input.password
         })
+        if(!success){
+          return { message }
+        }
         const tempPayload = jwt_decode(data.token)
         if(!tempPayload){
           setPayload(null)
           setIsAuthenticated(false)
-          return
+          return { success: false} 
         }
         setPayload(tempPayload)
         setIsAuthenticated(true)
         localStorage.setItem("authToken", data.token)
         localStorage.setItem("userId", tempPayload.id)
-        return {status}
+        return { success: true }
       },
       logout: () => {
         localStorage.removeItem("authToken")
+        localStorage.removeItem("userId")
         setPayload(null)
         setIsAuthenticated(false)
       }
