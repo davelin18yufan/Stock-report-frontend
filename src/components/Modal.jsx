@@ -120,7 +120,7 @@ export default function Modal({open, setOpen, modal}) {
           setOpen(false)
           setErrorMsg("")
           setShowErrorMsg(false)
-        }, 1000);
+        }, 1000)
       }
     }catch(err){
       console.log(err)
@@ -149,7 +149,7 @@ export default function Modal({open, setOpen, modal}) {
     }
     // fetch
     try{
-      const { success, data } = await postReport({ 
+      const { success, data, message } = await postReport({ 
         title,
         from,
         publishDate: publishDate.toString(),
@@ -182,6 +182,9 @@ export default function Modal({open, setOpen, modal}) {
           setShowErrorMsg(false)
         }, 1000)
         
+      }else{
+        setErrorMsg(message)
+        setShowErrorMsg(true)
       }
     }catch(err){
       console.log(err)
@@ -242,15 +245,17 @@ export default function Modal({open, setOpen, modal}) {
               inputRef={fileInputRef}
               disabled={ isSubmitting ? true : false}
             />
-            { fileSrc ? 
-              <div className="relative">
-                <img className="w-full h-full" src={previewURL} alt="uploading"/> 
-                <button className="text-sky-600 rounded-lg bg-gray-300 w-full mt-2 py-0.5 cursor-pointer hover:bg-gray-400" 
-                  onClick={handleClear}>
-                  清除
-                </button>
-              </div>
-              : null}
+            { 
+              fileSrc ? 
+                <div className="relative">
+                  <img className="w-full h-full" src={previewURL} alt="uploading"/> 
+                  <button className="text-sky-600 rounded-lg bg-gray-300 w-full mt-2 py-0.5 cursor-pointer hover:bg-gray-400" 
+                    onClick={handleClear}>
+                    清除
+                  </button>
+                </div>
+                : null
+            }
           </DialogContent>
         </>}
         {modal === "report" && 

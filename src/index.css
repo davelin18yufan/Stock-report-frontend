@@ -45,7 +45,6 @@ body {
   flex-direction: column;
   position: absolute;
   width: 90px;
-  hegithy: 100%;
   border-top-right-radius: 0.5rem; 
   border-bottom-right-radius: 0.5rem; 
   padding-left: 0.5rem; 
@@ -67,7 +66,8 @@ body {
 .bg-card {
   position: relative;
   background-color: rgba(255,255,255,0.1);
-  border: 2px solid rgba(0,0,0,0.1);
+  border-top: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid rgba(0,0,0,0.1);
   transition: .4s;
   cursor: pointer;
 }
@@ -101,11 +101,11 @@ body {
   }
 
   .inputDefault:hover{
-    @apply border-b-light-green
+    @apply border-b-light-green dark:border-sky-700
   }
 
   .inputDefault:focus {
-    @apply border-b-light-green z-10
+    @apply border-b-light-green z-10 dark:border-sky-700
   }
 
   .btn {

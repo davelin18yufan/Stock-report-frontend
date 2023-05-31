@@ -63,6 +63,7 @@ export const AuthProvider = ({children}) => {
         setPayload(tempPayload)
         setIsAuthenticated(true)
         localStorage.setItem("authToken", data.token)
+        localStorage.setItem("userId", tempPayload.id)
         return {status}
       },
       logout: () => {

@@ -6,7 +6,7 @@ export const UserImage = ({user, avatar}) => {
   return (
     <img 
       src={avatar} alt={user} 
-      className="w-[50px] h-[50px] rounded-full "
+      className="w-[50px] h-[50px] rounded-full object-cover"
       />
   )
 }
@@ -20,7 +20,7 @@ export const PostCard = ({post}) => {
   }, [setPostCardId])
   return(
     <a 
-      className="flex pl-6 pr-8 py-3 h-[110px] sm:h-[140px] bg-card dark:bg-slate-800 " 
+      className="flex pl-6 pr-8 py-3 h-[110px] sm:h-[140px] bg-card dark:bg-slate-800 shadow" 
       href="#side" 
       onClick={() => setPostCardId(post.id)}>
       <UserImage user={post.User.name} avatar={post.User.avatar}/>
@@ -85,7 +85,7 @@ export const ReportCard = ({report, userName, stockName}) => {
     };
   }, [setReportCardId])
   return (
-    <a className={`flex pl-6 pr-8 py-3 h-[160px] sm:h-[190px] bg-card dark:bg-slate-800`} href="#side"
+    <a className={`flex pl-6 pr-8 py-3 h-[160px] sm:h-[190px] bg-card dark:bg-slate-800 shadow`} href="#side"
       onClick={() => setReportCardId(report.id)}>
       <div className="ml-2 flow-root ">
         <h2 className="font-bold text-lg dark:text-neutral-300 line-clamp-1">{report.title}</h2>
@@ -114,6 +114,28 @@ export const ReportSide = ({report}) => {
       </div>
       <div className="mt-4">
         <p className="antialiased font-sans leading-6 text-[#333333] dark:text-neutral-300">{report.report}</p>
+      </div>
+    </div>
+  )
+}
+
+export const DefaultSide = () => {
+  return(
+    <div className="rounded-md p-4 w-full mx-auto">
+      <div className="animate-pulse flex space-x-4">
+        <div className="rounded-full bg-slate-200 h-10 w-10"></div>
+        <div className="flex-1 space-y-6 py-1">
+          <div className="h-2 bg-slate-200 rounded w-12"></div>
+          <div className="space-y-8">
+            <div className="grid grid-cols-3 gap-4">
+              <div className="h-2 bg-slate-200 rounded col-span-2"></div>
+              <div className="h-2 bg-slate-200 rounded col-span-1"></div>
+            </div>
+            <div className="h-2 bg-slate-200 rounded"></div>
+            <div className="h-2 bg-slate-200 rounded"></div>
+            <div className="h-2 bg-slate-200 rounded"></div>
+          </div>
+        </div>
       </div>
     </div>
   )

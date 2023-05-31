@@ -27,15 +27,15 @@ const Login = () => {
         icon: 'success',
         showConfirmButton: false,
       })
-    }else{
-      Swal.fire({
-        position: 'top',
-        title: '登入失敗！',
-        timer: 1000,
-        icon: 'error',
-        showConfirmButton: false,
-      })
     }
+    Swal.fire({
+      position: 'top',
+      title: '登入失敗！',
+      timer: 1000,
+      icon: 'error',
+      showConfirmButton: false,
+    })
+    
   }
 
   // 檢查是否要重新登入
