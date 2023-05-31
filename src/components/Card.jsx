@@ -7,7 +7,7 @@ export const UserImage = ({user, avatar}) => {
     <img 
       src={avatar} alt={user} 
       className="w-[50px] h-[50px] rounded-full object-cover"
-      />
+    />
   )
 }
 

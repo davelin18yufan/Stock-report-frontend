@@ -20,7 +20,14 @@ axiosInstance.interceptors.request.use(
 
 export async function editUser(userId, payload){
   try{
-    const res = await axiosInstance.put(`${baseUrl}/user/${userId}`, payload)
+    const config = {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'multipart/form-data',
+      },
+    }
+    const res = await axiosInstance.put(`${baseUrl}/user/${userId}`, payload, config)
+    
     if(res.data.status === "success"){
       return { success: true, data: res.data.data }
     }

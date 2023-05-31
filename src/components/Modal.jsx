@@ -98,7 +98,7 @@ export default function Modal({open, setOpen, modal}) {
       if(res.success){
         setIsSubmitting(false)
 
-        setPosts((prevposts) => {
+        setPosts((prevPosts) => {
           return [
             {
               id: res.data.id,
@@ -112,7 +112,7 @@ export default function Modal({open, setOpen, modal}) {
                 avatar: currentUser.avatar
               },
             },
-            ...prevposts
+            ...prevPosts
           ]
         })
         //一段時間過後自己關掉
