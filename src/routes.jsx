@@ -8,6 +8,7 @@ import Setting from "./pages/setting"
 import AdminLogin from "./pages/admin/login"
 import AdminUser from "./pages/admin/users"
 import AdminList from "./pages/admin/list"
+import UserPage from "./pages/user"
 
 const routes = [
     {
@@ -45,11 +46,11 @@ const routes = [
         element: <StockPage />,
         children: []
     },
-    // {
-    //     path: "/user",
-    //     element: <User />,
-    //     children: []
-    // },
+    {
+        path: "/user",
+        element: <UserPage />,
+        children: []
+    },
     {
         path: "/admin/list",
         element: <AdminList />,

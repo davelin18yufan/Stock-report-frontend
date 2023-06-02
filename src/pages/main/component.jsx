@@ -4,17 +4,26 @@ import { getReports, getSingleReport } from "../../apis/report"
 import { useEffect, useState } from "react"
 import { useMainContext } from "../../contexts/MainContext"
 
-export const MainSector = ({currentTab, setCurrentTab}) => {
-  const { posts, setPosts, reports, setReports } = useMainContext()
-  
-  async function handleTabClick(tab){
+export const Tab = ({post, report}) => {
+  const { setCurrentTab } = useMainContext()
+  function handleTabClick(tab){
     if(tab === "post"){
       setCurrentTab("post")
     }else{
       setCurrentTab("report")
     }
   }
+  return(
+    <div className="flex p-2 text-gray-500 border-b-2 dark:border-b-slate-300/50">
+      <button className="border-b-2 border-gray-400/50 focus:text-black  focus:border-black dark:focus:text-white dark:focus:border-white" autoFocus onClick={() => handleTabClick("post")}>{post}</button>
+      <button className="border-b-2 ml-3 focus:text-black border-gray-400/50 focus-border-black dark:focus:text-white dark:focus:border-white" onClick={() => handleTabClick("report")}>{report}</button>
+    </div>
+  )
+}
 
+export const MainSector = () => {
+  const { posts, setPosts, reports, setReports, currentTab } = useMainContext()
+  
   useEffect(() => {
     async function getPostsAsync() {
       try{
@@ -43,10 +52,7 @@ export const MainSector = ({currentTab, setCurrentTab}) => {
 
   return (
     <main className="border-x-2 border-gray-500 basis-3/5 grow w-full">
-      <div className="flex p-2 text-gray-500 border-b-2 dark:border-b-slate-300/50">
-        <button className="border-b-2 border-gray-400/50 focus:text-black  focus:border-black dark:focus:text-white dark:focus:border-white" autoFocus onClick={() => handleTabClick("post")}>最新貼文</button>
-        <button className="border-b-2 ml-3 focus:text-black border-gray-400/50 focus-border-black dark:focus:text-white dark:focus:border-white" onClick={() => handleTabClick("report")}>最新報告</button>
-      </div>
+      <Tab post="最新貼文" report="最新報告"/>
       <div className="w-full h-screen  overflow-y-auto">
         {currentTab === "post" && (posts.map(item => {
           return(
@@ -71,11 +77,11 @@ export const MainSector = ({currentTab, setCurrentTab}) => {
   )
 }
 
-export const Side = ({currentTab}) => {
+export const Side = () => {
   const [ post, setPost ] = useState(null)
   const [ report, setReport ] = useState(null)
   const [ isLoading, setIsLoading ] = useState(true)
-  const { postCardId, reportCardId } = useMainContext()
+  const { postCardId, reportCardId, currentTab } = useMainContext()
 
   // 確保它們只有在有值時為 true，沒有值時為 false。
   const hasPostCardClicked = !!postCardId

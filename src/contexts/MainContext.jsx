@@ -8,6 +8,7 @@ export function useMainContext() {
 
 export const MainContextProvider = ({children}) => {
   const [ menuToggle, setMenuToggle ] = useState(false)
+  const [ currentTab, setCurrentTab ] = useState("post")
   const [ darkMode, setDarkMode ] = useState(false)
   const [ postCardId, setPostCardId ] = useState(null)
   const [ reportCardId, setReportCardId ] = useState(null)
@@ -34,7 +35,9 @@ export const MainContextProvider = ({children}) => {
           posts, 
           setPosts,
           reports, 
-          setReports
+          setReports,
+          currentTab, 
+          setCurrentTab
         }}>
           { children }
         </MainContext.Provider>

@@ -38,3 +38,42 @@ export async function editUser(userId, payload){
     return { success: false, message: err.response.data.message}
   }
 }
+
+export async function getUserInfo(userId){
+  try{
+    const res = await axiosInstance.get(`${baseUrl}/user/${userId}`)
+    if(res.data.status === "success"){
+      return { success: true, data: res.data.data}
+    }
+    return { success: false, message: res.data.message }
+  }catch(err){
+    console.error("get user info failed", err)
+    return { success: false, message: err.response.data.message}
+  }
+}
+
+export async function getUserPosts(userId){
+  try{
+    const res = await axiosInstance.get(`${baseUrl}/user/${userId}/posts`)
+    if(res.data.status === "success"){
+      return { success: true, data: res.data.data}
+    }
+    return { success: false, message: res.data.message }
+  }catch(err){
+    console.error("get user posts failed", err)
+    return { success: false, message: err.response.data.message}
+  }
+}
+
+export async function getUserReports(userId){
+  try{
+    const res = await axiosInstance.get(`${baseUrl}/user/${userId}/reports`)
+    if(res.data.status === "success"){
+      return { success: true, data: res.data.data}
+    }
+    return { success: false, message: res.data.message }
+  }catch(err){
+    console.error("get user reports failed", err)
+    return { success: false, message: err.response.data.message}
+  }
+}
