@@ -55,3 +55,16 @@ export async function postReport(payload){
     return {success: false, message: err.response.data.message}
   }
 }
+
+export async function deleteReport(reportId){
+  try{
+    const res = await axiosInstance.delete(`${baseUrl}/report/${reportId}`)
+    if (res.data.status === "success"){
+      return { success: true, data: res.data.data}
+    }
+    return { success: false, message: res.data.message }
+  }catch(err){
+    console.error("delete report failed", err)
+    return { success: false, message: err.response.data.message}
+  }
+}

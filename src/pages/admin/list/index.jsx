@@ -55,10 +55,8 @@ const ReportList = ({report, onDelete}) => {
         </div>
         <div 
           className="ml-auto cursor-pointer"
-          onClick={() => onDelete?.(report.id)}
-        >
+          onClick={() => onDelete?.(report.id)} >
           <FontAwesomeIcon icon="fa-solid fa-xmark" /> 
-           
         </div>
       </div>
       <div className=" font-[400] text-[16px] leading-[26px] line-clamp-1 sm:line-clamp-2 ">
@@ -82,20 +80,18 @@ const MainSector = () => {
       })
       setIsSubmitting(false)
       setShowSuccessMsg(true)
-      return 
+      return setTimeout(() => {
+        setShowSuccessMsg(false)
+      }, 5000)
     }
     Swal.fire({
       position: 'top',
       title: message,
-      timer: 1300,
       icon: 'error',
-      showConfirmButton: false,
+      showConfirmButton: true,
+      confirmButtonColor: 'gray'
     })
     setIsSubmitting(false)
-
-    setTimeout(() => {
-      setShowSuccessMsg(false)
-    }, 5000)
   }
 
   async function handleReportDelete(id){
@@ -107,20 +103,18 @@ const MainSector = () => {
       })
       setIsSubmitting(false)
       setShowSuccessMsg(true)
-      return
+      return setTimeout(() => {
+        setShowSuccessMsg(false)
+      }, 5000)
     }
     Swal.fire({
       position: 'top',
       title: message,
-      timer: 1300,
       icon: 'error',
-      showConfirmButton: false,
+      showConfirmButton: true,
+      confirmButtonColor: 'gray'
     })
     setIsSubmitting(false)
-
-    setTimeout(() => {
-      setShowSuccessMsg(false)
-    }, 5000)
   }
 
   useEffect(() => {

@@ -111,6 +111,7 @@ export default function Modal({open, setOpen, modal}) {
               updatedAt: res.data.updatedAt,
               createdAt: res.data.createdAt,
               User: {
+                id: currentUser.id,
                 name: currentUser.name,
                 avatar: currentUser.avatar
               },
@@ -119,12 +120,13 @@ export default function Modal({open, setOpen, modal}) {
           ]
         })
         //一段時間過後自己關掉
-        setTimeout(() => {
+        return setTimeout(() => {
           setOpen(false)
           setErrorMsg("")
           setShowErrorMsg(false)
+          setIsSubmitting(false)
           fileInputRef.current.value= ""
-          go("/main")
+          setCurrentTab("post")
         }, 1000)
       }
       setErrorMsg(res.message)
@@ -176,16 +178,22 @@ export default function Modal({open, setOpen, modal}) {
               report: data.report,
               publish_date: data.publish_date,
               createdAt: data.createdAt,
-              userId: data.userId,
-              user_name: data.user_name,
-              stock_name: data.stock_name,
-              stockId: data.stockId
+              userId: currentUser.id,
+              stockId: data.stockId,
+              Stock: {
+                name: data.stock_name,
+                symbol: stock
+              },
+              User: {
+                  id: currentUser.id,
+                  name: currentUser.name
+              }
             },
             ...prevReports
           ]
         })
         //清空
-        setTimeout(() => {
+        return setTimeout(() => {
           setIsSubmitting(false)
           setOpen(false)
           setErrorMsg("")

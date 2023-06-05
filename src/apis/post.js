@@ -68,6 +68,19 @@ export async function posting(payload) {
   }
 }
 
+export async function deletePost(postId){
+  try{
+    const res = await axiosInstance.delete(`${baseUrl}/post/${postId}`)
+    if (res.data.status === "success"){
+      return { success: true, data: res.data.data}
+    }
+    return { success: false, message: res.data.message }
+  }catch(err){
+    console.error("delete post failed", err)
+    return { success: false, message: err.response.data.message}
+  }
+}
+
 export async function favoritePost(postId) {
   try {
     const { data } = await axiosInstance.post(`${baseUrl}/post/favorite/${postId}`)
