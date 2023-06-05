@@ -21,17 +21,29 @@ export const LogoTitle = ({title}) => {
   )
 }
 
-export const InputCard = ({label, placeholder, name, type }) => {
+export const InputCard = ({label, placeholder, name, type, onChange, disabled }) => {
   return (
     <div className="w-4/5 bg-[#F5F8FA] my-4 px-2.5 mx-auto dark:bg-gray-700">
-      <label className="block pb-0.5 text-dark-green dark:text-neutral-300">{label}</label>
-      <input type={type} name={name} placeholder={placeholder} className="inputDefault inputDefault:hover inputDefault:focus dark:hover:border-sky-700 dark:focus:border-sky-700 dark:placeholder-gray-500/50"></input>
+      <label className="block pb-0.5 text-dark-green dark:text-neutral-300" htmlFor={name}>{label}</label>
+      <input 
+        id={name}
+        type={type} 
+        name={name} 
+        placeholder={placeholder} 
+        className="inputDefault inputDefault:hover inputDefault:focus dark:placeholder-gray-500/50 "
+        onChange={(e) => onChange?.(e.target.value)}
+        disabled={disabled}>
+      </input>
     </div>
   )
 }
 
-export const SubmitBtn = ({submit}) => {
+export const SubmitBtn = ({submit, onSubmit}) => {
   return (
-    <button className="w-full btn btn:hover dark:bg-slate-400 dark:text-sky-700">{submit}</button>
+    <button 
+      className="w-full btn btn:hover dark:bg-slate-400 dark:text-sky-700"
+      onClick={onSubmit}>
+        {submit}
+    </button>
   )
 }

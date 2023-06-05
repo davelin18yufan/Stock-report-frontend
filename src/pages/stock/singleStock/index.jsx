@@ -2,31 +2,50 @@ import { MainContainer } from "../../../components/MainContainer"
 import Footer from "../../../components/Footer"
 import Header from "../../../components/Header"
 import Navbar from "../../../components/Navbar"
-import { MainContextProvider } from "../../../contexts/AuthContext"
+import ScrollToTopBtn from "../../../components/ScrollToTopBtn"
 import { ReportCard } from "../../../components/Card"
 import { Side } from "../../main/component"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { getSingleStock } from "../../../apis/stock"
 
 
 const MainSector = () => {
+  const [ stock, setStock ] = useState([])
   const go = useNavigate()
+  const symbol = useParams().symbol
+
+  useEffect(() => {
+    async function getSingleStockAsync(){
+      try{
+        const { success, data } = await getSingleStock(symbol)
+        if(success){
+          setStock(data)
+        }
+      }catch(err){
+        console.log(err)
+      }
+    }
+    getSingleStockAsync()
+  }, [symbol])
   return (
     <main className="border-x-2 border-gray-500 basis-3/5">
-      <div className="w-full h-screen overflow-y-auto ">
-        <div className="w-full bg-light-gray px-4 py-2">
-          <div className="w-fit cursor-pointer hover:opacity-70" onClick={() => go("/stock")}>
+      <div className="w-full h-screen ">
+        <div className="w-full overflow-y-auto scrollbar-y bg-light-gray px-4 py-2 dark:bg-slate-700 dark:text-neutral-400">
+          <div className="w-fit cursor-pointer hover:opacity-70 " onClick={() => go("/stock")}>
             <FontAwesomeIcon icon="fa-solid fa-arrow-left" />
             <span className="ml-2">回到搜尋頁面</span>
           </div>
         </div>
-        <ReportCard />
-        <ReportCard />
-        <ReportCard />
-        <ReportCard />
-        <ReportCard />
-        <ReportCard />
-        <ReportCard />
+        {
+          stock[0]?.Reports?.id ?
+            stock.map(item => 
+              <ReportCard report={item.Reports} userName={item.Reports.User.name} stockName={item.name} key={item.Reports.id}/>
+            )
+            :
+            <p className="mt-6 animate-bounce w-full text-center dark:text-neutral-500">目前暫無報告~</p>
+        }
       </div>
     </main>
   )
@@ -34,19 +53,18 @@ const MainSector = () => {
 
 const SingleStockPage = () => {
   return (
-    <MainContextProvider>
-      <MainContainer>
-        <Header />
-        <div className="h-full flex flex-col sm:flex-row ">
-          <Navbar />
-          <div className="lg:flex">
-            <MainSector />
-            <Side />
-          </div>
+    <MainContainer>
+      <Header />
+      <div className="h-full flex flex-col sm:flex-row ">
+        <Navbar />
+        <div className="lg:flex dark:bg-slate-800 dark:text-neutral-300 grow">
+          <MainSector />
+          <Side currentTab="report"/>
         </div>
-        <Footer />
-      </MainContainer>
-    </MainContextProvider>
+      </div>
+      <Footer />
+      <ScrollToTopBtn />
+    </MainContainer>
   )
 }
 

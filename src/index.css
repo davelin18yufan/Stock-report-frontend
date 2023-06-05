@@ -39,13 +39,20 @@ body {
   outline: none;
 }
 
+/* scrollbar */
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  background-color: transparent;
+}
+
+
 
 .navToggle {
   display: flex;
   flex-direction: column;
   position: absolute;
   width: 90px;
-  hegithy: 100%;
   border-top-right-radius: 0.5rem; 
   border-bottom-right-radius: 0.5rem; 
   padding-left: 0.5rem; 
@@ -67,7 +74,8 @@ body {
 .bg-card {
   position: relative;
   background-color: rgba(255,255,255,0.1);
-  border: 2px solid rgba(0,0,0,0.1);
+  border-top: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid rgba(0,0,0,0.1);
   transition: .4s;
   cursor: pointer;
 }
@@ -82,12 +90,62 @@ body {
   transition: .4s
 }
 
+.bounceBox {
+  transform: translateX(400%) rotate(30deg);
+  transform-origin: center;
+  transition: transform 0.6s ease-out;
+}
+
+.bounceBox-show{
+  transform: translateX(0) rotate(0deg);
+}
+
+.cover:hover {
+  outline: 2px solid #fff;
+  outline-offset: -6px;
+}
+
+.cover:hover div{
+  opacity: 1;
+}
+
+.cover:hover > img{
+  transform: scale(1,1);
+  filter: brightness(0.4);
+}
+
 @keyframes gradient {
   0% { background-position: 0% 50%; }
   100% { background-position: 100% 50%; }
 }
 
 @layer components{
+  .scrollbar-y::-webkit-scrollbar-track-piece{
+    background-color: #fff;
+    border-radius: 0;
+  }
+
+  .scrollbar-y::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollbar-y::-webkit-scrollbar-thumb {
+    height: 50px;
+    background-color: #999;
+    border-radius: 4px;
+    outline: 2px solid #fff;
+    outline-offset: -2px;
+    border: 2px solid #fff;
+  }
+
+  .scrollbar-y::-webkit-scrollbar-thumb:hover {
+    height:50px;
+    background-color:#9f9f9f;
+    border-radius:4px;
+    opacity: 0.8;
+  }
+
   .link {
       @apply underline text-[#283f73] cursor-pointer
   }
@@ -101,11 +159,11 @@ body {
   }
 
   .inputDefault:hover{
-    @apply border-b-light-green
+    @apply border-b-light-green dark:border-sky-700
   }
 
   .inputDefault:focus {
-    @apply border-b-light-green z-10
+    @apply border-b-light-green z-10 dark:border-sky-700
   }
 
   .btn {
@@ -122,6 +180,10 @@ body {
 
   .bg-card:before:is(:hover, :focus) {
     @apply opacity-100
+  }
+
+  .userInfo {
+    @apply rounded-md  text-amber-200 bg-gray-700 
   }
 
 }

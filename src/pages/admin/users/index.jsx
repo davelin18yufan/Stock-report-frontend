@@ -1,25 +1,26 @@
 import Header from "../../../components/Header"
 import Footer from "../../../components/Footer"
 import { MainContainer } from "../../../components/MainContainer"
-import { MainContextProvider } from "../../../contexts/AuthContext"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import AdminNavbar from "../AdminSidebar"
+import { useState, useEffect } from "react"
+import { getAllUsers } from "../../../apis/admin"
 
 
-const UserCard = () => {
+const UserCard = ({user}) => {
   return(
     <div className="w-[200px] h-[200px] relative break-all cursor-pointer border-1 rounded-lg shadow-lg " >
-      <div className="absolute inset-0 opacity-20 hover:opacity-80 rounded-lg transparent w-full h-full">
-        <img src={`https://loremflickr.com/320/320/headshot/?random=${Math.random() * 100}`} alt="user" className=""/>
+      <div className="absolute inset-0 opacity-20 hover:opacity-80 rounded-lg transparent">
+        <img src={user.avatar} alt="user" className="object-cover object-center w-full h-full"/>
       </div>
       <div className="py-8 px-6 rounded-[10px] ">
-        <p className="font-bold text-center">Dave</p>
-        <p className="text-[14px] text-[#6C757D] text-center">@davelin</p>
+        <p className="font-bold text-center">{user.name}</p>
+        <p className="text-[14px] text-[#6C757D] text-center">{user.email}</p>
         <div className="flex justify-center mt-[21px] items-center">
             <FontAwesomeIcon icon="fa-solid fa-newspaper" />
-            <p className="ml-2 mr-3 ">10</p>
+            <p className="ml-2 mr-3 ">{user.ReportsCount}</p>
             <FontAwesomeIcon icon="fa-solid fa-comment-dots" />
-            <p className="ml-1">10</p>
+            <p className="ml-1">{user.PostsCount}</p>
         </div>
         <div className="flex justify-center mt-2">
           <p className="text-[#6C757D] text-[14px]">
@@ -32,35 +33,34 @@ const UserCard = () => {
   )
 }
 
+const UserList = () => {
+  const [ users, setUsers ] = useState([])
+  useEffect(() => {
+    async function getAllUsersAsync(){
+      const { success, data } = await getAllUsers()
+      if(success){
+        setUsers(data)
+      }
+    }
+    getAllUsersAsync()
+  }, [])
+  return (
+    <div className="flex flex-wrap gap-4 p-4 dark:bg-slate-800 dark:text-white overflow-y-auto h-screen scrollbar-y">
+      {users?.map( user => <UserCard user={user} key={user.id}/>)}    
+    </div>
+  )
+}
+
 const AdminUser = () => {
   return (
-    <MainContextProvider>
-      <MainContainer>
-        <Header  />
-        <div className="h-full flex flex-col sm:flex-row ">
-          <AdminNavbar />
-          <div className="flex flex-wrap gap-4 p-4 dark:bg-slate-800 dark:text-white overflow-y-auto h-screen">
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-            <UserCard />
-          </div>
-        </div>
-        <Footer />
-      </MainContainer>
-    </MainContextProvider>
+    <MainContainer>
+      <Header  />
+      <div className="h-full flex flex-col sm:flex-row ">
+        <AdminNavbar />
+        <UserList />
+      </div>
+      <Footer />
+    </MainContainer>
   )
 }
 

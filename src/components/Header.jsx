@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useMainContext } from '../contexts/AuthContext'
+import { useMainContext } from '../contexts/MainContext'
 
 const Header = () => {
   const { menuToggle, setMenuToggle} = useMainContext()
