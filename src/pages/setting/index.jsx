@@ -48,19 +48,19 @@ const Setting = () => {
   async function handleSubmit(){
     setIsSubmitting(true)
     // 有欄位空白
-    if (
-      name.trim().length === 0 ||
-      email.trim().length === 0 ||
-      password.trim().length === 0 ||
-      passwordCheck.trim().length === 0
-    ) {
-      setShowErrorMsg(true)
-      setErrorMsg('欄位不可空白!')
-      setTimeout(() => {
-        setIsSubmitting(false)
-      }, 1000)
-      return
-    }
+    // if (
+    //   name.trim().length === 0 ||
+    //   email.trim().length === 0 ||
+    //   password.trim().length === 0 ||
+    //   passwordCheck.trim().length === 0
+    // ) {
+    //   setShowErrorMsg(true)
+    //   setErrorMsg('欄位不可空白!')
+    //   setTimeout(() => {
+    //     setIsSubmitting(false)
+    //   }, 1000)
+    //   return
+    // }
 
     // 密碼輸入不一致
     if(password.trim() !== passwordCheck.trim()){

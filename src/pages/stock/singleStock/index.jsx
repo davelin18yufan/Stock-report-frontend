@@ -31,8 +31,8 @@ const MainSector = () => {
   }, [symbol])
   return (
     <main className="border-x-2 border-gray-500 basis-3/5">
-      <div className="w-full h-screen overflow-y-auto ">
-        <div className="w-full bg-light-gray px-4 py-2 dark:bg-slate-700 dark:text-neutral-400">
+      <div className="w-full h-screen ">
+        <div className="w-full overflow-y-auto scrollbar-y bg-light-gray px-4 py-2 dark:bg-slate-700 dark:text-neutral-400">
           <div className="w-fit cursor-pointer hover:opacity-70 " onClick={() => go("/stock")}>
             <FontAwesomeIcon icon="fa-solid fa-arrow-left" />
             <span className="ml-2">回到搜尋頁面</span>

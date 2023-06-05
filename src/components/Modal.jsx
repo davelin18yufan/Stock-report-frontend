@@ -10,6 +10,7 @@ import { posting } from "../apis/post"
 import { postReport } from "../apis/report"
 import { useMainContext } from '../contexts/MainContext';
 import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Modal({open, setOpen, modal}) {
   // input
@@ -24,7 +25,8 @@ export default function Modal({open, setOpen, modal}) {
   const [ isSubmitting, setIsSubmitting ] = useState(false)
   const [ showErrorMsg, setShowErrorMsg ] = useState(false)
   const [ errorMsg, setErrorMsg ] = useState("")
-  const { setPosts, setReports } = useMainContext()
+  const { setPosts, setReports, setCurrentTab } = useMainContext()
+  const go = useNavigate()
   const { currentUser } = useAuth()
   const fileInputRef = useRef(null)
   const handleClose = () => {
@@ -48,8 +50,9 @@ export default function Modal({open, setOpen, modal}) {
 
   const handleClear = (e) => {
     e.preventDefault()
-    setFileSrc(null)
     // 清除輸入匡
+    setPreviewURL(null)
+    setFileSrc(null)
     fileInputRef.current.value= ""
   }
 
@@ -120,8 +123,14 @@ export default function Modal({open, setOpen, modal}) {
           setOpen(false)
           setErrorMsg("")
           setShowErrorMsg(false)
+          fileInputRef.current.value= ""
+          go("/main")
         }, 1000)
       }
+      setErrorMsg(res.message)
+      setShowErrorMsg(true)
+      setIsSubmitting(false)
+      
     }catch(err){
       console.log(err)
     }
@@ -147,6 +156,7 @@ export default function Modal({open, setOpen, modal}) {
       }, 1000)
       return
     }
+
     // fetch
     try{
       const { success, data, message } = await postReport({ 
@@ -180,12 +190,15 @@ export default function Modal({open, setOpen, modal}) {
           setOpen(false)
           setErrorMsg("")
           setShowErrorMsg(false)
+          go("/main")
+          setCurrentTab("report")
         }, 1000)
         
-      }else{
-        setErrorMsg(message)
-        setShowErrorMsg(true)
       }
+      setErrorMsg(message)
+      setShowErrorMsg(true)
+      setIsSubmitting(false)
+      
     }catch(err){
       console.log(err)
     }
@@ -228,7 +241,7 @@ export default function Modal({open, setOpen, modal}) {
               rows="5"
               multiline
               required
-              helperText="字數上限500"
+              helperText="字數上限700"
               onChange={handlePostChange}
               disabled={isSubmitting ? true : false}
             />
@@ -276,7 +289,7 @@ export default function Modal({open, setOpen, modal}) {
               variant="standard"
               placeholder="請寫出標題"
               required
-              helperText="字數上限20"
+              helperText="字數上限50"
               disabled={isSubmitting ? true : false}
               onChange={handleTitleChange}
             />
@@ -299,7 +312,7 @@ export default function Modal({open, setOpen, modal}) {
               fullWidth
               variant="outlined"
               placeholder="撰寫日期"
-              helperText="19110101"
+              helperText="格式：19110101"
               disabled={isSubmitting ? true : false}
               onChange={handlePublishDateChange}
             />

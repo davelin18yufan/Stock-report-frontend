@@ -41,6 +41,7 @@ export async function getSinglePost(postId) {
     }
   }catch(err) {
     console.error("get single post failed", err)
+    return {success: false, message: err.response.data.message}
   }
 }
 
@@ -58,17 +59,18 @@ export async function posting(payload) {
     }, config)
     if(data.status === "success") {
       return { success: true, data: data.data }
-    }else{
-      return { success: false, message: data.message}
     }
+    return { success: false, message: data.message}
+    
   }catch(err) {
     console.error("post failed", err)
+    return { success: false, message: err.response.data.message}
   }
 }
 
 export async function favoritePost(postId) {
   try {
-    const {data} = await axiosInstance.post(`${baseUrl}/post/${postId}`)
+    const { data } = await axiosInstance.post(`${baseUrl}/post/favorite/${postId}`)
     if(data.status === "success") {
       return { success: true }
     }else{
@@ -76,12 +78,13 @@ export async function favoritePost(postId) {
     }
   }catch(err){
     console.error("post favorite failed", err)
+    return {success: false, message: err.response.data.message}
   }
 }
 
 export async function cancelFavoritePost(postId) {
   try {
-    const [data] = await axiosInstance.delete(`${baseUrl}/post/${postId}`)
+    const { data } = await axiosInstance.delete(`${baseUrl}/post/favorite/${postId}`)
     if(data.status === "success") {
       return { success: true }
     }else{
@@ -89,5 +92,6 @@ export async function cancelFavoritePost(postId) {
     }
   }catch(err) {
     console.error("cancel favorite post failed", err)
+    return {success: false, message: err.response.data.message}
   }
 }

@@ -47,7 +47,7 @@ const routes = [
         children: []
     },
     {
-        path: "/user",
+        path: "/user/:userId",
         element: <UserPage />,
         children: []
     },

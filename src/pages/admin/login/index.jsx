@@ -9,16 +9,27 @@ const AdminLogin = () => {
   const [ email, setEmail ] = useState("")
   const [ password, setPassword ] = useState("")
   const { login, isAuthenticated } = useAuth()
+  const [ isSubmitting, setIsSubmitting ] = useState(false)
 
   async function handleLogin(){
-    if(email.length === 0){
-      return;
+    setIsSubmitting(true)
+    if(email.length === 0 || password.length === 0){
+      Swal.fire({
+        position: 'top',
+        title: "欄位不可空白",
+        icon: 'error',
+        showConfirmButton: true,
+        confirmButtonColor: "gray"
+      })
+      setTimeout(() => {
+        setIsSubmitting(false)
+      }, 1000)
+      return
     }
-    if (password.length === 0) {
-      return;
-    }
-    const result = await login({ email, password })
-    if(result){
+    const { success, message } = await login({email, password})
+  
+    if(success){
+      setIsSubmitting(false)
       Swal.fire({
         position: 'top',
         title: '登入成功！',
@@ -26,21 +37,23 @@ const AdminLogin = () => {
         icon: 'success',
         showConfirmButton: false,
       })
-      go("/admin/users")
+      return
     }else{
+      setIsSubmitting(false)
+      const data = message?.status === 401 ? "密碼或信箱錯誤！" : message?.data.message  
       Swal.fire({
         position: 'top',
-        title: '登入失敗！',
-        timer: 1000,
+        title: data || "發生錯誤",
         icon: 'error',
-        showConfirmButton: false,
+        showConfirmButton: true,
+        confirmButtonColor: "gray"
       })
     }
   }
 
   useEffect(() => {
     if(isAuthenticated){
-      go("/admin/list")
+      go("/admin/users")
     }
   }, [go, isAuthenticated])
 
@@ -49,8 +62,20 @@ const AdminLogin = () => {
         <LogoTitle title="登入管理者後台"/>
         
         <div className="w-full ">
-          <InputCard label="帳號 Account" placeholder="請輸入你的信箱" type="text" name="email" onChange={(inputValue) => setEmail(inputValue)}/>
-          <InputCard label="密碼 Password" placeholder="請輸入你的密碼" type="text" name="password" onChange={(inputValue) => setPassword(inputValue)}/>
+          <InputCard 
+            label="帳號 Account" 
+            placeholder="請輸入你的信箱" 
+            type="text" 
+            name="email" 
+            onChange={(inputValue) => setEmail(inputValue)} 
+            disabled={isSubmitting ? true : false}/>
+          <InputCard 
+            label="密碼 Password" 
+            placeholder="請輸入你的密碼" 
+            type="password" 
+            name="password" 
+            onChange={(inputValue) => setPassword(inputValue)} 
+            disabled={isSubmitting ? true : false}/>
         </div>
 
         <div className="w-4/5 mx-auto">

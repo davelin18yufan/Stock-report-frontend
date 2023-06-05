@@ -20,15 +20,28 @@ const AdminNavbar = () => {
   }
 
   function handleLogout() {
-    logout()
     Swal.fire({
-        position: 'top',
-        title: '登出成功',
-        timer: 1000,
-        icon: 'success',
-        showConfirmButton: false,
+      title: "確定登出？",
+      showDenyButton: true,
+      confirmButtonText: "Yes",
+      denyButtonText: "No",
+      confirmButtonColor: "green",
+      denyButtonColor: "gray"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logout()
+        Swal.fire({
+          position: 'top',
+          title: '登出成功！',
+          timer: 1300,
+          icon: 'success',
+          showConfirmButton: false,
+        })
+        go("/admin/login")
+      }else{
+        return
+      }
     })
-    go("/admin/login")
   }
 
   return (

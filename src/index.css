@@ -39,31 +39,13 @@ body {
   outline: none;
 }
 
-::-webkit-scrollbar-track-piece{
-  background-color: #fff;
-  border-radius: 0;
-}
-
+/* scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 0px;
+  height: 0px;
+  background-color: transparent;
 }
 
-::-webkit-scrollbar-thumb {
-  height: 50px;
-  background-color: #999;
-  border-radius: 4px;
-  outline: 2px solid #fff;
-  outline-offset: -2px;
-  border: 2px solid #fff;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  height:50px;
-  background-color:#9f9f9f;
-  border-radius:4px;
-  opacity: 0.8;
-}
 
 
 .navToggle {
@@ -138,6 +120,32 @@ body {
 }
 
 @layer components{
+  .scrollbar-y::-webkit-scrollbar-track-piece{
+    background-color: #fff;
+    border-radius: 0;
+  }
+
+  .scrollbar-y::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollbar-y::-webkit-scrollbar-thumb {
+    height: 50px;
+    background-color: #999;
+    border-radius: 4px;
+    outline: 2px solid #fff;
+    outline-offset: -2px;
+    border: 2px solid #fff;
+  }
+
+  .scrollbar-y::-webkit-scrollbar-thumb:hover {
+    height:50px;
+    background-color:#9f9f9f;
+    border-radius:4px;
+    opacity: 0.8;
+  }
+
   .link {
       @apply underline text-[#283f73] cursor-pointer
   }
@@ -159,7 +167,7 @@ body {
   }
 
   .btn {
-    @apply rounded-3xl bg-light-green text-light-green py-3
+    @apply rounded-3xl bg-dark-green text-light-green py-3
   }
 
   .btn:hover {

@@ -4,8 +4,6 @@ import Footer from "../../components/Footer"
 import ScrollToTopBtn from "../../components/ScrollToTopBtn"
 import { MainContainer } from "../../components/MainContainer"
 import { MainSector, Side } from "./component"
-import React, { useState } from 'react'
-
 
 const MainPage = () => {
   

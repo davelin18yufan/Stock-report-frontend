@@ -81,7 +81,7 @@ const StockList = ({searchTerm}) => {
   }, [])
   
   return (
-    <div ref={containerRef} className="w-full p-2  h-screen  overflow-y-auto" onScroll={handleScroll}>
+    <div ref={containerRef} className="w-full p-2 h-screen overflow-y-auto scrollbar-y" onScroll={handleScroll}>
       <ul  ref={scrollRef} className="flex flex-wrap h-full" >
         {visibleStocks.map((item, index) => 
           <StockItem stock={item} searchTerm={searchTerm} key={index}/>

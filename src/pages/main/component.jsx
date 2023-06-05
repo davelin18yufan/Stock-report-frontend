@@ -1,6 +1,7 @@
 import { PostSide, PostCard, ReportCard, ReportSide, DefaultSide } from "../../components/Card"
 import { getPosts, getSinglePost } from "../../apis/post"
 import { getReports, getSingleReport } from "../../apis/report"
+import { getUserInfo } from "../../apis/user"
 import { useEffect, useState } from "react"
 import { useMainContext } from "../../contexts/MainContext"
 
@@ -23,8 +24,26 @@ export const Tab = ({post, report}) => {
 
 export const MainSector = () => {
   const { posts, setPosts, reports, setReports, currentTab } = useMainContext()
-  
-  useEffect(() => {
+  const [ favoritePosts, setFavoritePosts ] = useState([])  
+  const [ isLoading, setIsLoading ] = useState(true)
+  const currentUserId = localStorage.getItem("userId")
+  const favoritePostsId = favoritePosts.map(item => item.id)
+ 
+   
+   useEffect(() => {
+    async function getUserAsync(){
+      // 檢查這頁的哪些貼文已被收藏
+      try{
+          const { success, data } = await getUserInfo(currentUserId)
+          if(success){
+            setFavoritePosts(data.FavoritePosts)
+          }
+        }catch(err){
+          console.log(err)
+        }finally{
+          setIsLoading(false)// 更新完成，設置 isLoading 為 false
+        }
+    }
     async function getPostsAsync() {
       try{
         const { data } = await getPosts()
@@ -45,23 +64,29 @@ export const MainSector = () => {
         console.log(err)
       }
     }
-  
+    getUserAsync()
     getPostsAsync()
     getReportsAsync()
-  }, [setPosts, setReports])
+  }, [setPosts, setReports, currentUserId])
 
   return (
     <main className="border-x-2 border-gray-500 basis-3/5 grow w-full">
       <Tab post="最新貼文" report="最新報告"/>
-      <div className="w-full h-screen  overflow-y-auto">
-        {currentTab === "post" && (posts.map(item => {
-          return(
-            <PostCard 
-              post={item}
-              key={item.id}
-            />
-          )
-        }))}
+      <div className="w-full h-screen  overflow-y-auto scrollbar-y">
+        {currentTab === "post" &&
+          (isLoading ? (
+            <div className="flex justify-center items-center h-screen">
+              <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-light-green"></div>
+            </div>
+          ) : (
+            posts.map(item => (
+              <PostCard
+                post={item}
+                key={item.id}
+                isFavorite={favoritePostsId.includes(item.id)}
+              />
+            ))
+          ))}
         {currentTab === "report" && (reports.map(item => {
           return(
             <ReportCard 
@@ -121,7 +146,7 @@ export const Side = () => {
   }, [reportCardId, postCardId, currentTab, hasPostCardClicked, hasReportCardClicked])
 
   // 沒被點擊先渲染預設畫面
-  if((currentTab === "post" && !hasPostCardClicked) || (currentTab === "report" && !hasReportCardClicked)){
+  if((currentTab === "post" && !hasPostCardClicked) || (currentTab === "report" && !hasReportCardClicked) || (currentTab === "favorite" && !hasPostCardClicked)){
     return (
       <aside className="basis-2/5 grow border-x-2 dark:bg-slate-800 dark:border-slate-300/25 w-full h-screen ">
         <DefaultSide /> 
@@ -129,15 +154,19 @@ export const Side = () => {
       )
   }
   return (
-    <aside className="basis-2/5 grow border-x-2 dark:bg-slate-800 dark:border-slate-300/25 scroll-smooth w-full h-screen overflow-y-auto" id="side">
+    <aside className="basis-2/5 grow border-x-2 dark:bg-slate-800 dark:border-slate-300/25 scroll-smooth w-full h-screen overflow-y-auto scrollbar-y" id="side">
       {isLoading ? (
         <div className="flex justify-center items-center h-screen">
           <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-light-green"></div>
         </div>
       ) : (
         <>
-          {currentTab === "post" && post && <PostSide post={post} />}
-          {currentTab === "report" && report && <ReportSide report={report} />}
+          {
+            currentTab === "report" ? (
+              report && <ReportSide report={report} />
+              ) : (
+              post && <PostSide post={post} />)
+          }
         </>
       )}
     </aside>
