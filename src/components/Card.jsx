@@ -18,9 +18,10 @@ export const UserImage = ({user, avatar, userId}) => {
   )
 }
 
-export const PostCard = ({post, isFavorite}) => {
+export const PostCard = ({post, isFavorite, onDelete}) => {
   const { setPostCardId } = useMainContext()
   const [ favorite, setFavorite ] = useState(isFavorite)
+  const userId = localStorage.getItem("userId")
 
   async function handleFavorite(e){
     e.stopPropagation()
@@ -63,6 +64,16 @@ export const PostCard = ({post, isFavorite}) => {
           <h4 className="font-bold text-lg dark:text-white">{post.title}</h4>
           <p className="leading-[26px] text-md line-clamp-1 sm:line-clamp-2">{post.post}</p>
         </div>
+        {
+          Number(userId) === post.User?.id ?
+            <div 
+              className="absolute top-2 right-7 cursor-pointer"
+              onClick={(e) => onDelete?.(e,post.id)} >
+              <FontAwesomeIcon icon="fa-solid fa-xmark" /> 
+            </div>
+            :
+            null
+        }
         {favorite ? 
           <div className="absolute right-2 top-2 " onClick={handleCancelFavorite}>
             <FontAwesomeIcon icon="fa-solid fa-bookmark" />
@@ -116,8 +127,10 @@ export const TargetCard = ({target}) => {
   )
 }
 
-export const ReportCard = ({report, userName, stockName}) => {
+export const ReportCard = ({report, userName, stockName, onDelete}) => {
   const { setReportCardId } = useMainContext()
+  const userId = localStorage.getItem("userId")
+
   useEffect(() => {
     return () => {
       setReportCardId(null) // 離開頁面時設為 null
@@ -132,14 +145,24 @@ export const ReportCard = ({report, userName, stockName}) => {
         <h2 className="font-bold text-lg dark:text-neutral-300 line-clamp-1">{report.title}</h2>
         <div className="flex space-x-8 pt-2 sm:space-x-28">
           <ul className="pl-4 font-normal list-disc text-sm text-[#6C757D] dark:text-amber-200">
-            <li>上傳者： {userName}</li>
+            <li>上傳者： {report.User?.name}</li>
             <li>上傳日期： {uploadDate}</li>
             <li>出版日期： {report.publish_date}</li>
             <li>出版作者： {report.from}</li>
           </ul>
           <div className="h-[100px] flex flex-col flex-wrap ">
-            <TargetCard target={stockName} />
+            <TargetCard target={report.Stock?.name} />
           </div>
+          {
+            Number(userId) === report.userId ?
+              <div 
+                className="absolute top-2 right-3 cursor-pointer"
+                onClick={(e) => onDelete?.(e,report.id)} >
+                <FontAwesomeIcon icon="fa-solid fa-xmark" /> 
+              </div>
+              :
+              null
+          }
         </div>
       </div>
     </a>
