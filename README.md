@@ -28,6 +28,7 @@ To run the application locally, follow these steps:
 4. Start the development server: `npm start`
 
 ## Technologies Used
+
 __Frontend__: The frontend of the application is built using React, a popular JavaScript framework for building user interfaces. The UI design is implemented with the help of Tailwind CSS, a utility-first CSS framework.
 
 __Backend__: The backend of the application is powered by Node.js with express.js, providing a robust and scalable server environment. Data is stored and managed using MySQL, a reliable relational database management system.
