@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react"
-// import { checkPermissionUser } from "api/Auth";
 
 //總導引頁
 const HomePage = () => {
