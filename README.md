@@ -1,70 +1,40 @@
-# Getting Started with Create React App
+# Report Sharing Web Application
+This web application is designed to facilitate the uploading and sharing of reports and insights among users. It provides a convenient platform for users to collaborate and exchange information within the context of brokerage institutional reports.
+
+## Features
++ **User Authentication**: Users are required to log in to access the application, ensuring a secure and private environment for report sharing.
+
++ **Report Upload**: Users can easily upload their reports to the platform, making them accessible to other members of the community.
+
++ **Insights Sharing**: Users can share their insights and thoughts on specific reports, fostering discussions and knowledge exchange.
+
++ **Collaborative Environment**: The application promotes collaboration among users, allowing them to engage in meaningful conversations, provide feedback, and learn from one another.
+
+Technologies Used
+Frontend: The frontend of the application is built using React, a popular JavaScript framework for building user interfaces. The UI design is implemented with the help of Tailwind CSS, a utility-first CSS framework.
+
+Backend: The backend of the application is powered by Node.js, providing a robust and scalable server environment. Data is stored and managed using MySQL, a reliable relational database management system.
+
+## Getting Started
+
+To run the application locally, follow these steps:
+
+1. Clone the repository: `git clone https://github.com/your/repository.git`
+2. Install the dependencies: `npm install`
+3. Set up the database and configure the connection details in the `.env` file.
+
+    [database repository](https://github.com/davelin18yufan/Stock-report-backend)
+
+4. Start the development server: `npm start`
+
+## Technologies Used
+__Frontend__: The frontend of the application is built using React, a popular JavaScript framework for building user interfaces. The UI design is implemented with the help of Tailwind CSS, a utility-first CSS framework.
+
+__Backend__: The backend of the application is powered by Node.js with express.js, providing a robust and scalable server environment. Data is stored and managed using MySQL, a reliable relational database management system.
+
+![screenshot](src/assets/images/screenshot.png)
+
+### Contributing
+Contributions are welcome! If you encounter any issues or have suggestions for improvements, please open an issue or submit a pull request.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
