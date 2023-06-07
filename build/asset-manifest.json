@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/davelin18yufan.github.io/Stock-report-frontend/static/css/main.a00407d2.css",
+    "main.js": "/davelin18yufan.github.io/Stock-report-frontend/static/js/main.ba3bcadd.js",
+    "static/media/bg-stocks.jpeg": "/davelin18yufan.github.io/Stock-report-frontend/static/media/bg-stocks.e1edf0324e3f51ba1fe9.jpeg",
+    "static/media/工商.png": "/davelin18yufan.github.io/Stock-report-frontend/static/media/工商.6aa4df6a9e013ae3257a.png",
+    "index.html": "/davelin18yufan.github.io/Stock-report-frontend/index.html",
+    "main.a00407d2.css.map": "/davelin18yufan.github.io/Stock-report-frontend/static/css/main.a00407d2.css.map",
+    "main.ba3bcadd.js.map": "/davelin18yufan.github.io/Stock-report-frontend/static/js/main.ba3bcadd.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a00407d2.css",
+    "static/js/main.ba3bcadd.js"
+  ]
+}
