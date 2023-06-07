@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/davelin18yufan.github.io/stock-report-frontend/static/css/main.e12f43ee.css",
-    "main.js": "/davelin18yufan.github.io/stock-report-frontend/static/js/main.89978826.js",
-    "static/media/bg-stocks.jpeg": "/davelin18yufan.github.io/stock-report-frontend/static/media/bg-stocks.e1edf0324e3f51ba1fe9.jpeg",
-    "static/media/工商.png": "/davelin18yufan.github.io/stock-report-frontend/static/media/工商.6aa4df6a9e013ae3257a.png",
-    "index.html": "/davelin18yufan.github.io/stock-report-frontend/index.html",
-    "main.e12f43ee.css.map": "/davelin18yufan.github.io/stock-report-frontend/static/css/main.e12f43ee.css.map",
-    "main.89978826.js.map": "/davelin18yufan.github.io/stock-report-frontend/static/js/main.89978826.js.map"
+    "main.css": "/Stock-report-frontend/static/css/main.90b3bc0e.css",
+    "main.js": "/Stock-report-frontend/static/js/main.ced6a841.js",
+    "static/media/bg-stocks.jpeg": "/Stock-report-frontend/static/media/bg-stocks.e1edf0324e3f51ba1fe9.jpeg",
+    "static/media/工商.png": "/Stock-report-frontend/static/media/工商.6aa4df6a9e013ae3257a.png",
+    "index.html": "/Stock-report-frontend/index.html",
+    "main.90b3bc0e.css.map": "/Stock-report-frontend/static/css/main.90b3bc0e.css.map",
+    "main.ced6a841.js.map": "/Stock-report-frontend/static/js/main.ced6a841.js.map"
   },
   "entrypoints": [
-    "static/css/main.e12f43ee.css",
-    "static/js/main.89978826.js"
+    "static/css/main.90b3bc0e.css",
+    "static/js/main.ced6a841.js"
   ]
 }
