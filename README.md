@@ -1,6 +1,9 @@
 # Report Sharing Web Application
 This web application is designed to facilitate the uploading and sharing of reports and insights among users. It provides a convenient platform for users to collaborate and exchange information within the context of brokerage institutional reports.
 
+## deploy on 
+[gh-pages](https://davelin18yufan.github.io/Stock-report-frontend)
+
 ## Features
 + **User Authentication**: Users are required to log in to access the application, ensuring a secure and private environment for report sharing.
 

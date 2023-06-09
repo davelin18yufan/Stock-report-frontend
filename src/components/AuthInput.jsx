@@ -8,13 +8,19 @@ export const AuthContainer = ({children}) => {
   )
 }
 
+export const Logo = () => {
+  return (
+    <div className="pl-5 py-2 contrast-100 bg-inherit text-center ">
+      <h1 className="text-xl sm:text-3xl font-logo text-dark-green uppercase whitespace-nowrap animate-[letterMove_3s_alternate_ease-in-out_infinite]">Momentum</h1>
+    </div>
+  )
+}
+
 export const LogoTitle = ({title}) => {
   return (
-    <div className="w-full ">
-      <h5 className="text-dark-green text-4xl font-bold text-center">
-        LOGO
-      </h5>
-      <h2 className=" text-3xl text-center font-bold p-2 bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-green-800">
+    <div className="">
+      <Logo />
+      <h2 className=" text-xl sm:text-2xl text-center font-bold p-2 bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-green-800">
         {title}
       </h2>
     </div>

@@ -1,13 +1,16 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useMainContext } from '../contexts/MainContext'
+import { ReactComponent as Logo } from "../assets/images/logo.svg"
+import { ReactComponent as LogoDark } from "../assets/images/logoDark.svg"
 
 const Header = () => {
-  const { menuToggle, setMenuToggle} = useMainContext()
+  const { menuToggle, setMenuToggle, darkMode} = useMainContext()
+
   return(
-    <header className= "bg-dark-green dark:bg-slate-900 text-light-green dark:text-slate-200 h-[70px] flex justify-between items-center">
-      <h5 className="text-light-green dark:text-slate-400 text-4xl font-bold pl-8">
-        LOGO
-      </h5>
+    <header className= "bg-dark-green dark:bg-slate-900 text-light-green dark:text-slate-200 h-[70px] flex justify-between items-center overflow-hidden">
+      <div className="pl-6 sm:pl-0 overflow-hidden bg-inherit">
+        {darkMode ? <LogoDark /> : <Logo /> }
+      </div>
       <div className="h-full absolute left-1 top-4 sm:hidden" 
         onClick={() => setMenuToggle(!menuToggle)} 
         onMouseEnter={() => setMenuToggle(true)} 

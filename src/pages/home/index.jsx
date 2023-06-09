@@ -1,10 +1,12 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
+import { useAuth } from "../../contexts/AuthContext"
 
 //總導引頁
 const HomePage = () => {
-const go = useNavigate()
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { logout } = useAuth()
+  const go = useNavigate()
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   //決定導向頁面
   useEffect(() => {
     // 模擬驗證用戶是否登入過，這裡假設您已有一個合適的驗證機制
@@ -29,9 +31,13 @@ const go = useNavigate()
         <div>
           {/* 顯示已登入的內容 */}
           <h1>歡迎回來！</h1>
-          <button onClick={() => { /* 登出邏輯 */ }}>登出</button>
+          <button onClick={() => logout()}>登出</button>
         </div>
-      ) : <div></div>
+      ) : 
+        <div>
+          <h1>前往登入</h1>
+          <button onClick={() => go("/login")}>登入</button>
+        </div>
       }
   </div>)
 }
