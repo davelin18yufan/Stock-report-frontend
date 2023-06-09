@@ -120,9 +120,9 @@ export const PostSide = ({post}) => {
 
 export const TargetCard = ({target}) => {
   return(
-      <div className="flex items-center border-2 rounded-full pl-2 text-rose-900" >
+      <div className="max-x-[100px] flex items-center border-2 rounded-full pl-2 text-rose-900" >
         <FontAwesomeIcon icon="fa-solid fa-bullseye" />
-        <p className="px-2 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">{target}</p>
+        <p className="px-2 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 truncate">{target}</p>
       </div>    
   )
 }
@@ -139,18 +139,18 @@ export const ReportCard = ({report, userName, stockName, onDelete}) => {
   // 拿到的時間去掉尾巴時分
   const uploadDate = getDateTransform(report.createdAt).substring(0, getDateTransform(report.createdAt).indexOf("·")).trim()
   return (
-    <a className={`flex pl-6 pr-8 py-3 h-[160px] sm:h-[190px] bg-card dark:bg-slate-800 shadow`} href="#side"
+    <a className={`flex pl-6 pr-8 py-3 h-[160px] sm:h-[200px] bg-card dark:bg-slate-800 shadow`} href="#side"
       onClick={() => setReportCardId(report.id)}>
-      <div className="ml-2 flow-root ">
+      <div className="w-full ml-2">
         <h2 className="font-bold text-lg dark:text-neutral-300 line-clamp-1">{report.title}</h2>
-        <div className="flex space-x-8 pt-2 sm:space-x-28">
-          <ul className="pl-4 font-normal list-disc text-sm text-[#6C757D] dark:text-amber-200">
+        <div className="flex space-x-4 pt-2 ">
+          <ul className="basis-3/5 pl-4 font-normal list-disc text-sm text-[#6C757D] break-normal dark:text-amber-200">
             <li>上傳者： {report.User?.name}</li>
             <li>上傳日期： {uploadDate}</li>
             <li>出版日期： {report.publish_date}</li>
             <li>出版作者： {report.from}</li>
           </ul>
-          <div className="h-[100px] flex flex-col flex-wrap ">
+          <div className="h-[120px] flex flex-col gap-1 flex-wrap ">
             <TargetCard target={report.Stock?.name} />
           </div>
           {
@@ -176,7 +176,7 @@ export const ReportSide = ({report}) => {
       <p className="text-[#6C757D] slashed-zero">
         {report.publish_date} 
       </p>
-      <div className=" flex flex-wrap py-2">
+      <div className="flex flex-wrap py-2 gap-1">
         <TargetCard target={report.Stock.name} />
       </div>
       <div className="mt-4">

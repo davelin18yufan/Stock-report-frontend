@@ -13,6 +13,9 @@ module.exports = {
         "Inter var, Noto Sans TC",
         { fontFeatureSettings: '"cv11", "ss01"' },
       ],
+      logo: [
+        'Kaushan Script, cursive'
+      ]
     },
     extend: {
       scrollbar: ['dark'],

@@ -119,6 +119,17 @@ body {
   100% { background-position: 100% 50%; }
 }
 
+@keyframes letterMove {
+  from {
+    letter-spacing: -1rem;
+    filter: blur(20px);
+  }
+  to {
+    letter-spacing: 1rem;
+    filter: blur(0)
+  }
+}
+
 @layer components{
   .scrollbar-y::-webkit-scrollbar-track-piece{
     background-color: #fff;
