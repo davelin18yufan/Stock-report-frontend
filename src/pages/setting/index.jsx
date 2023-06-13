@@ -47,20 +47,6 @@ const Setting = () => {
 
   async function handleSubmit(){
     setIsSubmitting(true)
-    // 有欄位空白
-    // if (
-    //   name.trim().length === 0 ||
-    //   email.trim().length === 0 ||
-    //   password.trim().length === 0 ||
-    //   passwordCheck.trim().length === 0
-    // ) {
-    //   setShowErrorMsg(true)
-    //   setErrorMsg('欄位不可空白!')
-    //   setTimeout(() => {
-    //     setIsSubmitting(false)
-    //   }, 1000)
-    //   return
-    // }
 
     // 密碼輸入不一致
     if(password.trim() !== passwordCheck.trim()){
@@ -169,7 +155,17 @@ const Setting = () => {
         {/* 中大螢幕 */}
         <div className="relative mx-auto hidden sm:block mt-12 lg:pr-12">
           { fileSrc ? 
+            <>
               <PreviewAvatar previewURL={previewURL} setFileSrc={setFileSrc} fileInputRef={fileInputRef} size={40}/>
+              <lottie-player
+                autoplay
+                loop
+                mode="normal"
+                src="https://assets3.lottiefiles.com/packages/lf20_wkaoqtgc.json"
+                style={{width: "250px", height:"300px"}}
+              >
+              </lottie-player>
+            </>
               : null
           }
         </div>
