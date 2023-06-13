@@ -1,4 +1,4 @@
-import {LogoTitle, InputCard, SubmitBtn, AuthContainer} from "../../components/AuthInput"
+import { LogoTitle, InputCard, SubmitBtn, AuthContainer } from "../../components"
 import { useNavigate  } from "react-router-dom"
 import { useAuth } from "../../contexts/AuthContext"
 import { useState, useEffect } from "react"

@@ -1,10 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Modal from "../components/Modal"
+import { Modal, DarkModeSwitch } from "../components"
 import { useState } from "react"
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from '@mui/material/Tooltip'
 import { useMainContext } from "../contexts/MainContext"
 import { useAuth } from "../contexts/AuthContext"
-import DarkModeSwitch from "./Switch"
 import FormControlLabel from '@mui/material/FormControlLabel'
 import { useNavigate } from 'react-router-dom'
 import Swal from "sweetalert2"

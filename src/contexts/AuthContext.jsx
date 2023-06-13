@@ -1,4 +1,4 @@
-import { login, signUp } from "../apis/auth"
+import { login, signUp } from "../apis"
 import { createContext, useState, useContext, useEffect } from "react"
 import jwt_decode from "jwt-decode"
 import { useLocation } from "react-router-dom"

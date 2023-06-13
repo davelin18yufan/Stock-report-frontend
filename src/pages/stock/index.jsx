@@ -1,13 +1,9 @@
-import { MainContainer } from "../../components/MainContainer"
-import Footer from "../../components/Footer"
-import Header from "../../components/Header"
-import Navbar from "../../components/Navbar"
-import ScrollToTopBtn from "../../components/ScrollToTopBtn"
+import { MainContainer, Footer, Header, Navbar, ScrollToTopBtn } from "../../components"
 import Button from '@mui/material/Button'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { lazy, Suspense, useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { getStocks } from "../../apis/stock"
+import { getStocks } from "../../apis"
 
 export const SearchBar = ({onSearch, value, setValue}) => {
   return(

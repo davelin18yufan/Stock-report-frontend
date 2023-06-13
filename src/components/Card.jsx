@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useMainContext } from '../contexts/MainContext'
 import { useEffect, useState } from "react"
 import { useNavigate } from 'react-router-dom'
-import { favoritePost, cancelFavoritePost } from '../apis/post'
+import { favoritePost, cancelFavoritePost } from '../apis'
 import { getTimeDiffTransForm, getDateTransform } from "../utilities/date"
 
 export const UserImage = ({user, avatar, userId}) => {

@@ -1,13 +1,10 @@
-import Header from "../../../components/Header"
-import Footer from "../../../components/Footer"
-import { MainContainer } from "../../../components/MainContainer"
+import { MainContainer, Footer, Header, UserImage } from "../../../components"
 import AdminNavbar from "../AdminSidebar"
 import { useEffect, useState } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useMainContext } from "../../../contexts/MainContext"
 import { Tab } from "../../main/component"
-import { deletePost, deleteReport, getAllPosts, getAllReports } from "../../../apis/admin"
-import { UserImage } from "../../../components/Card"
+import { deletePostAdmin, deleteReportAdmin, getAllPostsAdmin, getAllReportsAdmin } from "../../../apis"
 import Swal from "sweetalert2"
 
 const PostList = ({post, onDelete}) => {
@@ -73,7 +70,7 @@ const MainSector = () => {
 
   async function handlePostDelete(id){
     setIsSubmitting(true)
-    const { success, message } = await deletePost(id)
+    const { success, message } = await deletePostAdmin(id)
     if(success){
       setPosts(prevPost => {
         return prevPost.filter(item => item.id !== id)
@@ -96,7 +93,7 @@ const MainSector = () => {
 
   async function handleReportDelete(id){
     setIsSubmitting(true)
-    const { success, message } = await deleteReport(id)
+    const { success, message } = await deleteReportAdmin(id)
     if(success){
       setReports(prevReport => {
         return prevReport.filter(item => item.id !== id)
@@ -128,7 +125,7 @@ const MainSector = () => {
   useEffect(() => {
     async function getPostsAsync() {
       try{
-        const { data } = await getAllPosts()
+        const { data } = await getAllPostsAdmin()
         if(data){
           setPosts(data)
         }
@@ -138,7 +135,7 @@ const MainSector = () => {
     }
     async function getReportsAsync(){
       try{
-        const { data } = await getAllReports()
+        const { data } = await getAllReportsAdmin()
         if(data){
           setReports(data)
         }

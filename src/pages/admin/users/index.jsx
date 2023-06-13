@@ -1,10 +1,8 @@
-import Header from "../../../components/Header"
-import Footer from "../../../components/Footer"
-import { MainContainer } from "../../../components/MainContainer"
+import { MainContainer, Footer, Header } from "../../../components"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import AdminNavbar from "../AdminSidebar"
 import { useState, useEffect } from "react"
-import { getAllUsers } from "../../../apis/admin"
+import { getAllUsersAdmin } from "../../../apis"
 
 
 const UserCard = ({user}) => {
@@ -37,7 +35,7 @@ const UserList = () => {
   const [ users, setUsers ] = useState([])
   useEffect(() => {
     async function getAllUsersAsync(){
-      const { success, data } = await getAllUsers()
+      const { success, data } = await getAllUsersAdmin()
       if(success){
         setUsers(data)
       }

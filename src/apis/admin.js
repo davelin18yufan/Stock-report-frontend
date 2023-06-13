@@ -18,7 +18,7 @@ axiosInstance.interceptors.request.use(
   }
 )
 
-export async function getAllUsers(){
+export async function getAllUsersAdmin(){
   try{
     const res = await axiosInstance.get(`${baseUrl}/admin/users`)
     if (res.data.status === "success"){
@@ -31,7 +31,7 @@ export async function getAllUsers(){
   }
 }
 
-export async function getAllPosts(){
+export async function getAllPostsAdmin(){
   try{
     const res = await axiosInstance.get(`${baseUrl}/admin/post`)
     if (res.data.status === "success"){
@@ -44,7 +44,7 @@ export async function getAllPosts(){
   }
 }
 
-export async function getAllReports(){
+export async function getAllReportsAdmin(){
   try{
     const res = await axiosInstance.get(`${baseUrl}/admin/report`)
     if (res.data.status === "success"){
@@ -57,7 +57,7 @@ export async function getAllReports(){
   }
 }
 
-export async function deletePost(postId){
+export async function deletePostAdmin(postId){
   try{
     const res = await axiosInstance.delete(`${baseUrl}/admin/post/${postId}`)
     if (res.data.status === "success"){
@@ -70,7 +70,7 @@ export async function deletePost(postId){
   }
 }
 
-export async function deleteReport(reportId){
+export async function deleteReportAdmin(reportId){
   try{
     const res = await axiosInstance.delete(`${baseUrl}/admin/report/${reportId}`)
     if (res.data.status === "success"){

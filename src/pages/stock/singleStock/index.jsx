@@ -1,14 +1,9 @@
-import { MainContainer } from "../../../components/MainContainer"
-import Footer from "../../../components/Footer"
-import Header from "../../../components/Header"
-import Navbar from "../../../components/Navbar"
-import ScrollToTopBtn from "../../../components/ScrollToTopBtn"
-import { ReportCard } from "../../../components/Card"
+import { MainContainer, Footer, Header, Navbar, ScrollToTopBtn, ReportCard } from "../../../components"
 import { Side } from "../../main/component"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useNavigate, useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { getSingleStock } from "../../../apis/stock"
+import { getSingleStock } from "../../../apis"
 
 
 const MainSector = () => {

@@ -1,10 +1,6 @@
-import Navbar from "../../components/Navbar"
-import Header from "../../components/Header"
-import Footer from "../../components/Footer"
-import { MainContainer } from "../../components/MainContainer"
-import { InputCard, SubmitBtn } from "../../components/AuthInput"
+import { InputCard, SubmitBtn, Footer, Header, Navbar, MainContainer } from "../../components"
 import { useState, useRef, useEffect } from "react"
-import { editUser } from "../../apis/user"
+import { editUser } from "../../apis"
 import { useAuth } from "../../contexts/AuthContext"
 
 const PreviewAvatar = ({previewURL, setFileSrc, fileInputRef, size}) => {
