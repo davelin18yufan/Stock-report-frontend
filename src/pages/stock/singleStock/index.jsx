@@ -35,7 +35,7 @@ const MainSector = () => {
         {
           stock[0]?.Reports?.id ?
             stock.map(item => 
-              <ReportCard report={item.Reports} userName={item.Reports.User.name} stockName={item.name} key={item.Reports.id}/>
+              <ReportCard report={item.Reports} key={item.Reports.id}/>
             )
             :
             <p className="mt-6 animate-bounce w-full text-center dark:text-neutral-500">目前暫無報告~</p>

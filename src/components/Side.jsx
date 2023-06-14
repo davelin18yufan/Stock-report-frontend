@@ -35,15 +35,15 @@ export const PostSide = ({post}) => {
   )
 }
 
-export const ReportSide = ({report}) => {
+export const ReportSide = ({report, symbol}) => {
   return (
     <div className="px-6 py-4">
       <h2 className="mb-4 font-bold text-xl dark:text-white">{report.title}</h2>
       <p className="text-[#6C757D] slashed-zero">
-        {report.publish_date} 
+        出版時間：{report.publish_date} 
       </p>
       <div className="flex flex-wrap py-2 gap-1">
-        <TargetCard target={report.Stock.name} />
+        <TargetCard target={report.Stock.name} symbol={report.Stock?.symbol}/>
       </div>
       <div className="mt-4">
         <p className="antialiased font-sans leading-6 text-[#333333] dark:text-neutral-300 whitespace-pre-line">{report.report}</p>

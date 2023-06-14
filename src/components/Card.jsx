@@ -106,16 +106,18 @@ export const PostCard = ({post, isFavorite, onDelete}) => {
 }
 
 
-export const TargetCard = ({target}) => {
+export const TargetCard = ({target, symbol}) => {
+  const go = useNavigate()
   return(
-      <div className="max-x-[100px] flex items-center border-2 rounded-full pl-2 text-rose-900" >
+      <div className="max-x-[100px] flex items-center border-2 rounded-full pl-2 text-rose-900" 
+        onClick={() => go(`/stock/${symbol}`)}>
         <FontAwesomeIcon icon="fa-solid fa-bullseye" />
         <p className="px-2 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 truncate">{target}</p>
       </div>    
   )
 }
 
-export const ReportCard = ({report, userName, stockName, onDelete}) => {
+export const ReportCard = ({report, onDelete}) => {
   const { setReportCardId } = useMainContext()
   const userId = localStorage.getItem("userId")
 
@@ -139,7 +141,7 @@ export const ReportCard = ({report, userName, stockName, onDelete}) => {
             <li>出版作者： {report.from}</li>
           </ul>
           <div className="h-[120px] flex flex-col gap-1 flex-wrap ">
-            <TargetCard target={report.Stock?.name} />
+            <TargetCard target={report.Stock?.name} symbol={report.Stock?.symbol}/>
           </div>
           {
             Number(userId) === report.userId ?
