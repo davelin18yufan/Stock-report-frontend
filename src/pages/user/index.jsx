@@ -1,5 +1,4 @@
-import { Side, Tab } from "../main/component"
-import { PostCard, ReportCard, MainContainer, Footer, Header, Navbar, ScrollToTopBtn } from "../../components"
+import { PostCard, ReportCard, MainContainer, Footer, Header, Navbar, ScrollToTopBtn, Side, Tab } from "../../components"
 import { useMainContext } from "../../contexts/MainContext"
 import { getUserPosts, getUserReports, getUserInfo } from "../../apis"
 import { useEffect, useState } from "react"

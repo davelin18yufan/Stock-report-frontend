@@ -1,25 +1,9 @@
-import { PostSide, PostCard, ReportCard, ReportSide, DefaultSide } from "../../components"
-import { getPosts, getSinglePost, deletePost, getReports, getSingleReport, deleteReport, getUserInfo } from "../../apis"
+import { PostCard, ReportCard, Tab } from "../../components"
+import { getPosts, deletePost, getReports, deleteReport, getUserInfo } from "../../apis"
 import { useEffect, useState } from "react"
 import { useMainContext } from "../../contexts/MainContext"
 import Swal from "sweetalert2"
 
-export const Tab = ({post, report}) => {
-  const { setCurrentTab } = useMainContext()
-  function handleTabClick(tab){
-    if(tab === "post"){
-      setCurrentTab("post")
-    }else{
-      setCurrentTab("report")
-    }
-  }
-  return(
-    <div className="flex p-2 text-gray-500 border-b-2 dark:border-b-slate-300/50">
-      <button className="border-b-2 border-gray-400/50 focus:text-black  focus:border-black dark:focus:text-white dark:focus:border-white" autoFocus onClick={() => handleTabClick("post")}>{post}</button>
-      <button className="border-b-2 ml-3 focus:text-black border-gray-400/50 focus-border-black dark:focus:text-white dark:focus:border-white" onClick={() => handleTabClick("report")}>{report}</button>
-    </div>
-  )
-}
 
 export const MainSector = () => {
   const { posts, setPosts, reports, setReports, currentTab } = useMainContext()
@@ -157,73 +141,3 @@ export const MainSector = () => {
   )
 }
 
-export const Side = () => {
-  const [ post, setPost ] = useState(null)
-  const [ report, setReport ] = useState(null)
-  const [ isLoading, setIsLoading ] = useState(true)
-  const { postCardId, reportCardId, currentTab } = useMainContext()
-
-  // 確保它們只有在有值時為 true，沒有值時為 false。
-  const hasPostCardClicked = !!postCardId
-  const hasReportCardClicked = !!reportCardId 
-
-  useEffect(() => {
-    async function getPostAsync(){
-      try{
-        const { data } = await getSinglePost(postCardId)
-        if(data){
-          setPost(data)
-          
-        } 
-      }catch(err){
-        console.log(err)
-      }
-      setIsLoading(false)
-    }
-
-    async function getSingleReportAsync(){
-      try{
-        const { data } = await getSingleReport(reportCardId)
-        if(data){
-          setReport(data)
-        }
-      }catch(err){
-        console.log(err)
-      }
-      setIsLoading(false)
-    }
-    if(currentTab === "post" && hasPostCardClicked){ // 被點擊了再拿資料
-      getPostAsync()
-    }
-    if(currentTab === "report" && hasReportCardClicked){
-      getSingleReportAsync()
-    }
-  }, [reportCardId, postCardId, currentTab, hasPostCardClicked, hasReportCardClicked])
-
-  // 沒被點擊先渲染預設畫面
-  if((currentTab === "post" && !hasPostCardClicked) || (currentTab === "report" && !hasReportCardClicked) || (currentTab === "favorite" && !hasPostCardClicked)){
-    return (
-      <aside className="basis-2/5 grow border-x-2 dark:bg-slate-800 dark:border-slate-300/25 w-full h-screen ">
-        <DefaultSide /> 
-      </aside>
-      )
-  }
-  return (
-    <aside className="basis-2/5 grow border-x-2 dark:bg-slate-800 dark:border-slate-300/25 scroll-smooth w-full h-screen overflow-y-auto scrollbar-y" id="side">
-      {isLoading ? (
-        <div className="flex justify-center items-center h-screen">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-light-green"></div>
-        </div>
-      ) : (
-        <>
-          {
-            currentTab === "report" ? (
-              report && <ReportSide report={report} />
-              ) : (
-              post && <PostSide post={post} />)
-          }
-        </>
-      )}
-    </aside>
-  )
-}

@@ -1,5 +1,5 @@
-import { MainContainer, ScrollToTopBtn, Footer, Header, Navbar } from "../../components"
-import { MainSector, Side } from "./component"
+import { MainContainer, ScrollToTopBtn, Footer, Header, Navbar, Side } from "../../components"
+import { MainSector } from "./element"
 
 const MainPage = () => {
   

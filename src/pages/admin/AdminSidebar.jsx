@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useMainContext } from "../../contexts/MainContext"
 import Tooltip from '@mui/material/Tooltip'
-import DarkModeSwitch from "../../components/Switch"
+import { DarkModeSwitch } from "../../components"
 import FormControlLabel from '@mui/material/FormControlLabel'
 import { useAuth } from "../../contexts/AuthContext"
 import Swal from "sweetalert2"
@@ -60,7 +60,7 @@ const AdminNavbar = () => {
             <FontAwesomeIcon icon="fa-solid fa-face-grimace" />
           </Tooltip>
         </li>
-        <li className={`${menuToggle? "opacity-100" : "opacity-0"} hover:text-green-700 dark:hover:text-gray-500 nav-item sm:opacity-100`}>
+        <li className={`${menuToggle? "opacity-100" : "opacity-0"} hover:text-green-700 dark:hover:text-gray-500 nav-item sm:opacity-100`} >
           <Tooltip title="設定" placement="right">
             <FontAwesomeIcon icon="fa-solid fa-gear" />
           </Tooltip>

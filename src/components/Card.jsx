@@ -18,6 +18,23 @@ export const UserImage = ({user, avatar, userId}) => {
   )
 }
 
+export const Tab = ({post, report}) => {
+  const { setCurrentTab } = useMainContext()
+  function handleTabClick(tab){
+    if(tab === "post"){
+      setCurrentTab("post")
+    }else{
+      setCurrentTab("report")
+    }
+  }
+  return(
+    <div className="flex p-2 text-gray-500 border-b-2 dark:border-b-slate-300/50">
+      <button className="border-b-2 border-gray-400/50 focus:text-black  focus:border-black dark:focus:text-white dark:focus:border-white" autoFocus onClick={() => handleTabClick("post")}>{post}</button>
+      <button className="border-b-2 ml-3 focus:text-black border-gray-400/50 focus-border-black dark:focus:text-white dark:focus:border-white" onClick={() => handleTabClick("report")}>{report}</button>
+    </div>
+  )
+}
+
 export const PostCard = ({post, isFavorite, onDelete}) => {
   const { setPostCardId } = useMainContext()
   const [ favorite, setFavorite ] = useState(isFavorite)
@@ -88,35 +105,6 @@ export const PostCard = ({post, isFavorite, onDelete}) => {
   )
 }
 
-export const PostSide = ({post}) => {
-  
-  return(
-    <div className="w-full">
-      <div className="flex pl-6 pr-8 py-2">
-        <UserImage user={post.User.name} avatar={post.User.avatar}/>
-        <div className="ml-2 flow-root ">
-          <p>{post.User.name}</p>
-          <p className="text-[#6C757D] slashed-zero">
-            {getDateTransform(post.updatedAt)} &#9786;
-          </p>
-        </div>
-      </div>
-      <div className="px-6 pb-4">
-        <h3 className="font-bold text-xl dark:text-white">{post.title}</h3>
-        {
-          post.image ?
-            <img 
-            src={post.image} 
-            alt="post" 
-            className="w-full max-w-[300px] sm:max-w-[400px] lg:max-w-[500px] object-contain my-3 mx-auto"/>
-          :
-          null
-        }
-        <p className="antialiased font-sans w-full whitespace-pre-line">{post.post}</p>
-      </div>
-    </div>
-  )
-}
 
 export const TargetCard = ({target}) => {
   return(
@@ -166,44 +154,5 @@ export const ReportCard = ({report, userName, stockName, onDelete}) => {
         </div>
       </div>
     </a>
-  )
-}
-
-export const ReportSide = ({report}) => {
-  return (
-    <div className="px-6 py-4">
-      <h2 className="mb-4 font-bold text-xl dark:text-white">{report.title}</h2>
-      <p className="text-[#6C757D] slashed-zero">
-        {report.publish_date} 
-      </p>
-      <div className="flex flex-wrap py-2 gap-1">
-        <TargetCard target={report.Stock.name} />
-      </div>
-      <div className="mt-4">
-        <p className="antialiased font-sans leading-6 text-[#333333] dark:text-neutral-300 whitespace-pre-line">{report.report}</p>
-      </div>
-    </div>
-  )
-}
-
-export const DefaultSide = () => {
-  return(
-    <div className="rounded-md p-4 w-full mx-auto">
-      <div className="animate-pulse flex space-x-4">
-        <div className="rounded-full bg-slate-200 h-10 w-10"></div>
-        <div className="flex-1 space-y-6 py-1">
-          <div className="h-2 bg-slate-200 rounded w-12"></div>
-          <div className="space-y-8">
-            <div className="grid grid-cols-3 gap-4">
-              <div className="h-2 bg-slate-200 rounded col-span-2"></div>
-              <div className="h-2 bg-slate-200 rounded col-span-1"></div>
-            </div>
-            <div className="h-2 bg-slate-200 rounded"></div>
-            <div className="h-2 bg-slate-200 rounded"></div>
-            <div className="h-2 bg-slate-200 rounded"></div>
-          </div>
-        </div>
-      </div>
-    </div>
   )
 }

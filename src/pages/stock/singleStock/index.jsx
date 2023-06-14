@@ -1,5 +1,4 @@
-import { MainContainer, Footer, Header, Navbar, ScrollToTopBtn, ReportCard } from "../../../components"
-import { Side } from "../../main/component"
+import { MainContainer, Footer, Header, Navbar, ScrollToTopBtn, ReportCard, Side } from "../../../components"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useNavigate, useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
