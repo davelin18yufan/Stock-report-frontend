@@ -90,16 +90,6 @@ body {
   transition: .4s
 }
 
-.bounceBox {
-  transform: translateX(400%) rotate(30deg);
-  transform-origin: center;
-  transition: transform 0.6s ease-out;
-}
-
-.bounceBox-show{
-  transform: translateX(0) rotate(0deg);
-}
-
 .cover:hover {
   outline: 2px solid #fff;
   outline-offset: -6px;
@@ -132,7 +122,7 @@ body {
 
 @layer components{
   .scrollbar-y::-webkit-scrollbar-track-piece{
-    background-color: #fff;
+    background-color: transparent;
     border-radius: 0;
   }
 
@@ -145,9 +135,9 @@ body {
     height: 50px;
     background-color: #999;
     border-radius: 4px;
-    outline: 2px solid #fff;
+    outline: 1px solid #fff;
     outline-offset: -2px;
-    border: 2px solid #fff;
+    border: 1px solid #fff;
   }
 
   .scrollbar-y::-webkit-scrollbar-thumb:hover {
@@ -158,11 +148,11 @@ body {
   }
 
   .link {
-      @apply underline text-[#283f73] cursor-pointer
+    @apply underline text-[#283f73] cursor-pointer
   }
 
   .linkImg {
-      @apply w-[30px] h-[30px] object-contain mx-auto sm:w-[50px] sm:h-[40px]
+    @apply w-[30px] h-[30px] object-contain mx-auto sm:w-[50px] sm:h-[40px]
   }
 
   .inputDefault {
@@ -185,12 +175,12 @@ body {
     @apply bg-[#24727c] tracking-widest
   }
 
-  .bg-card:is(:hover,:focus) {
-    @apply border-[rgba(255,255,255,0.2)]
+  .bg-card:is(:hover, :focus, :active) {
+    @apply border-[rgba(255,255,255,0.2)] border-y-4
   }
 
-  .bg-card:before:is(:hover, :focus) {
-    @apply opacity-100
+  .bg-card:before:is(:hover, :focus, :active) {
+    @apply opacity-100 
   }
 
   .userInfo {

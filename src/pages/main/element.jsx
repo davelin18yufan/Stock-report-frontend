@@ -109,7 +109,7 @@ export const MainSector = () => {
       {isSubmitting && <svg className="absolute left-1/2 top-1/4 animate-spin h-5 w-5 border-slate-500 border-t-slate-200 rounded-full border-2" viewBox="0 0 24 24"></svg>}
       {showSuccessMsg && 
         <p className="bg-dark-green text-light-green text-center absolute top-1 left-1/3 rounded-lg py-1 px-4 dark:bg-slate-300 dark:text-amber-700">刪除成功！</p>}
-      <div className="w-full h-screen  overflow-y-auto scrollbar-y">
+      <div className="w-full h-screen overflow-y-auto scrollbar-y">
         {currentTab === "post" &&
           (isLoading ? (
             <div className="flex justify-center items-center h-screen">
