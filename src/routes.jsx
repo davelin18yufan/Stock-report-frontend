@@ -5,10 +5,10 @@ import MainPage from "./pages/main"
 import StockPage from "./pages/stock"
 import SingleStockPage from "./pages/stock/singleStock"
 import Setting from "./pages/setting"
-import AdminLogin from "./pages/admin/login"
-import AdminUser from "./pages/admin/users"
-import AdminList from "./pages/admin/list"
+import Admin from "./pages/admin"
 import UserPage from "./pages/user"
+import { Activities } from "./pages/admin/list"
+import { UserList } from "./pages/admin/users"
 
 const routes = [
   {
@@ -35,10 +35,10 @@ const routes = [
     path: "/stock",
     element: <StockPage />,
     children: [
-        {
-          path: "/stock/:symbol",
-          element: <SingleStockPage />,
-        },
+      {
+        path: "/stock/:symbol",
+        element: <SingleStockPage />,
+      },
     ],
   },
   {
@@ -47,25 +47,26 @@ const routes = [
     children: [],
   },
   {
-    path: "/admin/list",
-    element: <AdminList />,
-    children: [],
-  },
-  {
-    path: "/admin/login",
-    element: <AdminLogin />,
-    children: [],
-  },
-  {
-    path: "/admin/users",
-    element: <AdminUser />,
-    children: [],
+    path: "/admin",
+    element: <Admin />,
+    children: [
+      {
+        path: "/admin/list",
+        element: <Activities/>,
+        children: [],
+      },
+      {
+        path: "/admin/users",
+        element: <UserList />,
+        children: [],
+      },
+    ],
   },
   {
     path: "*",
     element: <HomePage />,
     children: [],
-  }
+  },
 ];
 
 export default routes

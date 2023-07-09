@@ -10,6 +10,7 @@ const Login = () => {
   const [ password, setPassword ] = useState("")
   const { login, isAuthenticated } = useAuth()
   const [ isSubmitting, setIsSubmitting ] = useState(false)
+  const [ isAdmin, setIsAdmin ] = useState(false);
 
   async function handleLogin(){
     setIsSubmitting(true)
@@ -55,13 +56,13 @@ const Login = () => {
   // 檢查是否要重新登入
   useEffect(() => {
     if(isAuthenticated){
-      go("/main")
+      isAdmin ? go("/admin/list") : go("/main");
     }
-  }, [go, isAuthenticated])
+  }, [go, isAuthenticated, isAdmin])
 
   return (
     <AuthContainer>
-        <LogoTitle title="登入 Stock Report"/>
+        <LogoTitle title={isAdmin ? "登入管理者後台" : "登入 Stock Report"}/>
         
         <div className="w-full ">
           <InputCard 
@@ -82,14 +83,32 @@ const Login = () => {
 
         <div className="w-4/5 mx-auto relative">
           <SubmitBtn submit="登入 Login" onSubmit={handleLogin}/>
-          {isSubmitting && <svg className="absolute right-5 top-1/4 animate-spin h-5 w-5 border-slate-500 border-t-slate-200 rounded-full border-2" viewBox="0 0 24 24"></svg>}
+          {isSubmitting && (
+            <svg 
+              className="absolute right-5 top-1/4 animate-spin h-5 w-5 border-slate-500 border-t-slate-200 rounded-full border-2" 
+              viewBox="0 0 24 24">
+            </svg>
+          )}
         </div>
-
-        <div className="w-4/5 mx-auto mt-4 flex ">
-          <p className="flex-1 text-end link" onClick={() => go("/register")}>註冊</p>
-          <span className="block px-[20px]">&#8729;</span>
-          <p className="link" onClick={() => go("/admin/login")}>後台登入</p>
-        </div>
+        {
+          isAdmin ? (
+            <div className="w-4/5 text-end mt-4 mx-auto">
+              <p className="link" onClick={() => setIsAdmin(false)}>
+                回前台登入
+              </p>
+            </div>
+          ) : (
+            <div className="w-4/5 mx-auto mt-4 flex ">
+              <p className="flex-1 text-end link" onClick={() => go("/register")}>
+                註冊
+              </p>
+              <span className="block px-[20px]">&#8729;</span>
+              <p className="link" onClick={() => setIsAdmin(true)}>
+                後台登入
+              </p>
+            </div>
+          )
+        }
     </AuthContainer>
   )
 }
