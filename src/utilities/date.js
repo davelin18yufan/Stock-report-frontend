@@ -52,7 +52,12 @@ export function getDateTransform(date){
       newDate?.getFullYear() + "年" 
       + (newDate?.getMonth()+1)+"月"
       + newDate?.getDate() + "日 · "
-      + hour + ":" + newDate?.getMinutes()
+      + hour + ":" + newDate?.getMinutes().toString().padStart(2, "0") // 強制加到兩位數
   }
   return result
+}
+
+// 去掉時分秒
+export function uploadDate(date) {
+  return getDateTransform(date).substring(0, getDateTransform(date).indexOf("·")).trim()
 }

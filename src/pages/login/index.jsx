@@ -55,10 +55,8 @@ const Login = () => {
 
   // 檢查是否要重新登入
   useEffect(() => {
-    if(isAuthenticated && isAdmin){
-      go("/admin/list")
-    }else if(isAuthenticated && !isAdmin){
-      go("/main")
+    if(isAuthenticated){
+      isAdmin ? go("/admin/list") : go("/main");
     }
   }, [go, isAuthenticated, isAdmin])
 

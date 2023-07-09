@@ -3,61 +3,69 @@ import { useEffect, useState } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useMainContext } from "../../../contexts/MainContext"
 import { deletePostAdmin, deleteReportAdmin, getAllPostsAdmin, getAllReportsAdmin } from "../../../apis"
+import { getDateTransform, uploadDate } from "../../../utilities/date";
 import Swal from "sweetalert2"
 
 const PostList = ({post, onDelete}) => {
   return (
     <div className="px-[24px] py-[16px] border-b border-slate-200 flex flex-col dark:bg-slate-800 dark:text-neutral-300">
       <div className="flex flex-row mb-[5px] items-center">
-        <UserImage avatar={post.User?.avatar}/>
+        <UserImage avatar={post.User?.avatar} />
         <div className="ml-2 flex flex-row items-center gap-[8px]">
-          <p className="font-bold text-[16px] leading-[26px] dark:text-gray-200">{post.User?.name}</p>
+          <p className="font-bold text-[16px] leading-[26px] dark:text-gray-200">
+            {post.User?.name}
+          </p>
           <div className="w-[4px] h-[4px] rounded-full bg-[#6C757D]"></div>
-          <p className="text-[#6C757D] text-[14px] leading-[22px] font-[400]">{post.createdAt}</p>
+          <p className="text-[#6C757D] text-[14px] leading-[22px] font-[400]">
+            {getDateTransform(post.createdAt)}
+          </p>
         </div>
-        <div 
+        <div
           className="ml-auto cursor-pointer"
-          onClick={() =>  onDelete?.(post.id)}
+          onClick={() => onDelete?.(post.id)}
         >
-          <FontAwesomeIcon icon="fa-solid fa-xmark" />  
+          <FontAwesomeIcon icon="fa-solid fa-xmark" />
         </div>
       </div>
       <div className="font-[400] text-[16px] leading-[26px] pl-[56px] ">
         {post.post}
       </div>
     </div>
-  )
+  );
 }
 
 const ReportList = ({report, onDelete}) => {
   
-  return(
+  return (
     <div className="px-[24px] py-[16px] border-b border-slate-200 flex flex-col dark:bg-slate-800 dark:text-neutral-300">
       <div className="flex flex-row mb-[5px] items-center">
         <div className="w-full flex flex-row items-center gap-[8px]">
-          <p className="basis-2/5 font-bold text-[20px] leading-[20px] truncate">{report.title}</p>
-          <div className="basis-3/5 flex  pt-2 flex-wrap sm:flex-nowrap space-x-4">
+          <p className="basis-2/5 font-bold text-[20px] leading-[20px] truncate">
+            {report.title}
+          </p>
+          <div className="basis-3/5 flex pt-2 pl-2 flex-wrap sm:flex-nowrap space-x-6">
             <ul className="pl-2 font-normal list-disc text-sm text-[#6C757D] dark:text-amber-200">
-              <li>上傳者： {report.User?.name}</li>
-              <li>上傳日期： {report.createdAt}</li>
+              <li>上傳者： <b>{report.User?.name}</b></li>
+              <li>上傳日期： {uploadDate(report.createdAt)}</li>
             </ul>
             <ul className="font-normal list-disc text-sm text-[#6C757D] dark:text-amber-200">
-              <li>出版日期： {report.publish_date}</li>
+              <li>出版日期： <b>{report.publish_date}</b></li>
               <li>出版作者： {report.from}</li>
             </ul>
           </div>
         </div>
-        <div 
+        <div
           className="ml-auto cursor-pointer"
-          onClick={() => onDelete?.(report.id)} >
-          <FontAwesomeIcon icon="fa-solid fa-xmark" /> 
+          onClick={() => onDelete?.(report.id)}
+        >
+          <FontAwesomeIcon icon="fa-solid fa-xmark" />
         </div>
       </div>
-      <div className=" font-[400] text-[16px] leading-[26px] line-clamp-1 sm:line-clamp-2 ">
+      <div className=" font-[300] text-[16px] leading-[26px] line-clamp-1 sm:line-clamp-2 ">
         {report.report}
       </div>
     </div>
-  )
+  );
 }
 
 export const Activities = () => {
