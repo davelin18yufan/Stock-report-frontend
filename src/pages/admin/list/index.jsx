@@ -37,7 +37,7 @@ const PostList = ({post, onDelete}) => {
 const ReportList = ({report, onDelete}) => {
   
   return (
-    <div className="px-[24px] py-[16px] border-b border-slate-200 flex flex-col dark:bg-slate-800 dark:text-neutral-300">
+    <div className="px-[24px] py-[16px] border-b border-slate-200 flex flex-col dark:bg-slate-800 dark:text-neutral-300 ">
       <div className="flex flex-row mb-[5px] items-center">
         <div className="w-full flex flex-row items-center gap-[8px]">
           <p className="basis-2/5 font-bold text-[20px] leading-[20px] truncate">

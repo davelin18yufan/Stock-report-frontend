@@ -1,15 +1,18 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { MainContextProvider } from './contexts/MainContext';
 import { AuthProvider } from './contexts/AuthContext';
 
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement
+);
 
 const basename = process.env.PUBLIC_URL
 
-ReactDOM.render(
+root.render(
   <React.StrictMode >
     <BrowserRouter basename={basename}>
       <MainContextProvider>
@@ -18,8 +21,7 @@ ReactDOM.render(
         </AuthProvider>
       </MainContextProvider>
     </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
