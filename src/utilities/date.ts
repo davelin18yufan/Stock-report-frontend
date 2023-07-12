@@ -1,5 +1,5 @@
 // 轉換資料庫的時間戳印跟現在的時間差
-export function convertTimeFromMs(time){
+export function convertTimeFromMs(time:string){
     //拿總共的毫秒差距
     let milliseconds = Date.parse(time) - Date.now()
     //相差的日期天數
@@ -17,7 +17,7 @@ export function convertTimeFromMs(time){
 
 // 轉換要顯示的格式 => 時間差
 // ５天５小時
-export function getTimeDiffTransForm(targetTime){
+export function getTimeDiffTransForm(targetTime:string){
   let displayTime
   if(targetTime){
     const {hours, days} = convertTimeFromMs(targetTime)
@@ -34,7 +34,7 @@ export function getTimeDiffTransForm(targetTime){
 
 // 轉換要顯示的格式 => 實際時間點
 // 上午 10:05・2021年11月10日
-export function getDateTransform(date){
+export function getDateTransform(date:string){
   let hour;
   let result;
   const  newDate = new Date(date)
@@ -58,6 +58,6 @@ export function getDateTransform(date){
 }
 
 // 去掉時分秒
-export function uploadDate(date) {
-  return getDateTransform(date).substring(0, getDateTransform(date).indexOf("·")).trim()
+export function uploadDate(date:string) {
+  return getDateTransform(date)?.substring(0, getDateTransform(date)?.indexOf("·")).trim()
 }
