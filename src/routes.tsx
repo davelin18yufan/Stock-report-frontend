@@ -9,8 +9,9 @@ import Admin from "./pages/admin"
 import UserPage from "./pages/user"
 import { Activities } from "./pages/admin/list"
 import { UserList } from "./pages/admin/users"
+import type { RouteObject } from "react-router-dom";
 
-const routes = [
+const routes:RouteObject[] = [
   {
     path: "/login",
     element: <Login />,
