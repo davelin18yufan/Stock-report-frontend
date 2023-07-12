@@ -9,7 +9,7 @@ import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 library.add( fas, faBookmark, faMagnifyingGlass, faBagShopping, faBars, faArrowDown);
 
 
-const App = () => {
+const App:React.FC = () => {
   const element = useRoutes(routes)
   return element
 }
