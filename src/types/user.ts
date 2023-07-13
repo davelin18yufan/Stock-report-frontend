@@ -54,3 +54,17 @@ export type Favorite = {
   createdAt: string,
   updatedAt: string
 }
+
+export interface PostPayload<T>{
+  title: string, 
+  post: string, 
+  image: T
+}
+
+export type ReportPayload = {
+  title: string,
+  report: string,
+  from: string,
+  publishDate: string,
+  stock: number | null
+}
