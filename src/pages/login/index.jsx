@@ -29,7 +29,6 @@ const Login = () => {
     }
     
     const { success, message } = await login({email, password})
-  
     if(success){
       setIsSubmitting(false)
       Swal.fire({

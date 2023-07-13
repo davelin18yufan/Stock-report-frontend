@@ -1,11 +1,11 @@
 import axios, { AxiosResponse, AxiosError} from "axios"
 
 export * from "./admin"
-export * from "./auth.js"
-export * from "./post.js"
-export * from "./report.js"
-export * from "./stock.js"
-export * from "./user.js"
+export * from "./auth"
+export * from "./post"
+export * from "./report"
+export * from "./stock"
+export * from "./user"
 
 //export const baseURL = "http://35.236.159.81:3000/api"
 export const baseURL = "http://localhost:5000/api"

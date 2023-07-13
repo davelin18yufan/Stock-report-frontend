@@ -55,6 +55,7 @@ export const AuthProvider = ({children}) => {
           email: input.email,
           password: input.password
         })
+        
         if(!success){
           return { message }
         }
