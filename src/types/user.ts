@@ -9,11 +9,48 @@ export type User =  {
   name: string,
   email: string,
   avatar: string,
-  createdAt: string,
-  updatedAt: string
+  createdAt?: string,
+  updatedAt?: string,
+  posts_count?: number,
+  reports_count?: number,
+  beingFavorite_count?: number,
+  FavoritePosts?: Post[]
 }
 
 export type LoginResponse = {
   token: string,
   user: User
+}
+
+export type Post = {
+  id: number,
+  title: string,
+  post: string,
+  image: string,
+  createdAt?: string,
+  updatedAt?: string,
+  userId: number,
+  User: User,
+  Favorite?: Favorite
+}
+
+export type Report = {
+  id: number,
+  title: string,
+  from?: string,
+  report: string,
+  stock_id?: number,
+  publish_date?: string,
+  stock_name?: string,
+  createdAt: string,
+  updatedAt: string,
+  userId: number,
+  stockId?: number,
+}
+
+export type Favorite = {
+  userId: number,
+  postId: number,
+  createdAt: string,
+  updatedAt: string
 }

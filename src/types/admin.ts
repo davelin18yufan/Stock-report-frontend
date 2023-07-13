@@ -32,6 +32,6 @@ export type AdminReport = {
   createdAt: string,
   updatedAt: string,
   userId: number,
-  stockId: number,
+  stockId?: number,
   User: Pick<AdminUser, "id" | "name" | "avatar">
 }
