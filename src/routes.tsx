@@ -1,17 +1,18 @@
-import HomePage from "./pages/home"
-import Login from "./pages/login"
-import Register from "./pages/register"
-import MainPage from "./pages/main"
-import StockPage from "./pages/stock"
-import SingleStockPage from "./pages/stock/singleStock"
-import Setting from "./pages/setting"
-import Admin from "./pages/admin"
-import UserPage from "./pages/user"
-import { Activities } from "./pages/admin/list"
-import { UserList } from "./pages/admin/users"
+import HomePage from "./pages/home";
+import Login from "./pages/login";
+import Register from "./pages/register";
+import MainPage from "./pages/main";
+import StockPage from "./pages/stock";
+import SingleStockPage from "./pages/stock/singleStock";
+import Setting from "./pages/setting";
+import Admin from "./pages/admin";
+import UserPage from "./pages/user";
+import { Activities } from "./pages/admin/list";
+import { UserList } from "./pages/admin/users";
 import type { RouteObject } from "react-router-dom";
+import AllStocks from "pages/stock/stockList";
 
-const routes:RouteObject[] = [
+const routes: RouteObject[] = [
   {
     path: "/login",
     element: <Login />,
@@ -39,6 +40,12 @@ const routes:RouteObject[] = [
       {
         path: "/stock/:symbol",
         element: <SingleStockPage />,
+        children: [],
+      },
+      {
+        path: "/stock",
+        element: <AllStocks />,
+        children: [],
       },
     ],
   },
@@ -53,7 +60,7 @@ const routes:RouteObject[] = [
     children: [
       {
         path: "/admin/list",
-        element: <Activities/>,
+        element: <Activities />,
         children: [],
       },
       {
@@ -70,4 +77,4 @@ const routes:RouteObject[] = [
   },
 ];
 
-export default routes
+export default routes;

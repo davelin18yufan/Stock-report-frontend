@@ -18,8 +18,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  padding:
-    env(safe-area-inset-top, 20px) env(safe-area-inset-right, 20px) env(safe-area-inset-bottom, 20px) env(safe-area-inset-left, 20px);
+  padding: env(safe-area-inset-top, 20px) env(safe-area-inset-right, 20px)
+    env(safe-area-inset-bottom, 20px) env(safe-area-inset-left, 20px);
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -46,37 +46,35 @@ body {
   background-color: transparent;
 }
 
-
-
 .navToggle {
   display: flex;
   flex-direction: column;
   position: absolute;
   width: 90px;
-  border-top-right-radius: 0.5rem; 
-  border-bottom-right-radius: 0.5rem; 
-  padding-left: 0.5rem; 
-  padding-right: 0.5rem; 
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
   padding-top: 1rem;
   z-index: 999;
   text-align: center;
   /*利用變形中的scale(x, y)來進行速度變化*/
   transform-origin: left;
-  transition: transform .3s ease-out;
+  transition: transform 0.3s ease-out;
 }
 
-.nav-item{
-  cursor: pointer;  
+.nav-item {
+  cursor: pointer;
   /*加入第四個參數，0.15秒的延遲在執行*/
-  transition: opacity .2s ease-out .2s
+  transition: opacity 0.2s ease-out 0.2s;
 }
 
 .bg-card {
   position: relative;
-  background-color: rgba(255,255,255,0.1);
-  border-top: 1px solid rgba(0,0,0,0.1);
-  border-bottom: 1px solid rgba(0,0,0,0.1);
-  transition: .4s;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  transition: 0.4s;
   cursor: pointer;
 }
 
@@ -87,7 +85,7 @@ body {
   background: radial-gradient(at 0px 0px, #10c2873a, transparent);
   z-index: -1;
   opacity: 0;
-  transition: .4s
+  transition: 0.4s;
 }
 
 .cover:hover {
@@ -95,18 +93,22 @@ body {
   outline-offset: -6px;
 }
 
-.cover:hover div{
+.cover:hover div {
   opacity: 1;
 }
 
-.cover:hover > img{
-  transform: scale(1,1);
+.cover:hover > img {
+  transform: scale(1, 1);
   filter: brightness(0.4);
 }
 
 @keyframes gradient {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
 }
 
 @keyframes letterMove {
@@ -116,12 +118,12 @@ body {
   }
   to {
     letter-spacing: 1rem;
-    filter: blur(0)
+    filter: blur(0);
   }
 }
 
-@layer components{
-  .scrollbar-y::-webkit-scrollbar-track-piece{
+@layer components {
+  .scrollbar-y::-webkit-scrollbar-track-piece {
     background-color: transparent;
     border-radius: 0;
   }
@@ -141,50 +143,49 @@ body {
   }
 
   .scrollbar-y::-webkit-scrollbar-thumb:hover {
-    height:50px;
-    background-color:#9f9f9f;
-    border-radius:4px;
+    height: 50px;
+    background-color: #9f9f9f;
+    border-radius: 4px;
     opacity: 0.8;
   }
 
   .link {
-    @apply underline text-[#283f73] cursor-pointer
+    @apply underline text-[#283f73] cursor-pointer;
   }
 
   .linkImg {
-    @apply w-[30px] h-[30px] object-contain mx-auto sm:w-[50px] sm:h-[40px]
+    @apply w-[30px] h-[30px] object-contain mx-auto sm:w-[50px] sm:h-[40px];
   }
 
   .inputDefault {
-    @apply bg-inherit border-b-2 border-black w-full text-lg
+    @apply bg-inherit border-b-2 border-black w-full text-lg;
   }
 
-  .inputDefault:hover{
-    @apply border-b-light-green dark:border-sky-700
+  .inputDefault:hover {
+    @apply border-b-light-green dark:border-sky-700;
   }
 
   .inputDefault:focus {
-    @apply border-b-light-green z-10 dark:border-sky-700
+    @apply border-b-light-green z-10 dark:border-sky-700;
   }
 
   .btn {
-    @apply rounded-3xl bg-dark-green text-light-green py-3
+    @apply rounded-3xl bg-dark-green text-light-green py-3;
   }
 
   .btn:hover {
-    @apply bg-[#24727c] tracking-widest
+    @apply bg-[#24727c] tracking-widest;
   }
 
   .bg-card:is(:hover, :focus, :active) {
-    @apply border-[rgba(255,255,255,0.2)] border-y-4
+    @apply border-[rgba(255,255,255,0.2)] border-y-4;
   }
 
   .bg-card:before:is(:hover, :focus, :active) {
-    @apply opacity-100 
+    @apply opacity-100;
   }
 
   .userInfo {
-    @apply rounded-md  text-amber-200 bg-gray-700 
+    @apply rounded-md  text-amber-200 bg-gray-700;
   }
-
 }
