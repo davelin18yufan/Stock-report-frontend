@@ -47,7 +47,7 @@ const Login = () => {
     } else {
       setIsSubmitting(false);
       const data =
-        message?.status === 401 ? "密碼或信箱錯誤！" : message?.data.message;
+        message?.status === 401 ? "密碼或信箱錯誤！" : message?.message;
       Swal.fire({
         position: "top",
         title: data || "發生錯誤",

@@ -78,7 +78,7 @@ const Register = () => {
       return;
     }
     setShowErrorMsg(true);
-    setErrorMsg(message.data.message);
+    setErrorMsg(message.message);
     setIsSubmitting(false);
   }
 

@@ -4,6 +4,10 @@ export type PayloadProp = {
   name?: string
 }
 
+export type ChildrenProp = {
+  children: React.ReactNode
+}
+
 export type User = {
   id: number
   name: string
