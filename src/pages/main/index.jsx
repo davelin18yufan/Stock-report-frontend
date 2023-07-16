@@ -1,12 +1,11 @@
+import { Outlet } from "react-router-dom";
 import {
   MainContainer,
   ScrollToTopBtn,
   Footer,
   Header,
   Navbar,
-  Side,
 } from "../../components";
-import { MainSector } from "./element";
 
 const MainPage = () => {
   return (
@@ -14,10 +13,7 @@ const MainPage = () => {
       <Header />
       <div className="h-full flex flex-col sm:flex-row ">
         <Navbar />
-        <div className="lg:flex dark:bg-slate-800 dark:text-neutral-300 grow">
-          <MainSector />
-          <Side />
-        </div>
+        <Outlet />
       </div>
       <Footer />
       <ScrollToTopBtn />

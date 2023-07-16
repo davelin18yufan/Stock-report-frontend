@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [modalOpened, setModalOpened] = useState(null);
-  const { menuToggle, setMenuToggle, darkMode, setDarkMode, setCurrentTab } = useMainContext();
+  const { menuToggle, setMenuToggle, darkMode, setDarkMode } = useMainContext();
   const { currentUser } = useAuth();
   const userId = currentUser?.id;
   const go = useNavigate();
@@ -69,7 +69,7 @@ const Navbar = () => {
           className={`${
             menuToggle ? "opacity-100" : "opacity-0"
           } hover:text-green-700 dark:hover:text-gray-500 nav-item sm:opacity-100`}
-          onClick={() => go("/stock")}
+          onClick={() => go("/main/stock")}
         >
           <Tooltip title="股票代號搜尋" placement="right">
             <FontAwesomeIcon icon="fa-solid fa-magnifying-glass-dollar" />
@@ -79,7 +79,7 @@ const Navbar = () => {
           className={`${
             menuToggle ? "opacity-100" : "opacity-0"
           } hover:text-green-700 dark:hover:text-gray-500 nav-item sm:opacity-100`}
-          onClick={() => go(`/user/${userId}`)}
+          onClick={() => go(`/main/user/${userId}`)}
         >
           <Tooltip title="個人頁面" placement="right">
             <FontAwesomeIcon icon="fa-solid fa-address-card" />
@@ -89,7 +89,7 @@ const Navbar = () => {
           className={`${
             menuToggle ? "opacity-100" : "opacity-0"
           } hover:text-green-700 dark:hover:text-gray-500 nav-item sm:opacity-100`}
-          onClick={() => go("/setting")}
+          onClick={() => go("/main/setting")}
         >
           <Tooltip title="設定" placement="right">
             <FontAwesomeIcon icon="fa-solid fa-gear" />

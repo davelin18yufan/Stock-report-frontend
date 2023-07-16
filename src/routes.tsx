@@ -1,16 +1,16 @@
-import HomePage from "./pages/home";
-import Login from "./pages/login";
-import Register from "./pages/register";
-import MainPage from "./pages/main";
-import StockPage from "./pages/stock";
-import SingleStockPage from "./pages/stock/singleStock";
-import Setting from "./pages/setting";
-import Admin from "./pages/admin";
-import UserPage from "./pages/user";
-import { Activities } from "./pages/admin/list";
-import { UserList } from "./pages/admin/users";
+import HomePage from "pages/home";
+import Login from "pages/login";
+import Register from "pages/register";
+import MainPage from "pages/main";
+import SingleStockPage from "pages/main/stock/singleStock";
+import Setting from "pages/main/setting";
+import Admin from "pages/admin";
+import UserPage from "pages/main/user";
+import FrontPage from "pages/main/frontPage";
+import { Activities } from "pages/admin/list";
+import { UserList } from "pages/admin/users";
 import type { RouteObject } from "react-router-dom";
-import AllStocks from "pages/stock/stockList";
+import AllStocks from "pages/main/stock/stockList";
 
 const routes: RouteObject[] = [
   {
@@ -24,35 +24,35 @@ const routes: RouteObject[] = [
     children: [],
   },
   {
-    path: "/setting",
-    element: <Setting />,
-    children: [],
-  },
-  {
     path: "/main",
     element: <MainPage />,
-    children: [],
-  },
-  {
-    path: "/stock",
-    element: <StockPage />,
     children: [
       {
-        path: "/stock/:symbol",
+        path: "/main",
+        element: <FrontPage />,
+        children: []
+      },
+      {
+        path: "/main/setting",
+        element: <Setting />,
+        children: [],
+      },
+      {
+        path: "/main/user/:userId",
+        element: <UserPage />,
+        children: [],
+      },
+      {
+        path: "/main/stock/:symbol",
         element: <SingleStockPage />,
         children: [],
       },
       {
-        path: "/stock",
+        path: "/main/stock",
         element: <AllStocks />,
         children: [],
       },
     ],
-  },
-  {
-    path: "/user/:userId",
-    element: <UserPage />,
-    children: [],
   },
   {
     path: "/admin",

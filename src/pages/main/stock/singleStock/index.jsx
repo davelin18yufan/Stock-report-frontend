@@ -1,11 +1,11 @@
 import {
   ReportCard,
   Side,
-} from "../../../components"
+} from "../../../../components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useNavigate, useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { getSingleStock } from "../../../apis"
+import { getSingleStock } from "../../../../apis"
 import { useMainContext } from "contexts/MainContext"
 
 const MainSector = () => {

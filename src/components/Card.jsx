@@ -14,14 +14,14 @@ export const UserImage = ({ user, avatar, userId }) => {
       className="w-[50px] h-[50px] rounded-full object-cover cursor-pointer{"
       onClick={(e) => {
         e.stopPropagation();
-        go(`/user/${userId}`);
+        go(`/main/user/${userId}`);
       }}
     />
   );
 };
 
 export const Tab = ({ post, report }) => {
-  const { setCurrentTab } = useMainContext();
+  const { setCurrentTab, currentTab } = useMainContext();
   function handleTabClick(tab) {
     if (tab === "post") {
       setCurrentTab("post");
@@ -33,7 +33,7 @@ export const Tab = ({ post, report }) => {
     <div className="flex p-2 text-gray-500 border-b-2 dark:border-b-slate-300/50">
       <button
         className="border-b-2 border-gray-400/50 focus:text-black  focus:border-black dark:focus:text-white dark:focus:border-white"
-        autoFocus
+        autoFocus={currentTab === "post"}
         onClick={() => handleTabClick("post")}
       >
         {post}

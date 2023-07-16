@@ -1,16 +1,11 @@
 import {
   PostCard,
   ReportCard,
-  MainContainer,
-  Footer,
-  Header,
-  Navbar,
-  ScrollToTopBtn,
   Side,
   Tab,
-} from "../../components";
-import { useMainContext } from "../../contexts/MainContext";
-import { getUserPosts, getUserReports, getUserInfo } from "../../apis";
+} from "../../../components";
+import { useMainContext } from "../../../contexts/MainContext";
+import { getUserPosts, getUserReports, getUserInfo } from "../../../apis";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -160,18 +155,10 @@ const MainSector = () => {
 
 const UserPage = () => {
   return (
-    <MainContainer>
-      <Header />
-      <div className="h-full flex flex-col sm:flex-row  dark:bg-slate-800 ">
-        <Navbar />
-        <div className="lg:flex dark:bg-slate-800 dark:z-0 dark:text-neutral-300 grow">
-          <MainSector />
-          <Side />
-        </div>
-      </div>
-      <Footer />
-      <ScrollToTopBtn />
-    </MainContainer>
+    <div className="lg:flex dark:bg-slate-800 dark:z-0 dark:text-neutral-300 grow">
+      <MainSector />
+      <Side />
+    </div>
   );
 };
 
