@@ -6,9 +6,11 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { useAuth } from "../../contexts/AuthContext";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react"
 
 const AdminNavbar = () => {
-  const { menuToggle, setMenuToggle, darkMode, setDarkMode } = useMainContext();
+  const { darkMode, setDarkMode } = useMainContext();
+  const [menuToggle, setMenuToggle] = useState(false)
   const go = useNavigate();
   const { logout } = useAuth();
 

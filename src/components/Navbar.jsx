@@ -1,27 +1,28 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Modal, DarkModeSwitch } from "../components";
-import { useState } from "react";
-import Tooltip from "@mui/material/Tooltip";
-import { useMainContext } from "../contexts/MainContext";
-import { useAuth } from "../contexts/AuthContext";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { Modal, DarkModeSwitch } from "../components"
+import { useState } from "react"
+import Tooltip from "@mui/material/Tooltip"
+import { useMainContext } from "../contexts/MainContext"
+import { useAuth } from "../contexts/AuthContext"
+import FormControlLabel from "@mui/material/FormControlLabel"
+import { useNavigate } from "react-router-dom"
+import Swal from "sweetalert2"
 
 const Navbar = () => {
-  const [open, setOpen] = useState(false);
-  const [modalOpened, setModalOpened] = useState(null);
-  const { menuToggle, setMenuToggle, darkMode, setDarkMode } = useMainContext();
-  const { currentUser } = useAuth();
-  const userId = currentUser?.id;
-  const go = useNavigate();
-  const { logout } = useAuth();
+  const [open, setOpen] = useState(false)
+  const [modalOpened, setModalOpened] = useState(null)
+  const [menuToggle, setMenuToggle] = useState(false)
+  const { darkMode, setDarkMode } = useMainContext()
+  const { currentUser } = useAuth()
+  const userId = currentUser?.id
+  const go = useNavigate()
+  const { logout } = useAuth()
 
   const handleSwitch = () => {
-    const theme = darkMode ? "light" : "dark";
-    setDarkMode(!darkMode);
-    localStorage.setItem("theme", theme);
-  };
+    const theme = darkMode ? "light" : "dark"
+    setDarkMode(!darkMode)
+    localStorage.setItem("theme", theme)
+  }
   function handleLogout() {
     Swal.fire({
       title: "確定登出？",
@@ -32,19 +33,19 @@ const Navbar = () => {
       denyButtonColor: "gray",
     }).then((result) => {
       if (result.isConfirmed) {
-        logout();
+        logout()
         Swal.fire({
           position: "top",
           title: "登出成功！",
           timer: 1300,
           icon: "success",
           showConfirmButton: false,
-        });
-        go("/login");
+        })
+        go("/login")
       } else {
-        return;
+        return
       }
-    });
+    })
   }
 
   return (
@@ -100,8 +101,8 @@ const Navbar = () => {
             menuToggle ? "opacity-100" : "opacity-0"
           } hover:text-green-700 dark:hover:text-gray-500 nav-item sm:opacity-100 `}
           onClick={() => {
-            setOpen(true);
-            setModalOpened("post");
+            setOpen(true)
+            setModalOpened("post")
           }}
         >
           <Tooltip title="發文" placement="right">
@@ -113,8 +114,8 @@ const Navbar = () => {
             menuToggle ? "opacity-100" : "opacity-0"
           } hover:text-green-700 dark:hover:text-gray-500 first:nav-item sm:opacity-100 `}
           onClick={() => {
-            setOpen(true);
-            setModalOpened("report");
+            setOpen(true)
+            setModalOpened("report")
           }}
         >
           <Tooltip title="報告" placement="right">
@@ -145,7 +146,7 @@ const Navbar = () => {
       </div>
       <Modal open={open} setOpen={setOpen} modal={modalOpened} />
     </nav>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar
