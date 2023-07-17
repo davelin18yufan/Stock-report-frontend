@@ -2,26 +2,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Modal, DarkModeSwitch } from "../components"
 import { useState } from "react"
 import Tooltip from "@mui/material/Tooltip"
-import { useMainContext } from "../contexts/MainContext"
 import { useAuth } from "../contexts/AuthContext"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import { useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
+import { useAppDispatch } from "hooks"
+import { setDarkMode } from "slices/mainSlice"
+
 
 const Navbar = () => {
   const [open, setOpen] = useState(false)
   const [modalOpened, setModalOpened] = useState(null)
   const [menuToggle, setMenuToggle] = useState(false)
-  const { darkMode, setDarkMode } = useMainContext()
   const { currentUser } = useAuth()
   const userId = currentUser?.id
   const go = useNavigate()
   const { logout } = useAuth()
+  const dispatch = useAppDispatch()
 
   const handleSwitch = () => {
-    const theme = darkMode ? "light" : "dark"
-    setDarkMode(!darkMode)
-    localStorage.setItem("theme", theme)
+    dispatch(setDarkMode())
   }
   function handleLogout() {
     Swal.fire({
