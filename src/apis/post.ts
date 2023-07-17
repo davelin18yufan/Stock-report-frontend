@@ -61,7 +61,6 @@ export async function posting(payload: PostPayload<string>) {
 export async function deletePost(postId: number) {
   try {
     const res = await axiosInstance.delete(`${baseURL}/post/${postId}`);
-    console.log(res);
 
     if (res.status === "success") {
       return { success: true };
@@ -75,14 +74,12 @@ export async function deletePost(postId: number) {
 
 export async function favoritePost(postId: number) {
   try {
-    const { data } = await axiosInstance.post(
+    const res = await axiosInstance.post(
       `${baseURL}/post/favorite/${postId}`,
     );
-    if (data.status === "success") {
+    if (res.status === "success") {
       return { success: true };
-    } else {
-      return { success: false };
-    }
+    } 
   } catch (err) {
     console.error("post favorite failed", err);
     return { success: false, message: err as string };
@@ -91,14 +88,12 @@ export async function favoritePost(postId: number) {
 
 export async function cancelFavoritePost(postId: number) {
   try {
-    const { data } = await axiosInstance.delete(
+    const res = await axiosInstance.delete(
       `${baseURL}/post/favorite/${postId}`,
     );
-    if (data.status === "success") {
+    if (res.status === "success") {
       return { success: true };
-    } else {
-      return { success: false };
-    }
+    } 
   } catch (err) {
     console.error("cancel favorite post failed", err);
     return { success: false, message: err as string };

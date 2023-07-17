@@ -8,10 +8,14 @@ import { useMainContext } from "../../../contexts/MainContext";
 import { getUserPosts, getUserReports, getUserInfo } from "../../../apis";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "hooks"
+import { setCurrentTab } from "slices/mainSlice"
+
 
 const MainSector = () => {
-  const { posts, setPosts, reports, setReports, currentTab, setCurrentTab } =
-    useMainContext();
+  const { posts, setPosts, reports, setReports } = useMainContext();
+  const currentTab = useAppSelector((state) => state.mainPageReducer.currentTab)
+  const dispatch = useAppDispatch()
   const userId = useParams().userId;
   const currentUserId = localStorage.getItem("userId");
   const [user, setUser] = useState({});
@@ -22,8 +26,8 @@ const MainSector = () => {
   useEffect(() => {
     async function getUserAsync() {
       try {
-        const { success, data } = await getUserInfo(userId);
-        if (success) {
+        const { data } = await getUserInfo(userId);
+        if (data) {
           setUser(data);
           setFavoritePosts(data.FavoritePosts);
         }
@@ -60,8 +64,8 @@ const MainSector = () => {
   }, [setPosts, setReports, userId]);
 
   useEffect(() => {
-    return () => setCurrentTab("post");
-  }, [setCurrentTab]);
+    return () => dispatch(setCurrentTab("post"))
+  }, [dispatch])
 
   return (
     <div className="basis-4/5 h-screen overflow-y-auto flex flex-col items-center space-y-4">
@@ -104,7 +108,7 @@ const MainSector = () => {
             {currentUserId === userId ? (
               <button
                 className="bg-gradient-to-r focus:from-purple-500 focus:to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-slate-500 font-semibold py-1 px-4 rounded-full shadow-md transition-colors duration-300 focus:text-gray-300 dark:focus:border-white mr-2 "
-                onClick={() => setCurrentTab("favorite")}
+                onClick={() => dispatch(setCurrentTab("favorite"))}
               >
                 &#9750; 收藏貼文
               </button>

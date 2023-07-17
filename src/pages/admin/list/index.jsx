@@ -1,15 +1,16 @@
-import { UserImage, Tab } from "../../../components";
-import { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useMainContext } from "../../../contexts/MainContext";
+import { UserImage, Tab } from "../../../components"
+import { useEffect, useState } from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useMainContext } from "../../../contexts/MainContext"
 import {
   deletePostAdmin,
   deleteReportAdmin,
   getAllPostsAdmin,
   getAllReportsAdmin,
-} from "../../../apis";
-import { getDateTransform, uploadDate } from "../../../utilities/date";
-import Swal from "sweetalert2";
+} from "../../../apis"
+import { getDateTransform, uploadDate } from "../../../utilities/date"
+import Swal from "sweetalert2"
+import { useAppSelector } from "hooks"
 
 const PostList = ({ post, onDelete }) => {
   return (
@@ -36,8 +37,8 @@ const PostList = ({ post, onDelete }) => {
         {post.post}
       </div>
     </div>
-  );
-};
+  )
+}
 
 const ReportList = ({ report, onDelete }) => {
   return (
@@ -73,26 +74,27 @@ const ReportList = ({ report, onDelete }) => {
         {report.report}
       </div>
     </div>
-  );
-};
+  )
+}
 
 export const Activities = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSuccessMsg, setShowSuccessMsg] = useState(false);
-  const { posts, setPosts, reports, setReports, currentTab } = useMainContext();
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showSuccessMsg, setShowSuccessMsg] = useState(false)
+  const { posts, setPosts, reports, setReports } = useMainContext()
+  const currentTab = useAppSelector((state) => state.mainPageReducer.currentTab)
 
   async function handlePostDelete(id) {
-    setIsSubmitting(true);
-    const { success, message } = await deletePostAdmin(id);
+    setIsSubmitting(true)
+    const { success, message } = await deletePostAdmin(id)
     if (success) {
       setPosts((prevPost) => {
-        return prevPost.filter((item) => item.id !== id);
-      });
-      setIsSubmitting(false);
-      setShowSuccessMsg(true);
+        return prevPost.filter((item) => item.id !== id)
+      })
+      setIsSubmitting(false)
+      setShowSuccessMsg(true)
       return setTimeout(() => {
-        setShowSuccessMsg(false);
-      }, 5000);
+        setShowSuccessMsg(false)
+      }, 5000)
     }
     Swal.fire({
       position: "top",
@@ -100,22 +102,22 @@ export const Activities = () => {
       icon: "error",
       showConfirmButton: true,
       confirmButtonColor: "gray",
-    });
-    setIsSubmitting(false);
+    })
+    setIsSubmitting(false)
   }
 
   async function handleReportDelete(id) {
-    setIsSubmitting(true);
-    const { success, message } = await deleteReportAdmin(id);
+    setIsSubmitting(true)
+    const { success, message } = await deleteReportAdmin(id)
     if (success) {
       setReports((prevReport) => {
-        return prevReport.filter((item) => item.id !== id);
-      });
-      setIsSubmitting(false);
-      setShowSuccessMsg(true);
+        return prevReport.filter((item) => item.id !== id)
+      })
+      setIsSubmitting(false)
+      setShowSuccessMsg(true)
       return setTimeout(() => {
-        setShowSuccessMsg(false);
-      }, 5000);
+        setShowSuccessMsg(false)
+      }, 5000)
     }
     Swal.fire({
       position: "top",
@@ -123,42 +125,42 @@ export const Activities = () => {
       icon: "error",
       showConfirmButton: true,
       confirmButtonColor: "gray",
-    });
-    setIsSubmitting(false);
+    })
+    setIsSubmitting(false)
   }
 
   useEffect(() => {
     return () => {
-      setIsSubmitting(false);
-      setShowSuccessMsg(false);
-    };
-  }, []);
+      setIsSubmitting(false)
+      setShowSuccessMsg(false)
+    }
+  }, [])
 
   useEffect(() => {
     async function getPostsAsync() {
       try {
-        const { data } = await getAllPostsAdmin();
+        const { data } = await getAllPostsAdmin()
         if (data) {
-          setPosts(data);
+          setPosts(data)
         }
       } catch (err) {
-        console.log(err);
+        console.log(err)
       }
     }
     async function getReportsAsync() {
       try {
-        const { data } = await getAllReportsAdmin();
+        const { data } = await getAllReportsAdmin()
         if (data) {
-          setReports(data);
+          setReports(data)
         }
       } catch (err) {
-        console.log(err);
+        console.log(err)
       }
     }
 
-    getPostsAsync();
-    getReportsAsync();
-  }, [setPosts, setReports]);
+    getPostsAsync()
+    getReportsAsync()
+  }, [setPosts, setReports])
   return (
     <div className="w-full relative">
       <Tab post="貼文清單" report="報告清單" />
@@ -191,5 +193,5 @@ export const Activities = () => {
             ))}
       </div>
     </div>
-  );
-};
+  )
+}

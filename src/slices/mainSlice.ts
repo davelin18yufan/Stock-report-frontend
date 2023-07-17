@@ -25,10 +25,15 @@ const mainSlice = createSlice({
   initialState,
   reducers: {
     setDarkMode: (state) => {
+      const theme = state.darkMode ? "light" : "dark"
       state.darkMode = !state.darkMode
+      localStorage.setItem("theme", theme)
+    },
+    setCurrentTab: (state, action:PayloadAction<string>) => {
+      state.currentTab = action.payload
     }
   }
 })
 
-export const {setDarkMode} = mainSlice.actions
+export const { setDarkMode, setCurrentTab } = mainSlice.actions
 export default mainSlice.reducer

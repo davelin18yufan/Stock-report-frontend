@@ -10,9 +10,12 @@ import {
 import { useEffect, useState } from "react"
 import { useMainContext } from "contexts/MainContext"
 import Swal from "sweetalert2"
+import { useAppSelector } from "hooks"
+
 
 export const MainSector = () => {
-  const { posts, setPosts, reports, setReports, currentTab } = useMainContext()
+  const { posts, setPosts, reports, setReports } = useMainContext()
+  const currentTab = useAppSelector((state) => state.mainPageReducer.currentTab)
   const [favoritePosts, setFavoritePosts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)

@@ -1,83 +1,80 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useMainContext } from "../contexts/MainContext";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { favoritePost, cancelFavoritePost } from "../apis";
-import { getTimeDiffTransForm, getDateTransform } from "../utilities/date";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useMainContext } from "../contexts/MainContext"
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { favoritePost, cancelFavoritePost } from "apis"
+import { getTimeDiffTransForm, getDateTransform } from "utilities/date"
+import { useAppDispatch, useAppSelector } from "hooks"
+import { setCurrentTab } from "slices/mainSlice"
 
 export const UserImage = ({ user, avatar, userId }) => {
-  const go = useNavigate();
+  const go = useNavigate()
   return (
     <img
       src={avatar}
       alt={user}
       className="w-[50px] h-[50px] rounded-full object-cover cursor-pointer{"
       onClick={(e) => {
-        e.stopPropagation();
-        go(`/main/user/${userId}`);
+        e.stopPropagation()
+        go(`/main/user/${userId}`)
       }}
     />
-  );
-};
+  )
+}
 
 export const Tab = ({ post, report }) => {
-  const { setCurrentTab, currentTab } = useMainContext();
-  function handleTabClick(tab) {
-    if (tab === "post") {
-      setCurrentTab("post");
-    } else {
-      setCurrentTab("report");
-    }
-  }
+  const currentTab = useAppSelector(state => state.mainPageReducer.currentTab)
+  const dispatch = useAppDispatch()
+
   return (
     <div className="flex p-2 text-gray-500 border-b-2 dark:border-b-slate-300/50">
       <button
         className="border-b-2 border-gray-400/50 focus:text-black  focus:border-black dark:focus:text-white dark:focus:border-white"
         autoFocus={currentTab === "post"}
-        onClick={() => handleTabClick("post")}
+        onClick={() => dispatch(setCurrentTab("post"))}
       >
         {post}
       </button>
       <button
-        className="border-b-2 ml-3 focus:text-black border-gray-400/50 focus-border-black dark:focus:text-white dark:focus:border-white"
-        onClick={() => handleTabClick("report")}
+        className="border-b-2 ml-3 focus:text-black border-gray-400/50 focus:border-black dark:focus:text-white dark:focus:border-white"
+        onClick={() => dispatch(setCurrentTab("report"))}
       >
         {report}
       </button>
     </div>
-  );
-};
+  )
+}
 
 export const PostCard = ({ post, isFavorite, onDelete }) => {
-  const { setPostCardId } = useMainContext();
-  const [favorite, setFavorite] = useState(isFavorite);
-  const userId = localStorage.getItem("userId");
+  const { setPostCardId } = useMainContext()
+  const [favorite, setFavorite] = useState(isFavorite)
+  const userId = localStorage.getItem("userId")
 
   async function handleFavorite(e) {
-    e.stopPropagation();
-    const { success, message } = await favoritePost(post.id);
+    e.stopPropagation()
+    const { success, message } = await favoritePost(post.id)
     if (success) {
-      setFavorite(true);
+      setFavorite(true)
     } else {
-      console.log(message);
+      console.log(message)
     }
   }
 
   async function handleCancelFavorite(e) {
-    e.stopPropagation();
-    const { success, message } = await cancelFavoritePost(post.id);
+    e.stopPropagation()
+    const { success, message } = await cancelFavoritePost(post.id)
     if (success) {
-      setFavorite(false);
+      setFavorite(false)
     } else {
-      console.log(message);
+      console.log(message)
     }
   }
 
   useEffect(() => {
     return () => {
-      setPostCardId(null); // 離開頁面時設為 null
-    };
-  }, [setPostCardId]);
+      setPostCardId(null) // 離開頁面時設為 null
+    }
+  }, [setPostCardId])
   return (
     <a
       className="flex pl-6 pr-8 py-3 h-[110px] sm:h-[140px] bg-card dark:bg-slate-800 shadow"
@@ -124,11 +121,11 @@ export const PostCard = ({ post, isFavorite, onDelete }) => {
         )}
       </div>
     </a>
-  );
-};
+  )
+}
 
 export const TargetCard = ({ target, symbol }) => {
-  const go = useNavigate();
+  const go = useNavigate()
   return (
     <div
       className="max-x-[100px] flex items-center border-2 rounded-full pl-2 text-rose-900"
@@ -139,22 +136,22 @@ export const TargetCard = ({ target, symbol }) => {
         {target}
       </p>
     </div>
-  );
-};
+  )
+}
 
 export const ReportCard = ({ report, onDelete }) => {
-  const { setReportCardId } = useMainContext();
-  const userId = localStorage.getItem("userId");
+  const { setReportCardId } = useMainContext()
+  const userId = localStorage.getItem("userId")
 
   useEffect(() => {
     return () => {
-      setReportCardId(null); // 離開頁面時設為 null
-    };
-  }, [setReportCardId]);
+      setReportCardId(null) // 離開頁面時設為 null
+    }
+  }, [setReportCardId])
   // 拿到的時間去掉尾巴時分
   const uploadDate = getDateTransform(report.createdAt)
     .substring(0, getDateTransform(report.createdAt).indexOf("·"))
-    .trim();
+    .trim()
   return (
     <a
       className={`flex pl-6 pr-8 py-3 h-[160px] sm:h-[200px] bg-card dark:bg-slate-800 shadow`}
@@ -189,5 +186,5 @@ export const ReportCard = ({ report, onDelete }) => {
         </div>
       </div>
     </a>
-  );
-};
+  )
+}
