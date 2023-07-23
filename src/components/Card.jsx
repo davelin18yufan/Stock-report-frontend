@@ -1,11 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useMainContext } from "../contexts/MainContext"
-import { useEffect, useState } from "react"
+import { useEffect, memo } from "react"
 import { useNavigate } from "react-router-dom"
-import { favoritePost, cancelFavoritePost } from "apis"
-import { getTimeDiffTransForm, getDateTransform } from "utilities/date"
+import { getTimeDiffTransForm, getUploadDate } from "utilities/date"
 import { useAppDispatch, useAppSelector } from "hooks"
-import { setCurrentTab } from "slices/mainSlice"
+import { setCurrentTab, setPostId, setReportId } from "slices/mainSlice"
 
 export const UserImage = ({ user, avatar, userId }) => {
   const go = useNavigate()
@@ -23,7 +21,7 @@ export const UserImage = ({ user, avatar, userId }) => {
 }
 
 export const Tab = ({ post, report }) => {
-  const currentTab = useAppSelector(state => state.mainPageReducer.currentTab)
+  const currentTab = useAppSelector((state) => state.mainPageReducer.currentTab)
   const dispatch = useAppDispatch()
 
   return (
@@ -45,84 +43,68 @@ export const Tab = ({ post, report }) => {
   )
 }
 
-export const PostCard = ({ post, isFavorite, onDelete }) => {
-  const { setPostCardId } = useMainContext()
-  const [favorite, setFavorite] = useState(isFavorite)
-  const userId = localStorage.getItem("userId")
+export const PostCard = memo(
+  ({ post, isFavorite, onDelete, onFavorite, onCancelFavorite }) => {
+    const dispatch = useAppDispatch()
+    const userId = Number(localStorage.getItem("userId"))
 
-  async function handleFavorite(e) {
-    e.stopPropagation()
-    const { success, message } = await favoritePost(post.id)
-    if (success) {
-      setFavorite(true)
-    } else {
-      console.log(message)
-    }
-  }
-
-  async function handleCancelFavorite(e) {
-    e.stopPropagation()
-    const { success, message } = await cancelFavoritePost(post.id)
-    if (success) {
-      setFavorite(false)
-    } else {
-      console.log(message)
-    }
-  }
-
-  useEffect(() => {
-    return () => {
-      setPostCardId(null) // 離開頁面時設為 null
-    }
-  }, [setPostCardId])
-  return (
-    <a
-      className="flex pl-6 pr-8 py-3 h-[110px] sm:h-[140px] bg-card dark:bg-slate-800 shadow"
-      href="#side"
-      onClick={() => setPostCardId(post.id)}
-    >
-      <UserImage
-        user={post.User?.name}
-        avatar={post.User?.avatar}
-        userId={post.User?.id}
-      />
-      <div className="ml-2 flow-root ">
-        <div className="">
-          <p>
-            {post.User?.name}
-            <span className="text-[14px] text-[#6C757D] ml-2">
-              &#8729; {getTimeDiffTransForm(post.updatedAt)}
-            </span>
-          </p>
-          <h4 className="font-bold text-lg dark:text-white">{post.title}</h4>
-          <p className="leading-[26px] text-md line-clamp-1 sm:line-clamp-2">
-            {post.post}
-          </p>
+    useEffect(() => {
+      return () => {
+        dispatch(setPostId(null)) // 離開頁面時設為 null
+      }
+    }, [dispatch])
+    return (
+      <a
+        className="flex pl-6 pr-8 py-3 h-[110px] sm:h-[140px] bg-card dark:bg-slate-800 shadow"
+        href="#side"
+        onClick={() => dispatch(setPostId(post.id))}
+      >
+        <UserImage
+          user={post.User?.name}
+          avatar={post.User?.avatar}
+          userId={post.User?.id}
+        />
+        <div className="ml-2 flow-root ">
+          <div className="">
+            <p>
+              {post.User?.name}
+              <span className="text-[14px] text-[#6C757D] ml-2">
+                &#8729; {getTimeDiffTransForm(post.updatedAt)}
+              </span>
+            </p>
+            <h4 className="font-bold text-lg dark:text-white">{post.title}</h4>
+            <p className="leading-[26px] text-md line-clamp-1 sm:line-clamp-2">
+              {post.post}
+            </p>
+          </div>
+          {userId === post.User?.id ? (
+            <div
+              className="absolute top-2 right-7 cursor-pointer"
+              onClick={(e) => onDelete(e, post.id)}
+            >
+              <FontAwesomeIcon icon="fa-solid fa-xmark" />
+            </div>
+          ) : null}
+          {isFavorite ? (
+            <div
+              className="absolute right-2 top-2 "
+              onClick={(e) => onCancelFavorite(e, post.id)}
+            >
+              <FontAwesomeIcon icon="fa-solid fa-bookmark" />
+            </div>
+          ) : (
+            <div
+              className="absolute right-2 top-2 "
+              onClick={(e) => onFavorite(e, post.id)}
+            >
+              <FontAwesomeIcon icon="fa-regular fa-bookmark" />
+            </div>
+          )}
         </div>
-        {Number(userId) === post.User?.id ? (
-          <div
-            className="absolute top-2 right-7 cursor-pointer"
-            onClick={(e) => onDelete?.(e, post.id)}
-          >
-            <FontAwesomeIcon icon="fa-solid fa-xmark" />
-          </div>
-        ) : null}
-        {favorite ? (
-          <div
-            className="absolute right-2 top-2 "
-            onClick={handleCancelFavorite}
-          >
-            <FontAwesomeIcon icon="fa-solid fa-bookmark" />
-          </div>
-        ) : (
-          <div className="absolute right-2 top-2 " onClick={handleFavorite}>
-            <FontAwesomeIcon icon="fa-regular fa-bookmark" />
-          </div>
-        )}
-      </div>
-    </a>
-  )
-}
+      </a>
+    )
+  }
+)
 
 export const TargetCard = ({ target, symbol }) => {
   const go = useNavigate()
@@ -140,23 +122,20 @@ export const TargetCard = ({ target, symbol }) => {
 }
 
 export const ReportCard = ({ report, onDelete }) => {
-  const { setReportCardId } = useMainContext()
-  const userId = localStorage.getItem("userId")
+  const userId = Number(localStorage.getItem("userId"))
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     return () => {
-      setReportCardId(null) // 離開頁面時設為 null
+      dispatch(setReportId(null)) // 離開頁面時設為 null
     }
-  }, [setReportCardId])
-  // 拿到的時間去掉尾巴時分
-  const uploadDate = getDateTransform(report.createdAt)
-    .substring(0, getDateTransform(report.createdAt).indexOf("·"))
-    .trim()
+  }, [dispatch])
+    
   return (
     <a
       className={`flex pl-6 pr-8 py-3 h-[160px] sm:h-[200px] bg-card dark:bg-slate-800 shadow`}
       href="#side"
-      onClick={() => setReportCardId(report.id)}
+      onClick={() => dispatch(setReportId(report.id))}
     >
       <div className="w-full ml-2">
         <h2 className="font-bold text-lg dark:text-neutral-300 line-clamp-1">
@@ -165,7 +144,7 @@ export const ReportCard = ({ report, onDelete }) => {
         <div className="flex space-x-4 pt-2 ">
           <ul className="basis-3/5 pl-4 font-normal list-disc text-sm text-[#6C757D] break-normal dark:text-amber-200">
             <li>上傳者： {report.User?.name}</li>
-            <li>上傳日期： {uploadDate}</li>
+            <li>上傳日期： {getUploadDate(report.createdAt)}</li>
             <li>出版日期： {report.publish_date}</li>
             <li>出版作者： {report.from}</li>
           </ul>
@@ -175,10 +154,10 @@ export const ReportCard = ({ report, onDelete }) => {
               symbol={report.Stock?.symbol}
             />
           </div>
-          {Number(userId) === report.userId ? (
+          {userId === report.userId ? (
             <div
               className="absolute top-2 right-3 cursor-pointer"
-              onClick={(e) => onDelete?.(e, report.id)}
+              onClick={(e) => onDelete(e, report.id)}
             >
               <FontAwesomeIcon icon="fa-solid fa-xmark" />
             </div>

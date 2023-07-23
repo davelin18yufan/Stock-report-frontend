@@ -63,7 +63,7 @@ export function getDateTransform(date: string) {
 }
 
 // 去掉時分秒
-export function uploadDate(date: string) {
+export function getUploadDate(date: string) {
   return getDateTransform(date)
     ?.substring(0, getDateTransform(date)?.indexOf("·"))
     .trim();

@@ -1,7 +1,6 @@
 import { useAppSelector } from "hooks"
 
 export const MainContainer = ({ children }) => {
-  //const { darkMode } = useMainContext();
   const darkMode = useAppSelector(state => state.mainPageReducer.darkMode)
 
   return (

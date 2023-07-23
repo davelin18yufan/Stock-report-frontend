@@ -8,7 +8,7 @@ import {
   getAllPostsAdmin,
   getAllReportsAdmin,
 } from "../../../apis"
-import { getDateTransform, uploadDate } from "../../../utilities/date"
+import { getDateTransform, getUploadDate } from "../../../utilities/date"
 import Swal from "sweetalert2"
 import { useAppSelector } from "hooks"
 
@@ -53,7 +53,7 @@ const ReportList = ({ report, onDelete }) => {
               <li>
                 上傳者： <b>{report.User?.name}</b>
               </li>
-              <li>上傳日期： {uploadDate(report.createdAt)}</li>
+              <li>上傳日期： {getUploadDate(report.createdAt)}</li>
             </ul>
             <ul className="font-normal list-disc text-sm text-[#6C757D] dark:text-amber-200">
               <li>

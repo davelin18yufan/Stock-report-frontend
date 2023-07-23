@@ -6,32 +6,26 @@ import { useAuth } from "../contexts/AuthContext"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import { useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
-import { useAppDispatch } from "hooks"
-import { setDarkMode } from "slices/mainSlice"
+import { useAppDispatch, useAppSelector } from "hooks"
+import { setDarkMode, setMenuToggle } from "slices/mainSlice"
+import { confirmPopOut } from "utilities/confirmPopOut"
 
 
 const Navbar = () => {
   const [open, setOpen] = useState(false)
   const [modalOpened, setModalOpened] = useState(null)
-  const [menuToggle, setMenuToggle] = useState(false)
   const { currentUser } = useAuth()
   const userId = currentUser?.id
   const go = useNavigate()
   const { logout } = useAuth()
   const dispatch = useAppDispatch()
+  const menuToggle = useAppSelector(state => state.mainPageReducer.menuToggle)
 
   const handleSwitch = () => {
     dispatch(setDarkMode())
   }
   function handleLogout() {
-    Swal.fire({
-      title: "確定登出？",
-      showDenyButton: true,
-      confirmButtonText: "Yes",
-      denyButtonText: "No",
-      confirmButtonColor: "green",
-      denyButtonColor: "gray",
-    }).then((result) => {
+    confirmPopOut("確定登出？").then((result) => {
       if (result.isConfirmed) {
         logout()
         Swal.fire({
@@ -42,9 +36,9 @@ const Navbar = () => {
           showConfirmButton: false,
         })
         go("/login")
-      } else {
-        return
-      }
+      } 
+      return
+      
     })
   }
 
@@ -52,8 +46,8 @@ const Navbar = () => {
     <nav
       className={`${menuToggle ? "scale-x-1" : "scale-x-0"} 
       sm:static sm:transform-none text-3xl space-y-16 shadow-lg navToggle bg-light-green sm:bg-light-gray sm:rounded-none dark:bg-slate-800`}
-      onMouseEnter={() => setMenuToggle(true)}
-      onMouseLeave={() => setMenuToggle(false)}
+      onMouseEnter={() => window.innerWidth <= 640 && dispatch(setMenuToggle(true))}
+      onMouseLeave={() => window.innerWidth <= 640 && dispatch(setMenuToggle(true))}
     >
       <ul className="text-dark-green dark:text-neutral-300 flex-col items-start space-y-8 ">
         <li

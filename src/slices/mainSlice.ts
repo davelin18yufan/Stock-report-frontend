@@ -4,6 +4,7 @@ import {  Post, Report } from "types/user"
 
 type MainState = {
   darkMode: boolean
+  menuToggle: boolean
   postCardId: number | null
   reportCardId: number | null
   posts: Post[]
@@ -13,6 +14,7 @@ type MainState = {
 
 const initialState: MainState = {
   darkMode: false,
+  menuToggle: false,
   postCardId: null,
   reportCardId: null,
   posts: [],
@@ -29,11 +31,26 @@ const mainSlice = createSlice({
       state.darkMode = !state.darkMode
       localStorage.setItem("theme", theme)
     },
-    setCurrentTab: (state, action:PayloadAction<string>) => {
+    setMenuToggle: (state) => {
+      state.menuToggle = !state.menuToggle
+    },
+    setCurrentTab: (state, action: PayloadAction<string>) => {
       state.currentTab = action.payload
-    }
-  }
+    },
+    setPostId: (state, action: PayloadAction<number>) => {
+      state.postCardId = action.payload
+    },
+    setReportId: (state, action: PayloadAction<number>) => {
+      state.reportCardId = action.payload
+    },
+  },
 })
 
-export const { setDarkMode, setCurrentTab } = mainSlice.actions
+export const {
+  setDarkMode,
+  setCurrentTab,
+  setPostId,
+  setReportId,
+  setMenuToggle,
+} = mainSlice.actions
 export default mainSlice.reducer

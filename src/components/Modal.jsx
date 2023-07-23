@@ -1,210 +1,152 @@
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import { useRef, useState } from "react";
-import { posting, postReport } from "../apis";
-import { useMainContext } from "../contexts/MainContext";
-import { useAuth } from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button"
+import TextField from "@mui/material/TextField"
+import Dialog from "@mui/material/Dialog"
+import DialogActions from "@mui/material/DialogActions"
+import DialogContent from "@mui/material/DialogContent"
+import DialogContentText from "@mui/material/DialogContentText"
+import DialogTitle from "@mui/material/DialogTitle"
+import { useRef, useState, memo } from "react"
+import { setCurrentTab } from "slices/mainSlice"
+import { useAppDispatch } from "hooks"
+import { usePostingMutation } from "services/postService"
+import { usePostReportMutation } from "services/reportService"
 
-export default function Modal({ open, setOpen, modal }) {
+function Modal({ open, setOpen, modal }) {
   // input
-  const [title, setTitle] = useState("");
-  const [post, setPost] = useState("");
-  const [stock, setStock] = useState(null);
-  const [from, setFrom] = useState("");
-  const [publishDate, setPublishDate] = useState("");
-  const [fileSrc, setFileSrc] = useState(null);
-  const [previewURL, setPreviewURL] = useState("");
+  const [title, setTitle] = useState("")
+  const [post, setPost] = useState("")
+  const [stock, setStock] = useState(null)
+  const [from, setFrom] = useState("")
+  const [publishDate, setPublishDate] = useState("")
+  const [fileSrc, setFileSrc] = useState(null)
+  const [previewURL, setPreviewURL] = useState("")
   // flow control
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showErrorMsg, setShowErrorMsg] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
-  const { setPosts, setReports, setCurrentTab } = useMainContext();
-  const go = useNavigate();
-  const { currentUser } = useAuth();
-  const fileInputRef = useRef(null);
+  const [showErrorMsg, setShowErrorMsg] = useState(false)
+  const [errorMsg, setErrorMsg] = useState("")
+  //initialization
+  const fileInputRef = useRef(null)
+  const dispatch = useAppDispatch()
+  const [
+    createPost,
+    { isLoading: isPostCreating, isError: isPostingError, error: postError },
+  ] = usePostingMutation()
+  const [
+    createReport,
+    { isLoading: isReportCreating, isError: isReportError, error: reportError },
+  ] = usePostReportMutation()
+
   const handleClose = () => {
-    setOpen(false);
-    setShowErrorMsg(false);
-    setErrorMsg("");
+    setOpen(false)
+    setShowErrorMsg(false)
+    setErrorMsg("")
     // 清除輸入匡
     if (fileSrc) {
-      fileInputRef.current.value = "";
-      setFileSrc(null);
+      fileInputRef.current.value = ""
+      setFileSrc(null)
     }
-  };
+  }
 
-  const handleUploadFile = (e) => {
-    const selectedImg = e.target.files[0];
+  function handleUploadFile(e) {
+    const selectedImg = e.target.files[0]
     // 轉成網址
-    const imgURL = URL.createObjectURL(selectedImg);
-    setFileSrc(selectedImg);
-    setPreviewURL(imgURL);
-  };
+    const imgURL = URL.createObjectURL(selectedImg)
+    setPreviewURL(imgURL)
+    setFileSrc(selectedImg)
+  }
 
   const handleClear = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     // 清除輸入匡
-    setPreviewURL(null);
-    setFileSrc(null);
-    fileInputRef.current.value = "";
-  };
+    setPreviewURL(null)
+    setFileSrc(null)
+    fileInputRef.current.value = ""
+  }
 
   function handlePostChange(e) {
-    setPost(e.target.value);
+    if (e.currentTarget) {
+      setPost(e.target.value)
+    }
   }
 
   function handleTitleChange(e) {
-    setTitle(e.target.value);
+    setTitle(e.target.value)
   }
 
   function handleStockChange(e) {
-    setStock(e.target.value);
+    setStock(e.target.value)
   }
 
   function handleFromChange(e) {
-    setFrom(e.target.value);
+    setFrom(e.target.value)
   }
 
   function handlePublishDateChange(e) {
-    setPublishDate(e.target.value);
+    setPublishDate(e.target.value)
   }
 
   async function handlePostSubmit() {
-    setIsSubmitting(true);
     if (title.trim().length === 0 || post.trim().length === 0) {
-      setShowErrorMsg(true);
-      setErrorMsg("欄位不可空白!");
-      setTimeout(() => {
-        setIsSubmitting(false);
-      }, 1000);
-      return;
+      setShowErrorMsg(true)
+      setErrorMsg("欄位不可空白!")
+      return
     }
 
     if (title.length > 30 || post.length > 800) {
-      setShowErrorMsg(true);
-      setErrorMsg("字數超過上限!");
-      setTimeout(() => {
-        setIsSubmitting(false);
-      }, 1000);
-      return;
+      setShowErrorMsg(true)
+      setErrorMsg("字數超過上限!")
+      return
     }
-    try {
-      const res = await posting({ title, post, image: fileSrc });
-      // 成功關掉視窗
-      if (res.success) {
-        setIsSubmitting(false);
+    // 使用 formData格式送出
+    const formData = new FormData()
+    formData.append("title", title)
+    formData.append("post", post)
+    formData.append("image", fileSrc)
+    const { data } = await createPost(formData)
 
-        setPosts((prevPosts) => {
-          return [
-            {
-              id: res.data.id,
-              title: res.data.title,
-              post: res.data.post,
-              image: res.data.image,
-              updatedAt: res.data.updatedAt,
-              createdAt: res.data.createdAt,
-              User: {
-                id: currentUser.id,
-                name: currentUser.name,
-                avatar: currentUser.avatar,
-              },
-            },
-            ...prevPosts,
-          ];
-        });
-        //一段時間過後自己關掉
-        return setTimeout(() => {
-          setOpen(false);
-          setErrorMsg("");
-          setShowErrorMsg(false);
-          setIsSubmitting(false);
-          fileInputRef.current.value = "";
-          setCurrentTab("post");
-        }, 1000);
-      }
-      setErrorMsg(res.message);
-      setShowErrorMsg(true);
-      setIsSubmitting(false);
-    } catch (err) {
-      console.log(err);
+    if (data) {
+      // 成功關掉視窗
+      //一段時間過後自己關掉
+      setOpen(false)
+      setShowErrorMsg(false)
+      setErrorMsg("")
+      fileInputRef.current.value = ""
+      dispatch(setCurrentTab("post"))
     }
   }
 
   async function handleReportSubmit() {
-    setIsSubmitting(true);
     // error check
     if (title.length === 0 || post.length === 0) {
-      setShowErrorMsg(true);
-      setErrorMsg("標題或是內容空白！");
-      setTimeout(() => {
-        setIsSubmitting(false);
-      }, 1000);
-      return;
+      setShowErrorMsg(true)
+      setErrorMsg("標題或是內容空白！")
+      return
     }
 
     if (title.length > 100 || post.length > 3000) {
-      setShowErrorMsg(true);
-      setErrorMsg("字數超過上限!");
-      setTimeout(() => {
-        setIsSubmitting(false);
-      }, 1000);
-      return;
+      setShowErrorMsg(true)
+      setErrorMsg("字數超過上限!")
+      return
+    }
+
+    if (publishDate.length !== 8) {
+      setShowErrorMsg(true)
+      setErrorMsg("出版日期格式錯誤!")
+      return
     }
 
     // fetch
-    try {
-      const { success, data, message } = await postReport({
-        title,
-        from,
-        publishDate: publishDate.toString(),
-        stock,
-        report: post,
-      });
-      if (success) {
-        setReports((prevReports) => {
-          return [
-            {
-              id: data.id,
-              title: data.title,
-              from: data.from,
-              report: data.report,
-              publish_date: data.publish_date,
-              createdAt: data.createdAt,
-              userId: currentUser.id,
-              stockId: data.stockId,
-              Stock: {
-                name: data.stock_name,
-                symbol: stock,
-              },
-              User: {
-                id: currentUser.id,
-                name: currentUser.name,
-              },
-            },
-            ...prevReports,
-          ];
-        });
-        //清空
-        return setTimeout(() => {
-          setIsSubmitting(false);
-          setOpen(false);
-          setErrorMsg("");
-          setShowErrorMsg(false);
-          go("/main");
-          setCurrentTab("report");
-        }, 1000);
-      }
-      setErrorMsg(message);
-      setShowErrorMsg(true);
-      setIsSubmitting(false);
-    } catch (err) {
-      console.log(err);
+    const { data } = await createReport({
+      title,
+      from,
+      publishDate: publishDate.toString(),
+      stock,
+      report: post,
+    })
+    if (data) {
+      setOpen(false)
+      setShowErrorMsg(false)
+      setErrorMsg("")
+      dispatch(setCurrentTab("report"))
     }
   }
 
@@ -218,8 +160,15 @@ export default function Modal({ open, setOpen, modal }) {
               <DialogContentText align="center">
                 分享是種提升自己的方法
               </DialogContentText>
+              {/* 前端檢查錯誤 */}
               {showErrorMsg ? (
                 <DialogContentText color="error">{errorMsg}</DialogContentText>
+              ) : null}
+              {/* 伺服器端檢查錯誤 */}
+              {isPostingError ? (
+                <DialogContentText color="error">
+                  {postError.data.message}
+                </DialogContentText>
               ) : null}
               <TextField
                 autoFocus
@@ -233,7 +182,7 @@ export default function Modal({ open, setOpen, modal }) {
                 required
                 helperText="字數上限30"
                 onChange={handleTitleChange}
-                disabled={isSubmitting ? true : false}
+                disabled={isPostCreating ? true : false}
               />
               <TextField
                 autoFocus
@@ -249,7 +198,7 @@ export default function Modal({ open, setOpen, modal }) {
                 required
                 helperText="字數上限700"
                 onChange={handlePostChange}
-                disabled={isSubmitting ? true : false}
+                disabled={isPostCreating ? true : false}
               />
               <TextField
                 autoFocus
@@ -262,7 +211,7 @@ export default function Modal({ open, setOpen, modal }) {
                 onChange={handleUploadFile}
                 helperText="可上傳一張照片"
                 inputRef={fileInputRef}
-                disabled={isSubmitting ? true : false}
+                disabled={isPostCreating ? true : false}
               />
               {fileSrc ? (
                 <div className="relative">
@@ -287,8 +236,15 @@ export default function Modal({ open, setOpen, modal }) {
             <DialogTitle align="center">上傳新報告</DialogTitle>
             <DialogContent>
               <DialogContentText align="center">閱讀掘金</DialogContentText>
+              {/* 前端檢查 */}
               {showErrorMsg ? (
                 <DialogContentText color="error">{errorMsg}</DialogContentText>
+              ) : null}
+              {/* 伺服器端檢查 */}
+              {isReportError ? (
+                <DialogContentText color="error">
+                  {reportError.data.message}
+                </DialogContentText>
               ) : null}
               <TextField
                 autoFocus
@@ -301,7 +257,7 @@ export default function Modal({ open, setOpen, modal }) {
                 placeholder="請寫出標題"
                 required
                 helperText="字數上限50"
-                disabled={isSubmitting ? true : false}
+                disabled={isReportCreating ? true : false}
                 onChange={handleTitleChange}
               />
               <TextField
@@ -312,7 +268,7 @@ export default function Modal({ open, setOpen, modal }) {
                 fullWidth
                 variant="standard"
                 placeholder="報告出處"
-                disabled={isSubmitting ? true : false}
+                disabled={isReportCreating ? true : false}
                 onChange={handleFromChange}
               />
               <TextField
@@ -324,7 +280,7 @@ export default function Modal({ open, setOpen, modal }) {
                 variant="outlined"
                 placeholder="撰寫日期"
                 helperText="格式：19110101"
-                disabled={isSubmitting ? true : false}
+                disabled={isReportCreating ? true : false}
                 onChange={handlePublishDateChange}
               />
               <TextField
@@ -335,7 +291,7 @@ export default function Modal({ open, setOpen, modal }) {
                 fullWidth
                 variant="outlined"
                 placeholder="股票代號"
-                disabled={isSubmitting ? true : false}
+                disabled={isReportCreating ? true : false}
                 onChange={handleStockChange}
               />
               <TextField
@@ -350,27 +306,32 @@ export default function Modal({ open, setOpen, modal }) {
                 rows="5"
                 multiline
                 required
-                disabled={isSubmitting ? true : false}
+                disabled={isReportCreating ? true : false}
                 onChange={handlePostChange}
               />
             </DialogContent>
           </>
         )}
         <DialogActions>
-          <Button onClick={handleClose} disabled={isSubmitting ? true : false}>
+          <Button
+            onClick={handleClose}
+            disabled={isPostCreating || isReportCreating ? true : false}
+          >
             取消
           </Button>
           {modal === "post" ? (
             <Button onClick={handlePostSubmit}>
-              {isSubmitting ? "送出中.." : "發佈"}
+              {isPostCreating ? "送出中.." : "發佈"}
             </Button>
           ) : (
             <Button onClick={handleReportSubmit}>
-              {isSubmitting ? "上傳中.." : "上傳"}
+              {isReportCreating ? "上傳中.." : "上傳"}
             </Button>
           )}
         </DialogActions>
       </Dialog>
     </div>
-  );
+  )
 }
+
+export default memo(Modal)

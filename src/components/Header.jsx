@@ -1,10 +1,17 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useMainContext } from "../contexts/MainContext";
 import { ReactComponent as Logo } from "../assets/images/logo.svg";
 import { ReactComponent as LogoDark } from "../assets/images/logoDark.svg";
+import { useAppDispatch, useAppSelector } from "hooks"
+import { setMenuToggle } from "slices/mainSlice"
+
 
 const Header = () => {
-  const { menuToggle, setMenuToggle, darkMode } = useMainContext();
+  const dispatch = useAppDispatch()
+  const menuToggle = useAppSelector(
+    (state) => state.mainPageReducer.menuToggle
+  )
+  const darkMode = useAppSelector((state) => state.mainPageReducer.darkMode)
+
 
   return (
     <header className="bg-dark-green dark:bg-slate-900 text-light-green dark:text-slate-200 h-[70px] flex justify-between items-center overflow-hidden">
@@ -13,9 +20,9 @@ const Header = () => {
       </div>
       <div
         className="h-full absolute left-1 top-4 sm:hidden"
-        onClick={() => setMenuToggle(!menuToggle)}
-        onMouseEnter={() => setMenuToggle(true)}
-        onMouseLeave={() => setMenuToggle(false)}
+        onClick={() => dispatch(setMenuToggle(!menuToggle))}
+        onMouseEnter={() => dispatch(setMenuToggle(true))}
+        onMouseLeave={() => dispatch(setMenuToggle(false))}
       >
         <FontAwesomeIcon icon="fa-solid fa-bars" />
       </div>

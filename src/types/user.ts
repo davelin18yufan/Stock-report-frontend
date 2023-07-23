@@ -62,7 +62,7 @@ export type Favorite = {
 export interface PostPayload<T> {
   title: string
   post: string
-  image: T
+  image?: T
 }
 
 export type ReportPayload = {
@@ -70,7 +70,7 @@ export type ReportPayload = {
   report: string
   from: string
   publishDate: string
-  stock: number | null
+  stock?: number 
 }
 
 export type Stock = {
@@ -80,4 +80,9 @@ export type Stock = {
   createdAt: string
   updatedAt: string
   Reports?: Report[]
+}
+
+export type ApiResponse<T> = {
+  status: string,
+  data: T
 }
