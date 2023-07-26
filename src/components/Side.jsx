@@ -2,7 +2,7 @@ import { UserImage, TargetCard } from "./Card"
 import { getDateTransform } from "../utilities/date"
 import { useGetPostQuery } from "services/postService"
 import { useGetReportQuery } from "services/reportService"
-import { useAppSelector } from "hooks"
+import { useAppSelector } from "hooks/store"
 import Loading from "components/Loading"
 
 export const PostSide = () => {

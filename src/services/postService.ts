@@ -55,7 +55,7 @@ export const postApi = createApi({
         url: `/post/favorite/${id}`,
         method: "POST"
       }),
-      invalidatesTags: (result, error, id) => [{ type: "Post", id}]
+      invalidatesTags: (result, error, id) => [{ type: "Post", id }]
     }),
     deleteFavoritePost: builder.mutation<ApiResponse<Post>, number>({
       query: (id) => ({

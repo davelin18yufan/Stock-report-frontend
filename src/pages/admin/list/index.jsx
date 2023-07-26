@@ -10,7 +10,7 @@ import {
 } from "../../../apis"
 import { getDateTransform, getUploadDate } from "../../../utilities/date"
 import Swal from "sweetalert2"
-import { useAppSelector } from "hooks"
+import { useAppSelector } from "hooks/store"
 
 const PostList = ({ post, onDelete }) => {
   return (

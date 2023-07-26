@@ -1,4 +1,4 @@
-import { useAppSelector } from "hooks"
+import { useAppSelector } from "hooks/store"
 
 export const MainContainer = ({ children }) => {
   const darkMode = useAppSelector(state => state.mainPageReducer.darkMode)

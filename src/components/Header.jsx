@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ReactComponent as Logo } from "../assets/images/logo.svg";
 import { ReactComponent as LogoDark } from "../assets/images/logoDark.svg";
-import { useAppDispatch, useAppSelector } from "hooks"
+import { useAppDispatch, useAppSelector } from "hooks/store"
 import { setMenuToggle } from "slices/mainSlice"
 
 

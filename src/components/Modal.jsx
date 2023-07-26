@@ -7,7 +7,7 @@ import DialogContentText from "@mui/material/DialogContentText"
 import DialogTitle from "@mui/material/DialogTitle"
 import { useRef, useState, memo } from "react"
 import { setCurrentTab } from "slices/mainSlice"
-import { useAppDispatch } from "hooks"
+import { useAppDispatch } from "hooks/store"
 import { usePostingMutation } from "services/postService"
 import { usePostReportMutation } from "services/reportService"
 

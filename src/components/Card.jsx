@@ -1,9 +1,14 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useEffect, memo } from "react"
+import { useEffect, memo, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { getTimeDiffTransForm, getUploadDate } from "utilities/date"
-import { useAppDispatch, useAppSelector } from "hooks"
+import { useAppDispatch, useAppSelector } from "hooks/store"
 import { setCurrentTab, setPostId, setReportId } from "slices/mainSlice"
+import {
+  useFavoritePostMutation,
+  useDeleteFavoritePostMutation,
+} from "services/postService"
+import { confirmPopOut } from "utilities/confirmPopOut"
 
 export const UserImage = ({ user, avatar, userId }) => {
   const go = useNavigate()
@@ -44,9 +49,37 @@ export const Tab = ({ post, report }) => {
 }
 
 export const PostCard = memo(
-  ({ post, isFavorite, onDelete, onFavorite, onCancelFavorite }) => {
+  ({ post, isFavorite, onDelete }) => {
+    const [isFavoriteState, setIsFavoriteState] = useState(isFavorite)
     const dispatch = useAppDispatch()
     const userId = Number(localStorage.getItem("userId"))
+    const [favoritePost] = useFavoritePostMutation()
+    const [cancelFavorite] = useDeleteFavoritePostMutation()
+
+    async function handleFavorite(e) {
+      e.stopPropagation()
+      const { data, error } = await favoritePost(post.id)
+      if (data) {
+        return setIsFavoriteState(true)
+      } else if (error) {
+        confirmPopOut(error?.data.message, false)
+      }
+    }
+
+    async function handleCancelFavorite(e) {
+      e.stopPropagation()
+      const { data, error } = await cancelFavorite(post.id)
+      if (data) {
+        return setIsFavoriteState(false)
+      } else if (error) {
+        confirmPopOut(error?.data.message, false)
+      }
+    }
+
+    // 如果 isFavorite prop 有變動，同步更新 isFavoriteState 狀態
+    useEffect(() => {
+      setIsFavoriteState(isFavorite)
+    }, [isFavorite])
 
     useEffect(() => {
       return () => {
@@ -85,18 +118,15 @@ export const PostCard = memo(
               <FontAwesomeIcon icon="fa-solid fa-xmark" />
             </div>
           ) : null}
-          {isFavorite ? (
+          {isFavoriteState ? (
             <div
               className="absolute right-2 top-2 "
-              onClick={(e) => onCancelFavorite(e, post.id)}
+              onClick={handleCancelFavorite}
             >
               <FontAwesomeIcon icon="fa-solid fa-bookmark" />
             </div>
           ) : (
-            <div
-              className="absolute right-2 top-2 "
-              onClick={(e) => onFavorite(e, post.id)}
-            >
+            <div className="absolute right-2 top-2 " onClick={handleFavorite}>
               <FontAwesomeIcon icon="fa-regular fa-bookmark" />
             </div>
           )}
@@ -130,7 +160,7 @@ export const ReportCard = ({ report, onDelete }) => {
       dispatch(setReportId(null)) // 離開頁面時設為 null
     }
   }, [dispatch])
-    
+
   return (
     <a
       className={`flex pl-6 pr-8 py-3 h-[160px] sm:h-[200px] bg-card dark:bg-slate-800 shadow`}

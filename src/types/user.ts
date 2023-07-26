@@ -1,7 +1,8 @@
 export type PayloadProp = {
   email: string
   password: string
-  name?: string
+  name?: string,
+  avatar?: string
 }
 
 export type ChildrenProp = {

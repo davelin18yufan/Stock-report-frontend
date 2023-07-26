@@ -6,7 +6,7 @@ import { useAuth } from "../contexts/AuthContext"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import { useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
-import { useAppDispatch, useAppSelector } from "hooks"
+import { useAppDispatch, useAppSelector } from "hooks/store"
 import { setDarkMode, setMenuToggle } from "slices/mainSlice"
 import { confirmPopOut } from "utilities/confirmPopOut"
 

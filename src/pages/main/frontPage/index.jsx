@@ -1,13 +1,10 @@
 import { PostCard, ReportCard, Tab } from "components"
 import { Side } from "components"
-import { getUserInfo } from "apis"
-import { useEffect, useState } from "react"
-import { useAppSelector } from "hooks"
+import { useState } from "react"
+import { useAppSelector } from "hooks/store"
 import {
   useGetPostsQuery,
   useDeletePostMutation,
-  useFavoritePostMutation,
-  useDeleteFavoritePostMutation,
 } from "services/postService"
 import Loading from "components/Loading"
 import {
@@ -15,45 +12,21 @@ import {
   useDeleteReportMutation,
 } from "services/reportService"
 import { confirmPopOut } from "utilities/confirmPopOut"
+import { useGetUserInfoQuery } from "services/userService"
 
 const PostList = ({ onDelete }) => {
   const currentUserId = Number(localStorage.getItem("userId"))
-  const [favoritePosts, setFavoritePosts] = useState([])
-  const favoritePostsId = favoritePosts.map((item) => item.id)
-  const { data, isSuccess, error, isLoading } = useGetPostsQuery()
-  if (error) console.log("getPosts error", error)
-  const posts = isSuccess ? data.data : []
+  const { data: allPosts,error, isLoading } = useGetPostsQuery()
+  const { data: userInfo } = useGetUserInfoQuery(currentUserId)
+  const posts = allPosts && allPosts.data
 
-  const [favoritePost, {error:favoriteError}] = useFavoritePostMutation()
-  const [cancelFavorite, {error:cancelError}] = useDeleteFavoritePostMutation()
-  const resError = favoriteError || cancelError
-  if(resError) {
-    confirmPopOut(resError, false)
+  if (error) {
+    confirmPopOut(error?.data.message, false)
   }
 
-  async function handleFavorite(e, id) {
-    e.stopPropagation()
-    favoritePost(id)
-  }
-
-  async function handleCancelFavorite(e, id) {
-    e.stopPropagation()
-    await cancelFavorite(id)
-  }
-  useEffect(() => {
-    async function getUserAsync() {
-      // 檢查這頁的哪些貼文已被收藏
-      try {
-        const { success, data } = await getUserInfo(currentUserId)
-        if (success) {
-          setFavoritePosts(data.FavoritePosts)
-        }
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    getUserAsync()
-  }, [currentUserId])
+  // check favorite post
+  const favoritePosts = userInfo?.data.FavoritePosts
+  const favoritePostsId = favoritePosts?.map((item) => item.id)
 
   return (
     <>
@@ -64,10 +37,8 @@ const PostList = ({ onDelete }) => {
           <PostCard
             post={item}
             key={item.id}
-            isFavorite={favoritePostsId.includes(item.id)}
+            isFavorite={ favoritePostsId?.includes(item.id)}
             onDelete={onDelete}
-            onFavorite={handleFavorite}
-            onCancelFavorite={handleCancelFavorite}
           />
         ))
       )}
@@ -77,7 +48,7 @@ const PostList = ({ onDelete }) => {
 
 const ReportList = ({ onDelete }) => {
   const { data, isLoading, isSuccess, error } = useGetReportsQuery()
-  if (error) console.log("get Reports failed", error)
+  if (error) confirmPopOut(error?.data.message, false)
   const reports = isSuccess ? data.data.slice(0, 30) : []
   return (
     <>
@@ -154,7 +125,9 @@ export const MainSector = () => {
         </p>
       ) : null}
       <div className="w-full h-screen overflow-y-auto scrollbar-y">
-        {currentTab === "post" && <PostList onDelete={handlePostDelete} />}
+        {currentTab === "post" && (
+          <PostList onDelete={handlePostDelete} />
+        )}
         {currentTab === "report" && (
           <ReportList onDelete={handleReportDelete} />
         )}
