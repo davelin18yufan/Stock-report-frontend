@@ -1,7 +1,7 @@
 import { axiosInstance, baseURL } from "./index";
-import { PayloadProp, User, Post, Report } from "types/user";
+import { UserRequest, User, Post, Report } from "types/user";
 
-export async function editUser(userId: number, payload: PayloadProp) {
+export async function editUser(userId: number, payload: UserRequest) {
   try {
     const config = {
       headers: {

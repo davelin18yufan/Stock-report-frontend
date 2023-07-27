@@ -1,15 +1,18 @@
-import { configureStore } from "@reduxjs/toolkit"
+import { configureStore, combineReducers } from "@reduxjs/toolkit"
 import mainPageReducer from "slices/mainSlice"
+import authReducer from "slices/authSlice"
 import { postApi } from "services/postService"
 import { reportApi } from "services/reportService"
+import { authApi } from "services/authService"
 import { userApi } from "services/userService"
-import { combineReducers } from "@reduxjs/toolkit"
 
 const reducers = combineReducers({
   [postApi.reducerPath]: postApi.reducer,
   [reportApi.reducerPath]: reportApi.reducer,
   [userApi.reducerPath]: userApi.reducer,
+  [authApi.reducerPath]: authApi.reducer,
   mainPageReducer,
+  authReducer,
 })
 
 const store = configureStore({
@@ -19,6 +22,7 @@ const store = configureStore({
       .concat(postApi.middleware)
       .concat(reportApi.middleware)
       .concat(userApi.middleware)
+      .concat(authApi.middleware),
 })
 
 // 反推行別

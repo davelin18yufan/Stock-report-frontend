@@ -51,7 +51,7 @@ export const InputCard = ({
         name={name}
         placeholder={placeholder}
         className="inputDefault inputDefault:hover inputDefault:focus dark:placeholder-gray-500/50 "
-        onChange={(e) => onChange?.(e.target.value)}
+        onChange={(e) => onChange?.(e)}
         disabled={disabled}
       ></input>
     </div>

@@ -9,6 +9,7 @@ import Swal from "sweetalert2"
 import { useAppDispatch, useAppSelector } from "hooks/store"
 import { setDarkMode, setMenuToggle } from "slices/mainSlice"
 import { confirmPopOut } from "utilities/confirmPopOut"
+import { logout} from "slices/authSlice"
 
 
 const Navbar = () => {
@@ -17,7 +18,7 @@ const Navbar = () => {
   const { currentUser } = useAuth()
   const userId = currentUser?.id
   const go = useNavigate()
-  const { logout } = useAuth()
+  //const { logout } = useAuth()
   const dispatch = useAppDispatch()
   const menuToggle = useAppSelector(state => state.mainPageReducer.menuToggle)
 
@@ -25,9 +26,9 @@ const Navbar = () => {
     dispatch(setDarkMode())
   }
   function handleLogout() {
-    confirmPopOut("確定登出？").then((result) => {
-      if (result.isConfirmed) {
-        logout()
+    confirmPopOut("確定登出？", true).then((result) => {
+      if (result) {
+        dispatch(logout())
         Swal.fire({
           position: "top",
           title: "登出成功！",

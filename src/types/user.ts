@@ -1,4 +1,4 @@
-export type PayloadProp = {
+export type UserRequest = {
   email: string
   password: string
   name?: string,

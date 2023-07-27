@@ -2,7 +2,7 @@ import { login, signUp } from "apis"
 import { createContext, useState, useContext, useEffect } from "react"
 import jwt_decode from "jwt-decode"
 import { useLocation } from "react-router-dom"
-import { User, PayloadProp, LoginResponse, ChildrenProp } from "types/user"
+import { User, UserRequest, LoginResponse, ChildrenProp } from "types/user"
 
 const defaultAuthContext = {
   isAuthenticated: false,
@@ -21,8 +21,8 @@ type ApiResponse = {
 type DefaultContext = {
   isAuthenticated: boolean
   currentUser: User | null
-  signUp: ((userInput: PayloadProp) => Promise<ApiResponse>) | null
-  login: ((input: PayloadProp) => Promise<ApiResponse>) | null
+  signUp: ((userInput: UserRequest) => Promise<ApiResponse>) | null
+  login: ((input: UserRequest) => Promise<ApiResponse>) | null
   logout: (() => void) | null
 }
 
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: ChildrenProp) => {
       value={{
         isAuthenticated,
         currentUser: payload,
-        signUp: async (userInput: PayloadProp) => {
+        signUp: async (userInput: UserRequest) => {
           const res = await signUp({
             name: userInput.name,
             email: userInput.email,
@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }: ChildrenProp) => {
           }
           return { success, message }
         },
-        login: async (input: PayloadProp) => {
+        login: async (input: UserRequest) => {
           const { success, data, message } = await login({
             email: input.email,
             password: input.password,

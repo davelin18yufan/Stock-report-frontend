@@ -1,96 +1,92 @@
-import {
-  LogoTitle,
-  InputCard,
-  SubmitBtn,
-  AuthContainer,
-} from "../../components";
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { useAuth } from "../../contexts/AuthContext";
-import Swal from "sweetalert2";
+import { LogoTitle, InputCard, SubmitBtn, AuthContainer } from "components"
+import { useNavigate } from "react-router-dom"
+import { useState, useEffect } from "react"
+import { useAuth } from "hooks/useAuth"
+import { useLoginMutation } from "services/authService"
+import { useAppDispatch } from "hooks/store"
+//import { UserRequest } from "types/user"
+import Swal from "sweetalert2"
+import { setCredential } from "slices/authSlice"
 
 const Login = () => {
-  const go = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const { login, isAuthenticated } = useAuth();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const go = useNavigate()
+  const { user: currentUser } = useAuth()
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [showErrorMsg, setShowErrorMsg] = useState(false)
+  const [errorMsg, setErrorMsg] = useState("")
+  const [formState, setFormState] = useState({ email: "", password: "" })
+
+  const [login, { isLoading }] = useLoginMutation()
+  const dispatch = useAppDispatch()
+
+  function handleChange({ target: { name, value } }) {
+    setFormState((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
 
   async function handleLogin() {
-    setIsSubmitting(true);
-    if (email.length === 0 || password.length === 0) {
-      Swal.fire({
-        position: "top",
-        title: "欄位不可空白",
-        icon: "error",
-        showConfirmButton: true,
-        confirmButtonColor: "gray",
-      });
-      setTimeout(() => {
-        setIsSubmitting(false);
-      }, 1000);
-      return;
-    }
+    if (formState.email.length === 0 || formState.password.length === 0) {
+      setShowErrorMsg(true)
+      setErrorMsg("欄位不可空白!")
 
-    const { success, message } = await login({ email, password });
-    if (success) {
-      setIsSubmitting(false);
+      return
+    }
+    const { data: res, error } = await login(formState)
+    if (res) {
       Swal.fire({
         position: "top",
         title: "登入成功！",
         timer: 1000,
         icon: "success",
         showConfirmButton: false,
-      });
-      return;
-    } else {
-      setIsSubmitting(false);
-      const data =
-        message?.status === 401 ? "密碼或信箱錯誤！" : message?.message;
-      Swal.fire({
-        position: "top",
-        title: data || "發生錯誤",
-        icon: "error",
-        showConfirmButton: true,
-        confirmButtonColor: "gray",
-      });
+      })
+      dispatch(setCredential(res.data))
+    } else if (error) {
+      setShowErrorMsg(true)
+      setErrorMsg(error === "Unauthorized" ? "信箱或密碼錯誤" : error.message)
     }
   }
 
   // 檢查是否要重新登入
   useEffect(() => {
-    if (isAuthenticated) {
-      isAdmin ? go("/admin/list") : go("/main");
+    if (currentUser) {
+      isAdmin ? go("/admin/list") : go("/main")
     }
-  }, [go, isAuthenticated, isAdmin]);
+  }, [go, currentUser, isAdmin])
 
   return (
     <AuthContainer>
       <LogoTitle title={isAdmin ? "登入管理者後台" : "登入 Stock Report"} />
-
+      {/* error */}
+      {showErrorMsg && (
+        <h4 className="text-lg text-red-500 text-center font-bold ">
+          &#9883; {errorMsg}!
+        </h4>
+      )}
       <div className="w-full ">
         <InputCard
           label="帳號 Account"
           placeholder="請輸入你的信箱"
           type="text"
           name="email"
-          onChange={(inputValue) => setEmail(inputValue)}
-          disabled={isSubmitting ? true : false}
+          onChange={handleChange}
+          disabled={isLoading ? true : false}
         />
         <InputCard
           label="密碼 Password"
           placeholder="請輸入你的密碼"
           type="password"
           name="password"
-          onChange={(inputValue) => setPassword(inputValue)}
-          disabled={isSubmitting ? true : false}
+          onChange={handleChange}
+          disabled={isLoading ? true : false}
         />
       </div>
 
       <div className="w-4/5 mx-auto relative">
         <SubmitBtn submit="登入 Login" onSubmit={handleLogin} />
-        {isSubmitting && (
+        {isLoading && (
           <svg
             className="absolute right-5 top-1/4 animate-spin h-5 w-5 border-slate-500 border-t-slate-200 rounded-full border-2"
             viewBox="0 0 24 24"
@@ -115,7 +111,7 @@ const Login = () => {
         </div>
       )}
     </AuthContainer>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

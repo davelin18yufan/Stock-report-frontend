@@ -1,7 +1,7 @@
 import { axiosInstance, baseURL } from "./index";
-import { PayloadProp, LoginResponse } from "types/user";
+import { UserRequest, LoginResponse } from "types/user";
 
-export async function login(payload: PayloadProp) {
+export async function login(payload: UserRequest) {
   try {
     const { email, password } = payload;
     const res = await axiosInstance.post(`${baseURL}/login`, {
@@ -26,7 +26,7 @@ export async function login(payload: PayloadProp) {
   }
 }
 
-export async function signUp(payload: PayloadProp) {
+export async function signUp(payload: UserRequest) {
   try {
     const { name, email, password } = payload;
     const res = await axiosInstance.post(`${baseURL}/signup`, {
