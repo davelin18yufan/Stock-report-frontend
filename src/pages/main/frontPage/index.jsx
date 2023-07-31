@@ -1,12 +1,10 @@
-import { PostCard, ReportCard, Tab } from "components"
-import { Side } from "components"
+import { PostCard, ReportCard, Tab, Loading, Side } from "components"
 import { useState } from "react"
 import { useAppSelector } from "hooks/store"
 import {
   useGetPostsQuery,
   useDeletePostMutation,
 } from "services/postService"
-import Loading from "components/Loading"
 import {
   useGetReportsQuery,
   useDeleteReportMutation,

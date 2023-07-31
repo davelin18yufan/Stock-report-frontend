@@ -1,8 +1,8 @@
 import Button from "@mui/material/Button"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { lazy, Suspense, useEffect, useRef, useState } from "react"
+import { lazy, Suspense, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { getStocks } from "apis"
+import { useGetAllStocksQuery } from "services/stockSlices"
 
 export const SearchBar = ({ onSearch, value, setValue }) => {
   return (
@@ -43,18 +43,20 @@ const StockItem = ({ stock }) => {
 }
 
 const StockList = ({ searchTerm }) => {
-  const [loadedStocks, setLoadedStocks] = useState([])
+  const {data:stocks} = useGetAllStocksQuery()
   const [startIndex, setStartIndex] = useState(0)
   const [endIndex, setEndIndex] = useState(100)
   const containerRef = useRef(null)
   const scrollRef = useRef(null)
+  const loadedStocks = stocks?.data
 
-  const filteredItem = loadedStocks.filter(
+
+  const filteredItem = loadedStocks?.filter(
     (item) =>
       item.name.toLowerCase().trim().includes(searchTerm.toLowerCase()) ||
       item.symbol.toString().includes(searchTerm)
   )
-  const visibleStocks = filteredItem.slice(startIndex, endIndex)
+  const visibleStocks = filteredItem?.slice(startIndex, endIndex)
 
   const handleScroll = () => {
     // 畫面最上方跟目前的距離
@@ -70,20 +72,6 @@ const StockList = ({ searchTerm }) => {
     setEndIndex(end)
   }
 
-  useEffect(() => {
-    async function getStocksAsync() {
-      try {
-        const { success, data } = await getStocks()
-        if (success) {
-          setLoadedStocks(data)
-        }
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    getStocksAsync()
-  }, [])
-
   return (
     <div
       ref={containerRef}
@@ -91,8 +79,8 @@ const StockList = ({ searchTerm }) => {
       onScroll={handleScroll}
     >
       <ul ref={scrollRef} className="flex flex-wrap h-full">
-        {visibleStocks.map((item, index) => (
-          <StockItem stock={item} searchTerm={searchTerm} key={index} />
+        {visibleStocks?.map((item, index) => (
+          <StockItem stock={item} key={index} />
         ))}
       </ul>
     </div>
