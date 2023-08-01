@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState, useEffect } from "react";
-import { getAllUsersAdmin } from "../../../apis";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useGetAllUsersQuery } from "services/adminService"
+import { Loading } from "components"
 
 const UserCard = ({ user }) => {
   return (
@@ -24,30 +24,25 @@ const UserCard = ({ user }) => {
         <div className="flex justify-center mt-2">
           <p className="text-[#6C757D] text-[14px]">
             貼文被收藏數
-            <span className="text-red-800 dark:text-amber-200">10</span>
+            <span className="ml-1 text-red-800 dark:text-amber-200">{user.beingFavorite_count}</span>
           </p>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 export const UserList = () => {
-  const [users, setUsers] = useState([]);
-  useEffect(() => {
-    async function getAllUsersAsync() {
-      const { success, data } = await getAllUsersAdmin();
-      if (success) {
-        setUsers(data);
-      }
-    }
-    getAllUsersAsync();
-  }, []);
+  const { data, isLoading } = useGetAllUsersQuery()
+  const users = data?.data
+
   return (
-    <div className="flex flex-wrap gap-4 p-4 dark:bg-slate-800 dark:text-white overflow-y-auto h-screen scrollbar-y">
-      {users?.map((user) => (
-        <UserCard user={user} key={user.id} />
-      ))}
+    <div className="w-full flex flex-wrap gap-4 p-4 dark:bg-slate-800 dark:text-white overflow-y-auto h-screen scrollbar-y">
+      {isLoading ? (
+        <Loading />
+      ) : (
+        users?.map((user) => <UserCard user={user} key={user.id} />)
+      )}
     </div>
-  );
-};
+  )
+}

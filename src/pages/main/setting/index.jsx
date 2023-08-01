@@ -1,10 +1,16 @@
 import {
   InputCard,
   SubmitBtn,
-} from "../../../components"
+} from "components"
 import { useState, useRef, useEffect } from "react"
-import { editUser } from "../../../apis"
-import { useAuth } from "../../../contexts/AuthContext"
+import { useEditUserMutation } from "services/userService"
+
+const initialFormState = {
+  name: "",
+  email: "",
+  password: "",
+  passwordCheck: "",
+}
 
 const PreviewAvatar = ({ previewURL, setFileSrc, fileInputRef, size }) => {
   return (
@@ -28,20 +34,23 @@ const PreviewAvatar = ({ previewURL, setFileSrc, fileInputRef, size }) => {
 }
 
 const Setting = () => {
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [passwordCheck, setPasswordCheck] = useState("")
+  const [formState, setFormState] = useState(initialFormState)
   const [fileSrc, setFileSrc] = useState(null)
   const [previewURL, setPreviewURL] = useState("")
-  //flow control
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const [showErrorMsg, setShowErrorMsg] = useState(false)
   const [showSuccessMsg, setShowSuccessMsg] = useState(false)
   const [errorMsg, setErrorMsg] = useState("")
   const fileInputRef = useRef(null)
-  const { currentUser } = useAuth()
-  const userId = currentUser?.id
+  const id = Number(localStorage.getItem("userId"))
+
+  const [editUser, { isLoading }] = useEditUserMutation()
+
+  function handleChange({ target: { name, value } }) {
+    setFormState((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
 
   const handleUpload = (e) => {
     const selectedImg = e.target.files[0]
@@ -51,59 +60,52 @@ const Setting = () => {
   }
 
   async function handleSubmit() {
-    setIsSubmitting(true)
+    const { name, email, password, passwordCheck } = formState
 
     // 密碼輸入不一致
     if (password.trim() !== passwordCheck.trim()) {
       setShowErrorMsg(true)
       setErrorMsg("密碼輸入不一致!")
-      setTimeout(() => {
-        setIsSubmitting(false)
-      }, 1000)
       return
     }
     // 長度超出上限
     if (name.trim().length > 15) {
       setShowErrorMsg(true)
       setErrorMsg("暱稱輸入超過上限15")
-      setTimeout(() => {
-        setIsSubmitting(false)
-      }, 1000)
       return
     }
 
     if (password.trim().length > 15 || passwordCheck.trim().length > 15) {
       setShowErrorMsg(true)
       setErrorMsg("密碼輸入超過上限15")
-      setTimeout(() => {
-        setIsSubmitting(false)
-      }, 1000)
       return
     }
 
-    try {
-      const { success, message } = await editUser(userId, {
-        name,
-        email,
-        password,
-        passwordCheck,
-        avatar: fileSrc,
-      })
-      setIsSubmitting(false)
-      if (success) {
-        setShowSuccessMsg(true)
+    // 使用 formData格式送出
+    const formData = new FormData()
+    formData.append("name", name)
+    formData.append("email", email)
+    formData.append("password", password)
+    formData.append("passwordCheck", passwordCheck)
+    formData.append("avatar", fileSrc)
+
+    const { data, error } = await editUser({id, body:formData})
+
+    if(data){
+      console.log(data)
+      setShowSuccessMsg(true)
         setShowErrorMsg(false)
         setErrorMsg("修改成功！")
         fileInputRef.current.value = ""
-        return
-      }
+        return setTimeout(() => {
+          setShowSuccessMsg(false)
+        }, 3500)
+    }else if(error){
       setShowErrorMsg(true)
       setShowSuccessMsg(false)
-      setErrorMsg(message)
-    } catch (err) {
-      console.log(err)
-      throw err //丟給上層接收
+      setErrorMsg(error?.data.message)
     }
+
   }
 
   // 離開頁面清除
@@ -121,7 +123,16 @@ const Setting = () => {
         <h2 className="text-center font-bold text-xl mt-2 dark:text-white">
           個人資料設定
         </h2>
-        <div className="py-4">
+        <div className="py-4 relative">
+          {isLoading && (
+            <lottie-player
+              autoplay
+              loop
+              mode="normal"
+              src="https://lottie.host/f2cbb1f7-338b-48ca-a553-c6bee18975eb/fsTMxuEo6D.json"
+              style={{ width: "150px", height: "150px", position:"absolute", left:"40%", top:"10%" }}
+            ></lottie-player>
+          )}
           {showErrorMsg ? (
             <p className="text-center text-red-500">&#9785; {errorMsg}</p>
           ) : null}
@@ -133,32 +144,32 @@ const Setting = () => {
             placeholder="請輸入你Line群組裡的名稱"
             type="text"
             name="name"
-            onChange={(inputValue) => setName(inputValue)}
-            disabled={isSubmitting ? true : false}
+            onChange={handleChange}
+            disabled={isLoading ? true : false}
           />
           <InputCard
             label="信箱 Email"
             placeholder="請輸入你的信箱"
             type="text"
             name="email"
-            onChange={(inputValue) => setEmail(inputValue)}
-            disabled={isSubmitting ? true : false}
+            onChange={handleChange}
+            disabled={isLoading ? true : false}
           />
           <InputCard
             label="密碼 Password"
             placeholder="請輸入你的密碼"
             type="password"
             name="password"
-            onChange={(inputValue) => setPassword(inputValue)}
-            disabled={isSubmitting ? true : false}
+            onChange={handleChange}
+            disabled={isLoading ? true : false}
           />
           <InputCard
             label="再次確認密碼 Confirm password"
             placeholder="請再次輸入你的密碼"
             type="password"
             name="passwordCheck"
-            onChange={(inputValue) => setPasswordCheck(inputValue)}
-            disabled={isSubmitting ? true : false}
+            onChange={handleChange}
+            disabled={isLoading ? true : false}
           />
           <div className="mb-2">
             <div className="w-4/5 bg-[#F5F8FA] my-4 px-2.5 mx-auto dark:bg-gray-700">
@@ -175,7 +186,7 @@ const Setting = () => {
                 onChange={handleUpload}
                 className="inputDefault"
                 ref={fileInputRef}
-                disabled={isSubmitting ? true : false}
+                disabled={isLoading ? true : false}
               />
             </div>
             {/*手機螢幕 */}
@@ -192,12 +203,6 @@ const Setting = () => {
           </div>
           <div className="w-4/5 mx-auto relative">
             <SubmitBtn submit="確認更改" onSubmit={handleSubmit} />
-            {isSubmitting && (
-              <svg
-                className="absolute right-1/3 top-1/4 animate-spin h-5 w-5 border-slate-500 border-t-slate-200 rounded-full border-2"
-                viewBox="0 0 24 24"
-              ></svg>
-            )}
           </div>
         </div>
       </div>

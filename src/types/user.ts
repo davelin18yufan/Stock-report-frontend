@@ -1,7 +1,8 @@
 export type UserRequest = {
   email: string
   password: string
-  name?: string,
+  passwordCheck?: string
+  name?: string
   avatar?: string
 }
 
@@ -71,7 +72,7 @@ export type ReportPayload = {
   report: string
   from: string
   publishDate: string
-  stock?: number 
+  stock?: number
 }
 
 export type Stock = {
@@ -84,6 +85,6 @@ export type Stock = {
 }
 
 export type ApiResponse<T> = {
-  status: string,
+  status: string
   data: T
 }

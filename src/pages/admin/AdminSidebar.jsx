@@ -1,56 +1,50 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useMainContext } from "../../contexts/MainContext";
-import Tooltip from "@mui/material/Tooltip";
-import { DarkModeSwitch } from "../../components";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import { useAuth } from "../../contexts/AuthContext";
-import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import Tooltip from "@mui/material/Tooltip"
+import { DarkModeSwitch } from "components"
+import FormControlLabel from "@mui/material/FormControlLabel"
+import Swal from "sweetalert2"
+import { useNavigate } from "react-router-dom"
+import { useAppDispatch, useAppSelector } from "hooks/store"
+import { setDarkMode, setMenuToggle } from "slices/mainSlice"
+import { confirmPopOut } from "utilities/confirmPopOut"
+import { logout } from "slices/authSlice"
 
 const AdminNavbar = () => {
-  const { darkMode, setDarkMode } = useMainContext();
-  const [menuToggle, setMenuToggle] = useState(false)
-  const go = useNavigate();
-  const { logout } = useAuth();
+  const go = useNavigate()
+  const dispatch = useAppDispatch()
+  const menuToggle = useAppSelector((state) => state.mainPageReducer.menuToggle)
 
   const handleSwitch = () => {
-    const theme = darkMode ? "light" : "dark";
-    setDarkMode(!darkMode);
-    localStorage.setItem("theme", theme);
-  };
+    dispatch(setDarkMode())
+  }
 
   function handleLogout() {
-    Swal.fire({
-      title: "確定登出？",
-      showDenyButton: true,
-      confirmButtonText: "Yes",
-      denyButtonText: "No",
-      confirmButtonColor: "green",
-      denyButtonColor: "gray",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        logout();
+    confirmPopOut("確定登出？", true).then((result) => {
+      if (result) {
+        dispatch(logout())
         Swal.fire({
           position: "top",
           title: "登出成功！",
           timer: 1300,
           icon: "success",
           showConfirmButton: false,
-        });
-        go("/admin/login");
-      } else {
-        return;
+        })
+        go("/login")
       }
-    });
+      return
+    })
   }
 
   return (
     <nav
       className={`${menuToggle ? "scale-x-1" : "scale-x-0"} 
       sm:static sm:transform-none text-3xl space-y-16 shadow-lg navToggle bg-light-green sm:bg-light-gray dark:bg-slate-800`}
-      onMouseEnter={() => setMenuToggle(true)}
-      onMouseLeave={() => setMenuToggle(false)}
+      onMouseEnter={() =>
+        window.innerWidth <= 640 && dispatch(setMenuToggle(true))
+      }
+      onMouseLeave={() =>
+        window.innerWidth <= 640 && dispatch(setMenuToggle(true))
+      }
     >
       <ul className="text-dark-green dark:text-neutral-300 flex-col items-start space-y-8 ">
         <li
@@ -105,7 +99,7 @@ const AdminNavbar = () => {
         </Tooltip>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default AdminNavbar;
+export default AdminNavbar

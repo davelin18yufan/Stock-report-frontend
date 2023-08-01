@@ -11,13 +11,17 @@ import { useAppDispatch } from "hooks/store"
 import { usePostingMutation } from "services/postService"
 import { usePostReportMutation } from "services/reportService"
 
+const initialFormState = {
+  title: "",
+  post: "",
+  stock: null,
+  from: "" || null,
+  publishDate: "" || null,
+}
+
 function Modal({ open, setOpen, modal }) {
+  const [formState, setFormState] = useState(initialFormState)
   // input
-  const [title, setTitle] = useState("")
-  const [post, setPost] = useState("")
-  const [stock, setStock] = useState(null)
-  const [from, setFrom] = useState("")
-  const [publishDate, setPublishDate] = useState("")
   const [fileSrc, setFileSrc] = useState(null)
   const [previewURL, setPreviewURL] = useState("")
   // flow control
@@ -62,29 +66,15 @@ function Modal({ open, setOpen, modal }) {
     fileInputRef.current.value = ""
   }
 
-  function handlePostChange(e) {
-    if (e.currentTarget) {
-      setPost(e.target.value)
-    }
-  }
-
-  function handleTitleChange(e) {
-    setTitle(e.target.value)
-  }
-
-  function handleStockChange(e) {
-    setStock(e.target.value)
-  }
-
-  function handleFromChange(e) {
-    setFrom(e.target.value)
-  }
-
-  function handlePublishDateChange(e) {
-    setPublishDate(e.target.value)
+  function handleChange({ target: { name, value } }) {
+    setFormState((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
   }
 
   async function handlePostSubmit() {
+    const { title, post } = formState
     if (title.trim().length === 0 || post.trim().length === 0) {
       setShowErrorMsg(true)
       setErrorMsg("欄位不可空白!")
@@ -115,6 +105,7 @@ function Modal({ open, setOpen, modal }) {
   }
 
   async function handleReportSubmit() {
+    const { title, post, publishDate, from, stock } = formState
     // error check
     if (title.length === 0 || post.length === 0) {
       setShowErrorMsg(true)
@@ -174,6 +165,7 @@ function Modal({ open, setOpen, modal }) {
                 autoFocus
                 margin="dense"
                 id="title"
+                name="title"
                 label="標題"
                 type="text"
                 fullWidth
@@ -181,13 +173,14 @@ function Modal({ open, setOpen, modal }) {
                 placeholder="請寫出你的標題"
                 required
                 helperText="字數上限30"
-                onChange={handleTitleChange}
+                onChange={handleChange}
                 disabled={isPostCreating ? true : false}
               />
               <TextField
                 autoFocus
                 margin="dense"
                 id="post"
+                name="post"
                 label="發文"
                 type="text"
                 fullWidth
@@ -197,13 +190,14 @@ function Modal({ open, setOpen, modal }) {
                 multiline
                 required
                 helperText="字數上限700"
-                onChange={handlePostChange}
+                onChange={handleChange}
                 disabled={isPostCreating ? true : false}
               />
               <TextField
                 autoFocus
                 margin="dense"
                 id="image"
+                name="image"
                 type="file"
                 fullWidth
                 variant="standard"
@@ -250,6 +244,7 @@ function Modal({ open, setOpen, modal }) {
                 autoFocus
                 margin="dense"
                 id="title"
+                name="title"
                 label="標題"
                 type="text"
                 fullWidth
@@ -258,22 +253,24 @@ function Modal({ open, setOpen, modal }) {
                 required
                 helperText="字數上限50"
                 disabled={isReportCreating ? true : false}
-                onChange={handleTitleChange}
+                onChange={handleChange}
               />
               <TextField
                 margin="normal"
                 id="from"
+                name="from"
                 label="出處"
                 type="text"
                 fullWidth
                 variant="standard"
                 placeholder="報告出處"
                 disabled={isReportCreating ? true : false}
-                onChange={handleFromChange}
+                onChange={handleChange}
               />
               <TextField
                 margin="normal"
                 id="publishDate"
+                name="publishDate"
                 label="撰寫日期"
                 type="text"
                 fullWidth
@@ -281,23 +278,25 @@ function Modal({ open, setOpen, modal }) {
                 placeholder="撰寫日期"
                 helperText="格式：19110101"
                 disabled={isReportCreating ? true : false}
-                onChange={handlePublishDateChange}
+                onChange={handleChange}
               />
               <TextField
                 margin="normal"
                 id="stock"
+                name="stock"
                 label="股票代號"
                 type="number"
                 fullWidth
                 variant="outlined"
                 placeholder="股票代號"
                 disabled={isReportCreating ? true : false}
-                onChange={handleStockChange}
+                onChange={handleChange}
               />
               <TextField
                 autoFocus
                 margin="dense"
                 id="report"
+                name="post"
                 label="報告內容"
                 type="text"
                 fullWidth
@@ -307,7 +306,7 @@ function Modal({ open, setOpen, modal }) {
                 multiline
                 required
                 disabled={isReportCreating ? true : false}
-                onChange={handlePostChange}
+                onChange={handleChange}
               />
             </DialogContent>
           </>

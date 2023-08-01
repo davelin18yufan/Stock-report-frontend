@@ -1,17 +1,16 @@
-import { PostCard, ReportCard, Side, Tab } from "components"
+import { PostCard, ReportCard, Side, Tab, Loading } from "components"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "hooks/store"
 import { setCurrentTab } from "slices/mainSlice"
 import { getUploadDate } from "utilities/date"
-import { useGetUserInfoQuery } from "services/userService"
 import {
   useGetUserPostsQuery,
   useGetUserReportsQuery,
+  useGetUserInfoQuery,
 } from "services/userService"
 import { useDeletePostMutation } from "services/postService"
 import { useDeleteReportMutation } from "services/reportService"
-import Loading from "components/Loading"
 import { confirmPopOut } from "utilities/confirmPopOut"
 
 const UserPostList = ({ onDelete }) => {

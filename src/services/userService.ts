@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-import { User, Post, Report, ApiResponse } from "types/user"
+import { User, Post, Report, ApiResponse, UserRequest } from "types/user"
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -15,11 +15,15 @@ export const userApi = createApi({
   }),
   tagTypes: ["User", "Post", "Report"],
   endpoints: (builder) => ({
-    editUser: builder.mutation<ApiResponse<User>, Partial<Post>>({
-      query: ({ id, ...body }) => ({
+    editUser: builder.mutation<
+      ApiResponse<User>,
+      { id: number; body: Partial<UserRequest> }
+    >({
+      query: ({ id, body }) => ({
         url: `/user/${id}`,
-        method: "POST",
+        method: "PUT",
         body,
+        formData: true,
       }),
       invalidatesTags: (result, error, { id }) => [{ type: "User", id }],
     }),
@@ -31,13 +35,11 @@ export const userApi = createApi({
       query: (id) => `/user/${id}/posts`,
       providesTags: (result) =>
         result
-          ? 
-            [
+          ? [
               ...result.data.map(({ id }) => ({ type: "Post" as const, id })),
               { type: "Post", id: "LIST" },
             ]
-          : 
-            [{ type: "Post", id: "LIST" }],
+          : [{ type: "Post", id: "LIST" }],
     }),
     getUserReports: builder.query<ApiResponse<Report[]>, number>({
       query: (id) => `/user/${id}/Reports`,

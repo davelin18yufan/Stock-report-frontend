@@ -6,6 +6,7 @@ import { reportApi } from "services/reportService"
 import { authApi } from "services/authService"
 import { userApi } from "services/userService"
 import { stockApi } from "services/stockSlices"
+import { adminApi } from "services/adminService"
 
 const reducers = combineReducers({
   [postApi.reducerPath]: postApi.reducer,
@@ -13,6 +14,7 @@ const reducers = combineReducers({
   [userApi.reducerPath]: userApi.reducer,
   [authApi.reducerPath]: authApi.reducer,
   [stockApi.reducerPath]: stockApi.reducer,
+  [adminApi.reducerPath]: adminApi.reducer,
   mainPageReducer,
   authReducer,
 })
@@ -25,7 +27,8 @@ const store = configureStore({
       .concat(reportApi.middleware)
       .concat(userApi.middleware)
       .concat(authApi.middleware)
-      .concat(stockApi.middleware),
+      .concat(stockApi.middleware)
+      .concat(adminApi.middleware),
 })
 
 // 反推行別
