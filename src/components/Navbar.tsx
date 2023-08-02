@@ -1,4 +1,13 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import {
+  faHouse,
+  faMagnifyingGlassDollar,
+  faAddressCard,
+  faGear,
+  faPen,
+  faFile,
+  faRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons"
 import { Modal, DarkModeSwitch } from "components"
 import { useState } from "react"
 import Tooltip from "@mui/material/Tooltip"
@@ -8,20 +17,20 @@ import Swal from "sweetalert2"
 import { useAppDispatch, useAppSelector } from "hooks/store"
 import { setDarkMode, setMenuToggle } from "slices/mainSlice"
 import { confirmPopOut } from "utilities/confirmPopOut"
-import { logout} from "slices/authSlice"
+import { logout } from "slices/authSlice"
 
 const Navbar = () => {
   const [open, setOpen] = useState(false)
-  const [modalOpened, setModalOpened] = useState(null)
+  const [modalOpened, setModalOpened] = useState("")
   const userId = Number(localStorage.getItem("userId"))
   const go = useNavigate()
   const dispatch = useAppDispatch()
-  const menuToggle = useAppSelector(state => state.mainPageReducer.menuToggle)
+  const menuToggle = useAppSelector((state) => state.mainPageReducer.menuToggle)
 
   const handleSwitch = () => {
     dispatch(setDarkMode())
   }
-  
+
   function handleLogout() {
     confirmPopOut("確定登出？", true).then((result) => {
       if (result) {
@@ -34,9 +43,8 @@ const Navbar = () => {
           showConfirmButton: false,
         })
         go("/login")
-      } 
+      }
       return
-      
     })
   }
 
@@ -44,8 +52,12 @@ const Navbar = () => {
     <nav
       className={`${menuToggle ? "scale-x-1" : "scale-x-0"} 
       sm:static sm:transform-none text-3xl space-y-16 shadow-lg navToggle bg-light-green sm:bg-light-gray sm:rounded-none dark:bg-slate-800`}
-      onMouseEnter={() => window.innerWidth <= 640 && dispatch(setMenuToggle(true))}
-      onMouseLeave={() => window.innerWidth <= 640 && dispatch(setMenuToggle(true))}
+      onMouseEnter={() =>
+        window.innerWidth <= 640 && dispatch(setMenuToggle(true))
+      }
+      onMouseLeave={() =>
+        window.innerWidth <= 640 && dispatch(setMenuToggle(true))
+      }
     >
       <ul className="text-dark-green dark:text-neutral-300 flex-col items-start space-y-8 ">
         <li
@@ -55,7 +67,7 @@ const Navbar = () => {
           onClick={() => go("/main")}
         >
           <Tooltip title="首頁" placement="right">
-            <FontAwesomeIcon icon="fa-solid fa-house" />
+            <FontAwesomeIcon icon={faHouse} />
           </Tooltip>
         </li>
         <li
@@ -65,7 +77,7 @@ const Navbar = () => {
           onClick={() => go("/main/stock")}
         >
           <Tooltip title="股票代號搜尋" placement="right">
-            <FontAwesomeIcon icon="fa-solid fa-magnifying-glass-dollar" />
+            <FontAwesomeIcon icon={faMagnifyingGlassDollar} />
           </Tooltip>
         </li>
         <li
@@ -75,7 +87,7 @@ const Navbar = () => {
           onClick={() => go(`/main/user/${userId}`)}
         >
           <Tooltip title="個人頁面" placement="right">
-            <FontAwesomeIcon icon="fa-solid fa-address-card" />
+            <FontAwesomeIcon icon={faAddressCard} />
           </Tooltip>
         </li>
         <li
@@ -85,7 +97,7 @@ const Navbar = () => {
           onClick={() => go("/main/setting")}
         >
           <Tooltip title="設定" placement="right">
-            <FontAwesomeIcon icon="fa-solid fa-gear" />
+            <FontAwesomeIcon icon={faGear} />
           </Tooltip>
         </li>
         <li
@@ -98,7 +110,7 @@ const Navbar = () => {
           }}
         >
           <Tooltip title="發文" placement="right">
-            <FontAwesomeIcon icon="fa-solid fa-pen" />
+            <FontAwesomeIcon icon={faPen} />
           </Tooltip>
         </li>
         <li
@@ -111,7 +123,7 @@ const Navbar = () => {
           }}
         >
           <Tooltip title="報告" placement="right">
-            <FontAwesomeIcon icon="fa-solid fa-file" />
+            <FontAwesomeIcon icon={faFile} />
           </Tooltip>
         </li>
         <li
@@ -121,7 +133,13 @@ const Navbar = () => {
         >
           <Tooltip title="夜間模式" placement="right">
             <FormControlLabel
-              control={<DarkModeSwitch sx={{ m: 1 }} onChange={handleSwitch} />}
+              control={
+                <DarkModeSwitch
+                  sx={{ m: 1 }}
+                  onChange={handleSwitch}
+                  />
+                }
+              label="switch"
             />
           </Tooltip>
         </li>
@@ -133,7 +151,7 @@ const Navbar = () => {
         onClick={handleLogout}
       >
         <Tooltip title="登出" placement="right">
-          <FontAwesomeIcon icon="fa-solid fa-right-from-bracket" />
+          <FontAwesomeIcon icon={faRightFromBracket} />
         </Tooltip>
       </div>
       <Modal open={open} setOpen={setOpen} modal={modalOpened} />

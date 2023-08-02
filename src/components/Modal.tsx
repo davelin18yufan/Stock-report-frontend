@@ -11,32 +11,48 @@ import { useAppDispatch } from "hooks/store"
 import { usePostingMutation } from "services/postService"
 import { usePostReportMutation } from "services/reportService"
 
-const initialFormState = {
+const initialFormState:{
+  title: string,
+  post: string,
+  stock?: number | undefined
+  from: string
+  publishDate?: string 
+} = {
   title: "",
   post: "",
-  stock: null,
-  from: "" || null,
-  publishDate: "" || null,
+  stock: undefined,
+  from: "" ,
+  publishDate: "" ,
 }
 
-function Modal({ open, setOpen, modal }) {
+function Modal({
+  open,
+  setOpen,
+  modal,
+}: {
+  open: boolean
+  setOpen: React.Dispatch<
+    React.SetStateAction<boolean>
+  >
+  modal:string
+}) {
   const [formState, setFormState] = useState(initialFormState)
   // input
-  const [fileSrc, setFileSrc] = useState(null)
+  const [fileSrc, setFileSrc] = useState<string | Blob >("")
   const [previewURL, setPreviewURL] = useState("")
   // flow control
   const [showErrorMsg, setShowErrorMsg] = useState(false)
   const [errorMsg, setErrorMsg] = useState("")
   //initialization
-  const fileInputRef = useRef(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const dispatch = useAppDispatch()
   const [
     createPost,
-    { isLoading: isPostCreating, isError: isPostingError, error: postError },
+    { isLoading: isPostCreating, isError: isPostingError },
   ] = usePostingMutation()
   const [
     createReport,
-    { isLoading: isReportCreating, isError: isReportError, error: reportError },
+    { isLoading: isReportCreating, isError: isReportError },
   ] = usePostReportMutation()
 
   const handleClose = () => {
@@ -45,28 +61,30 @@ function Modal({ open, setOpen, modal }) {
     setErrorMsg("")
     // 清除輸入匡
     if (fileSrc) {
-      fileInputRef.current.value = ""
-      setFileSrc(null)
+      if(fileInputRef.current) fileInputRef.current.value = ""
+      setFileSrc("")
     }
   }
 
-  function handleUploadFile(e) {
-    const selectedImg = e.target.files[0]
+  function handleUploadFile(e:React.ChangeEvent<HTMLInputElement>) {
+    const selectedImg = e?.target?.files?.[0]
     // 轉成網址
-    const imgURL = URL.createObjectURL(selectedImg)
-    setPreviewURL(imgURL)
-    setFileSrc(selectedImg)
+    if(selectedImg){
+      const imgURL = URL.createObjectURL(selectedImg)
+      setPreviewURL(imgURL)
+      setFileSrc(selectedImg)
+    }
   }
 
-  const handleClear = (e) => {
+  const handleClear = (e:React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     // 清除輸入匡
-    setPreviewURL(null)
-    setFileSrc(null)
-    fileInputRef.current.value = ""
+    setPreviewURL("")
+    setFileSrc("")
+    if(fileInputRef.current) fileInputRef.current.value = ""
   }
 
-  function handleChange({ target: { name, value } }) {
+  function handleChange({ target: { name, value } }:React.ChangeEvent<HTMLInputElement>) {
     setFormState((prev) => ({
       ...prev,
       [name]: value,
@@ -91,17 +109,19 @@ function Modal({ open, setOpen, modal }) {
     formData.append("title", title)
     formData.append("post", post)
     formData.append("image", fileSrc)
-    const { data } = await createPost(formData)
 
-    if (data) {
-      // 成功關掉視窗
-      //一段時間過後自己關掉
-      setOpen(false)
-      setShowErrorMsg(false)
-      setErrorMsg("")
-      fileInputRef.current.value = ""
-      dispatch(setCurrentTab("post"))
-    }
+    createPost(formData)
+      .unwrap()
+      .then(() => {
+        // 成功關掉視窗
+        setOpen(false)
+        setShowErrorMsg(false)
+        setErrorMsg("")
+        if(fileInputRef.current) fileInputRef.current.value = ""
+        dispatch(setCurrentTab("post"))
+      })
+      .catch(err => setErrorMsg(err.data.message))
+    
   }
 
   async function handleReportSubmit() {
@@ -119,26 +139,28 @@ function Modal({ open, setOpen, modal }) {
       return
     }
 
-    if (publishDate.length !== 8) {
+    if ( typeof publishDate === "string" && publishDate.length !== 8) {
       setShowErrorMsg(true)
       setErrorMsg("出版日期格式錯誤!")
       return
     }
 
     // fetch
-    const { data } = await createReport({
+    createReport({
       title,
       from,
-      publishDate: publishDate.toString(),
+      publishDate: publishDate?.toString(),
       stock,
       report: post,
     })
-    if (data) {
-      setOpen(false)
-      setShowErrorMsg(false)
-      setErrorMsg("")
-      dispatch(setCurrentTab("report"))
-    }
+      .unwrap()
+      .then(() => {
+        setOpen(false)
+        setShowErrorMsg(false)
+        setErrorMsg("")
+        dispatch(setCurrentTab("report"))
+      })
+      .catch((err) => setErrorMsg(err.data.message))
   }
 
   return (
@@ -158,7 +180,7 @@ function Modal({ open, setOpen, modal }) {
               {/* 伺服器端檢查錯誤 */}
               {isPostingError ? (
                 <DialogContentText color="error">
-                  {postError.data.message}
+                  {errorMsg}
                 </DialogContentText>
               ) : null}
               <TextField
@@ -237,7 +259,7 @@ function Modal({ open, setOpen, modal }) {
               {/* 伺服器端檢查 */}
               {isReportError ? (
                 <DialogContentText color="error">
-                  {reportError.data.message}
+                  {errorMsg}
                 </DialogContentText>
               ) : null}
               <TextField

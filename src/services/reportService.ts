@@ -29,7 +29,7 @@ export const reportApi = createApi({
       query: (id) => `/report/${id}`,
       providesTags: (result, error, id) => [{ type: "Report", id }],
     }),
-    postReport: builder.mutation<ApiResponse<ReportPayload>, Report>({
+    postReport: builder.mutation<ApiResponse<Report>, ReportPayload>({
       query: (newReport) => ({
         url: "/report",
         method: "POST",

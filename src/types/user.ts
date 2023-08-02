@@ -52,6 +52,8 @@ export type Report = {
   updatedAt: string
   userId: number
   stockId?: number
+  User: User
+  Stock?: Stock
 }
 
 export type Favorite = {
@@ -61,7 +63,13 @@ export type Favorite = {
   updatedAt: string
 }
 
-export interface PostPayload<T> {
+// 推斷 FormData 中的型別
+type FormData = ReturnType<typeof createFormData>
+// 建立一個FormData Instance
+function createFormData() {
+  return new FormData()
+}
+export interface PostPayload<T> extends FormData{
   title: string
   post: string
   image?: T
@@ -71,7 +79,7 @@ export type ReportPayload = {
   title: string
   report: string
   from: string
-  publishDate: string
+  publishDate?: string
   stock?: number
 }
 

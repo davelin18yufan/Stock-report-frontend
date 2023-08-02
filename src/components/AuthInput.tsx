@@ -1,12 +1,15 @@
-export const AuthContainer = ({ children }) => {
+import { ChangeEventHandler } from "react";
+import {ChildrenProp} from "types/user"
+
+export const AuthContainer = ({ children }: ChildrenProp) => {
   return (
     <div className=" h-full bg-login bg-cover bg-no-repeat py-5 sm:pt-[90px] sm:h-screen">
       <div className="w-1/2 mx-auto lg:max-w-[500px] bg-white bg-opacity-80 rounded-lg py-3">
         {children}
       </div>
     </div>
-  );
-};
+  )
+}
 
 export const Logo = () => {
   return (
@@ -18,7 +21,7 @@ export const Logo = () => {
   );
 };
 
-export const LogoTitle = ({ title }) => {
+export const LogoTitle = ({ title }: {title:string}) => {
   return (
     <div className="">
       <Logo />
@@ -36,6 +39,13 @@ export const InputCard = ({
   type,
   onChange,
   disabled,
+}: {
+  label: string
+  placeholder: string
+  name: string
+  type: string
+  onChange: ChangeEventHandler<HTMLInputElement>
+  disabled:boolean
 }) => {
   return (
     <div className="w-4/5 bg-[#F5F8FA] my-4 px-2.5 mx-auto dark:bg-gray-700">
@@ -55,10 +65,16 @@ export const InputCard = ({
         disabled={disabled}
       ></input>
     </div>
-  );
-};
+  )
+}
 
-export const SubmitBtn = ({ submit, onSubmit }) => {
+export const SubmitBtn = ({
+  submit,
+  onSubmit,
+}: {
+  submit: string
+  onSubmit: React.MouseEventHandler<HTMLButtonElement>
+}) => {
   return (
     <button
       className="w-full btn btn:hover dark:bg-slate-400 dark:text-sky-700"
@@ -66,5 +82,5 @@ export const SubmitBtn = ({ submit, onSubmit }) => {
     >
       {submit}
     </button>
-  );
-};
+  )
+}

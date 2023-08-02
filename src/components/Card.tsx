@@ -1,5 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useEffect, memo, useState } from "react"
+import {
+  faXmark,
+  faBullseye,
+  faBookmark as faBookMarkSolid,
+} from "@fortawesome/free-solid-svg-icons"
+import { faBookmark } from "@fortawesome/free-regular-svg-icons"
+import React, { useEffect, memo, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { getTimeDiffTransForm, getUploadDate } from "utilities/date"
 import { useAppDispatch, useAppSelector } from "hooks/store"
@@ -9,8 +15,17 @@ import {
   useDeleteFavoritePostMutation,
 } from "services/postService"
 import { confirmPopOut } from "utilities/confirmPopOut"
+import { Post, Report } from "types/user"
 
-export const UserImage = ({ user, avatar, userId }) => {
+export const UserImage = ({
+  user,
+  avatar,
+  userId,
+}: {
+  user?: string
+  avatar?: string
+  userId?: number
+}) => {
   const go = useNavigate()
   return (
     <img
@@ -25,7 +40,7 @@ export const UserImage = ({ user, avatar, userId }) => {
   )
 }
 
-export const Tab = ({ post, report }) => {
+export const Tab = ({ post, report }: { post: string; report: string }) => {
   const currentTab = useAppSelector((state) => state.mainPageReducer.currentTab)
   const dispatch = useAppDispatch()
 
@@ -49,31 +64,38 @@ export const Tab = ({ post, report }) => {
 }
 
 export const PostCard = memo(
-  ({ post, isFavorite, onDelete }) => {
+  ({
+    post,
+    isFavorite,
+    onDelete,
+  }: {
+    post: Post
+    isFavorite: boolean
+    onDelete: (
+      e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+      id: number
+    ) => void
+  }) => {
     const [isFavoriteState, setIsFavoriteState] = useState(isFavorite)
     const dispatch = useAppDispatch()
     const userId = Number(localStorage.getItem("userId"))
     const [favoritePost] = useFavoritePostMutation()
     const [cancelFavorite] = useDeleteFavoritePostMutation()
 
-    async function handleFavorite(e) {
+    async function handleFavorite(e: React.MouseEvent<HTMLDivElement>) {
       e.stopPropagation()
-      const { data, error } = await favoritePost(post.id)
-      if (data) {
-        return setIsFavoriteState(true)
-      } else if (error) {
-        confirmPopOut(error?.data.message, false)
-      }
+      favoritePost(post.id)
+        .unwrap()
+        .then(() => setIsFavoriteState(true))
+        .catch((err) => confirmPopOut(err?.data?.message, false))
     }
 
-    async function handleCancelFavorite(e) {
+    async function handleCancelFavorite(e: React.MouseEvent<HTMLDivElement>) {
       e.stopPropagation()
-      const { data, error } = await cancelFavorite(post.id)
-      if (data) {
-        return setIsFavoriteState(false)
-      } else if (error) {
-        confirmPopOut(error?.data.message, false)
-      }
+      cancelFavorite(post.id)
+        .unwrap()
+        .then(() => setIsFavoriteState(false))
+        .catch((err) => confirmPopOut(err?.data.message, false))
     }
 
     // 如果 isFavorite prop 有變動，同步更新 isFavoriteState 狀態
@@ -102,7 +124,10 @@ export const PostCard = memo(
             <p>
               {post.User?.name}
               <span className="text-[14px] text-[#6C757D] ml-2">
-                &#8729; {getTimeDiffTransForm(post.updatedAt)}
+                &#8729;{" "}
+                {typeof post.updatedAt === "string"
+                  ? getTimeDiffTransForm(post.updatedAt)
+                  : ""}
               </span>
             </p>
             <h4 className="font-bold text-lg dark:text-white">{post.title}</h4>
@@ -115,7 +140,7 @@ export const PostCard = memo(
               className="absolute top-2 right-7 cursor-pointer"
               onClick={(e) => onDelete(e, post.id)}
             >
-              <FontAwesomeIcon icon="fa-solid fa-xmark" />
+              <FontAwesomeIcon icon={faXmark} />
             </div>
           ) : null}
           {isFavoriteState ? (
@@ -123,11 +148,11 @@ export const PostCard = memo(
               className="absolute right-2 top-2 "
               onClick={handleCancelFavorite}
             >
-              <FontAwesomeIcon icon="fa-solid fa-bookmark" />
+              <FontAwesomeIcon icon={faBookMarkSolid} />
             </div>
           ) : (
             <div className="absolute right-2 top-2 " onClick={handleFavorite}>
-              <FontAwesomeIcon icon="fa-regular fa-bookmark" />
+              <FontAwesomeIcon icon={faBookmark} />
             </div>
           )}
         </div>
@@ -136,14 +161,20 @@ export const PostCard = memo(
   }
 )
 
-export const TargetCard = ({ target, symbol }) => {
+export const TargetCard = ({
+  target,
+  symbol,
+}: {
+  target?: string
+  symbol?: number
+}) => {
   const go = useNavigate()
   return (
     <div
       className="max-x-[100px] flex items-center border-2 rounded-full pl-2 text-rose-900"
       onClick={() => go(`/stock/${symbol}`)}
     >
-      <FontAwesomeIcon icon="fa-solid fa-bullseye" />
+      <FontAwesomeIcon icon={faBullseye} />
       <p className="px-2 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 truncate">
         {target}
       </p>
@@ -151,7 +182,16 @@ export const TargetCard = ({ target, symbol }) => {
   )
 }
 
-export const ReportCard = ({ report, onDelete }) => {
+export const ReportCard = ({
+  report,
+  onDelete,
+}: {
+  report: Report
+  onDelete: (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    id: number
+  ) => void
+}) => {
   const userId = Number(localStorage.getItem("userId"))
   const dispatch = useAppDispatch()
 
@@ -189,7 +229,7 @@ export const ReportCard = ({ report, onDelete }) => {
               className="absolute top-2 right-3 cursor-pointer"
               onClick={(e) => onDelete(e, report.id)}
             >
-              <FontAwesomeIcon icon="fa-solid fa-xmark" />
+              <FontAwesomeIcon icon={faXmark} />
             </div>
           ) : null}
         </div>

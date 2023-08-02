@@ -31,16 +31,16 @@ const mainSlice = createSlice({
       state.darkMode = !state.darkMode
       localStorage.setItem("theme", theme)
     },
-    setMenuToggle: (state) => {
-      state.menuToggle = !state.menuToggle
+    setMenuToggle: (state, action:PayloadAction<boolean>) => {
+      state.menuToggle = action.payload
     },
     setCurrentTab: (state, action: PayloadAction<string>) => {
       state.currentTab = action.payload
     },
-    setPostId: (state, action: PayloadAction<number>) => {
+    setPostId: (state, action: PayloadAction<number | null>) => {
       state.postCardId = action.payload
     },
-    setReportId: (state, action: PayloadAction<number>) => {
+    setReportId: (state, action: PayloadAction<number | null>) => {
       state.reportCardId = action.payload
     },
   },
