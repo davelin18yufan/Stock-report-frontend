@@ -1,16 +1,16 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Post, ApiResponse, PostPayload, User } from "types/user";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { Post, ApiResponse, PostPayload, User } from "types/user"
 
 export const postApi = createApi({
   reducerPath: "postApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:5000/api",
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem("authToken");
+      const token = localStorage.getItem("authToken")
       if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
+        headers.set("Authorization", `Bearer ${token}`)
       }
-      return headers;
+      return headers
     },
   }),
   tagTypes: ["Post"],
@@ -70,7 +70,7 @@ export const postApi = createApi({
       invalidatesTags: [{ type: "Post", id: "FList" }],
     }),
   }),
-});
+})
 
 export const {
   useGetPostsQuery,
@@ -80,4 +80,4 @@ export const {
   useDeletePostMutation,
   useFavoritePostMutation,
   useDeleteFavoritePostMutation,
-} = postApi;
+} = postApi

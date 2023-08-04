@@ -1,23 +1,23 @@
-import { UserImage, Tab, Loading } from "components";
-import { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getDateTransform, getUploadDate } from "utilities/date";
-import { useAppSelector } from "hooks/store";
+import { UserImage, Tab, Loading } from "components"
+import { useEffect, useState } from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { getDateTransform, getUploadDate } from "utilities/date"
+import { useAppSelector } from "hooks/store"
 import {
   useGetAllPostsQuery,
   useGetAllReportsQuery,
   useDeletePostMutation,
   useDeleteReportMutation,
-} from "services/adminService";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+} from "services/adminService"
+import { faXmark } from "@fortawesome/free-solid-svg-icons"
 
 const PostList = ({
   onDelete,
 }: {
-  onDelete: (id: number) => Promise<void>;
+  onDelete: (id: number) => Promise<void>
 }) => {
-  const { data, isLoading } = useGetAllPostsQuery();
-  const posts = data?.data;
+  const { data, isLoading } = useGetAllPostsQuery()
+  const posts = data?.data
   return (
     <>
       {isLoading ? (
@@ -53,16 +53,16 @@ const PostList = ({
         ))
       )}
     </>
-  );
-};
+  )
+}
 
 const ReportList = ({
   onDelete,
 }: {
-  onDelete: (id: number) => Promise<void>;
+  onDelete: (id: number) => Promise<void>
 }) => {
-  const { data, isLoading } = useGetAllReportsQuery();
-  const reports = data?.data;
+  const { data, isLoading } = useGetAllReportsQuery()
+  const reports = data?.data
   return (
     <>
       {isLoading ? (
@@ -107,62 +107,60 @@ const ReportList = ({
         ))
       )}
     </>
-  );
-};
+  )
+}
 
 export const Activities = () => {
-  const [showMsg, setShowMsg] = useState(false);
-  const [msg, setMsg] = useState("");
-  const currentTab = useAppSelector(
-    (state) => state.mainPageReducer.currentTab,
-  );
+  const [showMsg, setShowMsg] = useState(false)
+  const [msg, setMsg] = useState("")
+  const currentTab = useAppSelector((state) => state.mainPageReducer.currentTab)
 
   const [deletePost, { isLoading: deletePostLoading, isError: deletePostErr }] =
-    useDeletePostMutation();
+    useDeletePostMutation()
   const [
     deleteReport,
     { isLoading: deleReportLoading, isError: deleteReportErr },
-  ] = useDeleteReportMutation();
+  ] = useDeleteReportMutation()
 
-  const isDeleteLoading = deletePostLoading || deleReportLoading;
-  const isError = deletePostErr || deleteReportErr;
+  const isDeleteLoading = deletePostLoading || deleReportLoading
+  const isError = deletePostErr || deleteReportErr
 
   async function handlePostDelete(id: number) {
     deletePost(id)
       .unwrap()
       .then(() => {
-        setShowMsg(true);
-        setMsg("刪除成功！");
+        setShowMsg(true)
+        setMsg("刪除成功！")
       })
       .catch((err) => setMsg(err?.data.message))
       .finally(() =>
         setTimeout(() => {
-          setShowMsg(false);
-        }, 3000),
-      );
+          setShowMsg(false)
+        }, 3000)
+      )
   }
 
   async function handleReportDelete(id: number) {
     deleteReport(id)
       .unwrap()
       .then(() => {
-        setShowMsg(true);
-        setMsg("刪除成功！");
+        setShowMsg(true)
+        setMsg("刪除成功！")
       })
       .catch((err) => setMsg(err?.data.message))
       .finally(() =>
         setTimeout(() => {
-          setShowMsg(false);
-        }, 3000),
-      );
+          setShowMsg(false)
+        }, 3000)
+      )
   }
 
   useEffect(() => {
     return () => {
-      setShowMsg(false);
-      setMsg("");
-    };
-  }, []);
+      setShowMsg(false)
+      setMsg("")
+    }
+  }, [])
 
   return (
     <div className="w-full relative">
@@ -192,5 +190,5 @@ export const Activities = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}

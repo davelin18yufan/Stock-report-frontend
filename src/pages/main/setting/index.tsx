@@ -1,22 +1,22 @@
-import { InputCard, SubmitBtn } from "components";
-import { useState, useRef, useEffect } from "react";
-import { useEditUserMutation } from "services/userService";
+import { InputCard, SubmitBtn } from "components"
+import { useState, useRef, useEffect } from "react"
+import { useEditUserMutation } from "services/userService"
 
 const initialFormState = {
   name: "",
   email: "",
   password: "",
   passwordCheck: "",
-};
+}
 
 const PreviewAvatar = ({
   previewURL,
   onClear,
   size,
 }: {
-  previewURL: string;
-  size: number;
-  onClear: () => void;
+  previewURL: string
+  size: number
+  onClear: () => void
 }) => {
   return (
     <div>
@@ -32,20 +32,20 @@ const PreviewAvatar = ({
         清除
       </button>
     </div>
-  );
-};
+  )
+}
 
 const Setting = () => {
-  const [formState, setFormState] = useState(initialFormState);
-  const [fileSrc, setFileSrc] = useState<string | Blob | File>("");
-  const [previewURL, setPreviewURL] = useState("");
-  const [showErrorMsg, setShowErrorMsg] = useState(false);
-  const [showSuccessMsg, setShowSuccessMsg] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const id = Number(localStorage.getItem("userId"));
+  const [formState, setFormState] = useState(initialFormState)
+  const [fileSrc, setFileSrc] = useState<string | Blob | File>("")
+  const [previewURL, setPreviewURL] = useState("")
+  const [showErrorMsg, setShowErrorMsg] = useState(false)
+  const [showSuccessMsg, setShowSuccessMsg] = useState(false)
+  const [errorMsg, setErrorMsg] = useState("")
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const id = Number(localStorage.getItem("userId"))
 
-  const [editUser, { isLoading }] = useEditUserMutation();
+  const [editUser, { isLoading }] = useEditUserMutation()
 
   function handleChange({
     target: { name, value },
@@ -53,87 +53,87 @@ const Setting = () => {
     setFormState((prev) => ({
       ...prev,
       [name]: value,
-    }));
+    }))
   }
 
   function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    const selectedImg = e?.target?.files?.[0];
+    const selectedImg = e?.target?.files?.[0]
     if (selectedImg) {
-      const imgURL = URL.createObjectURL(selectedImg);
-      setFileSrc(selectedImg);
-      setPreviewURL(imgURL);
+      const imgURL = URL.createObjectURL(selectedImg)
+      setFileSrc(selectedImg)
+      setPreviewURL(imgURL)
     }
   }
 
   function fileClear() {
-    setFileSrc("");
-    if (fileInputRef.current) fileInputRef.current.value = "";
+    setFileSrc("")
+    if (fileInputRef.current) fileInputRef.current.value = ""
   }
 
   async function handleSubmit() {
-    const { name, email, password, passwordCheck } = formState;
+    const { name, email, password, passwordCheck } = formState
 
     // 密碼輸入不一致
     if (password.trim() !== passwordCheck.trim()) {
-      setShowErrorMsg(true);
-      setErrorMsg("密碼輸入不一致!");
-      return;
+      setShowErrorMsg(true)
+      setErrorMsg("密碼輸入不一致!")
+      return
     }
     // 長度超出上限
     if (name.trim().length > 15) {
-      setShowErrorMsg(true);
-      setErrorMsg("暱稱輸入超過上限15");
-      return;
+      setShowErrorMsg(true)
+      setErrorMsg("暱稱輸入超過上限15")
+      return
     }
 
     if (password.trim().length > 15 || passwordCheck.trim().length > 15) {
-      setShowErrorMsg(true);
-      setErrorMsg("密碼輸入超過上限15");
-      return;
+      setShowErrorMsg(true)
+      setErrorMsg("密碼輸入超過上限15")
+      return
     }
 
     // 使用 formData格式送出
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("email", email);
-    formData.append("password", password);
-    formData.append("passwordCheck", passwordCheck);
-    formData.append("avatar", fileSrc);
+    const formData = new FormData()
+    formData.append("name", name)
+    formData.append("email", email)
+    formData.append("password", password)
+    formData.append("passwordCheck", passwordCheck)
+    formData.append("avatar", fileSrc)
 
     editUser({ id, body: formData })
       .unwrap()
       .then(() => {
-        setShowSuccessMsg(true);
-        setShowErrorMsg(false);
-        setErrorMsg("修改成功！");
-        fileClear();
+        setShowSuccessMsg(true)
+        setShowErrorMsg(false)
+        setErrorMsg("修改成功！")
+        fileClear()
         return setTimeout(() => {
-          setShowSuccessMsg(false);
-        }, 3500);
+          setShowSuccessMsg(false)
+        }, 3500)
       })
       .catch((error) => {
-        setShowErrorMsg(true);
-        setShowSuccessMsg(false);
-        setErrorMsg(error?.data.message);
+        setShowErrorMsg(true)
+        setShowSuccessMsg(false)
+        setErrorMsg(error?.data.message)
       })
       .finally(() => {
         return setTimeout(() => {
-          setErrorMsg("");
-          setShowErrorMsg(false);
-          setShowSuccessMsg(false);
-        }, 3500);
-      });
+          setErrorMsg("")
+          setShowErrorMsg(false)
+          setShowSuccessMsg(false)
+        }, 3500)
+      })
   }
 
   // 離開頁面清除
   useEffect(() => {
     return () => {
-      setErrorMsg("");
-      setShowErrorMsg(false);
-      setShowSuccessMsg(false);
-      fileClear();
-    };
-  }, []);
+      setErrorMsg("")
+      setShowErrorMsg(false)
+      setShowSuccessMsg(false)
+      fileClear()
+    }
+  }, [])
 
   return (
     <>
@@ -249,7 +249,7 @@ const Setting = () => {
         ) : null}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Setting;
+export default Setting

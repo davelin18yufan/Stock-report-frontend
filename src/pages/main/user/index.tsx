@@ -1,41 +1,41 @@
-import { PostCard, ReportCard, Side, Tab, Loading } from "components";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "hooks/store";
-import { setCurrentTab } from "slices/mainSlice";
-import { getUploadDate } from "utilities/date";
+import { PostCard, ReportCard, Side, Tab, Loading } from "components"
+import { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
+import { useAppDispatch, useAppSelector } from "hooks/store"
+import { setCurrentTab } from "slices/mainSlice"
+import { getUploadDate } from "utilities/date"
 import {
   useGetUserPostsQuery,
   useGetUserReportsQuery,
-} from "services/userService";
+} from "services/userService"
 import {
   useDeletePostMutation,
   useGetUserFavoritesQuery,
-} from "services/postService";
-import { useDeleteReportMutation } from "services/reportService";
-import { confirmPopOut } from "utilities/confirmPopOut";
+} from "services/postService"
+import { useDeleteReportMutation } from "services/reportService"
+import { confirmPopOut } from "utilities/confirmPopOut"
 
 const UserPostList = ({
   onDelete,
   userId,
 }: {
-  onDelete: (e: React.MouseEvent<HTMLDivElement>, id: number) => Promise<void>;
-  userId?: string;
+  onDelete: (e: React.MouseEvent<HTMLDivElement>, id: number) => Promise<void>
+  userId?: string
 }) => {
-  const currentUserId = Number(localStorage.getItem("userId"));
+  const currentUserId = Number(localStorage.getItem("userId"))
   const {
     data: allPosts,
     error,
     isLoading,
-  } = useGetUserPostsQuery(Number(userId));
-  const { data: userInfo } = useGetUserFavoritesQuery(currentUserId);
-  const posts = allPosts?.data;
+  } = useGetUserPostsQuery(Number(userId))
+  const { data: userInfo } = useGetUserFavoritesQuery(currentUserId)
+  const posts = allPosts?.data
 
-  if (error) console.error("get user Posts error", error);
+  if (error) console.error("get user Posts error", error)
 
   // check favorite post
-  const favoritePosts = userInfo?.data.FavoritePosts;
-  const favoritePostsId = favoritePosts?.map((item) => item.id);
+  const favoritePosts = userInfo?.data.FavoritePosts
+  const favoritePostsId = favoritePosts?.map((item) => item.id)
   return (
     <>
       {isLoading ? (
@@ -51,101 +51,99 @@ const UserPostList = ({
         ))
       )}
     </>
-  );
-};
+  )
+}
 
 const UserReportsList = ({
   onDelete,
   userId,
 }: {
-  onDelete: (e: React.MouseEvent<HTMLDivElement>, id: number) => Promise<void>;
-  userId?: string;
+  onDelete: (e: React.MouseEvent<HTMLDivElement>, id: number) => Promise<void>
+  userId?: string
 }) => {
-  const { data, isLoading, error } = useGetUserReportsQuery(Number(userId));
-  if (error) console.error("get user reports error", error);
-  const reports = data?.data.slice(0, 30);
+  const { data, isLoading, error } = useGetUserReportsQuery(Number(userId))
+  if (error) console.error("get user reports error", error)
+  const reports = data?.data.slice(0, 30)
   return (
     <>
       {isLoading ? (
         <Loading />
       ) : (
         reports?.map((item) => {
-          return <ReportCard report={item} key={item.id} onDelete={onDelete} />;
+          return <ReportCard report={item} key={item.id} onDelete={onDelete} />
         })
       )}
     </>
-  );
-};
+  )
+}
 
 const MainSector = () => {
-  const [showMsg, setShowMsg] = useState(false);
-  const [errMsg, setErrMsg] = useState("");
-  const currentTab = useAppSelector(
-    (state) => state.mainPageReducer.currentTab,
-  );
-  const dispatch = useAppDispatch();
-  const userId = useParams().userId;
-  const currentUserId = localStorage.getItem("userId");
+  const [showMsg, setShowMsg] = useState(false)
+  const [errMsg, setErrMsg] = useState("")
+  const currentTab = useAppSelector((state) => state.mainPageReducer.currentTab)
+  const dispatch = useAppDispatch()
+  const userId = useParams().userId
+  const currentUserId = localStorage.getItem("userId")
 
   //Favorites
-  const { data: userInfo } = useGetUserFavoritesQuery(Number(userId));
-  const user = userInfo?.data;
-  const favoritePosts = user?.FavoritePosts;
-  const favoritePostsId = favoritePosts?.map((item) => item.id);
+  const { data: userInfo } = useGetUserFavoritesQuery(Number(userId))
+  const user = userInfo?.data
+  const favoritePosts = user?.FavoritePosts
+  const favoritePostsId = favoritePosts?.map((item) => item.id)
 
   const [deletePost, { isSuccess: isDeletePostSuccess }] =
-    useDeletePostMutation();
+    useDeletePostMutation()
 
   const [deleteReport, { isSuccess: isDeleteReportSuccess }] =
-    useDeleteReportMutation();
+    useDeleteReportMutation()
 
   async function handlePostDelete(
     e: React.MouseEvent<HTMLDivElement>,
-    id: number,
+    id: number
   ) {
-    e.stopPropagation();
-    const ans = await confirmPopOut("確認刪除此貼文？", true);
+    e.stopPropagation()
+    const ans = await confirmPopOut("確認刪除此貼文？", true)
     if (ans) {
       await deletePost(id)
         .then(() => setShowMsg(true))
         .catch((err) => setErrMsg(err.data.message))
         .finally(() => {
           return setTimeout(() => {
-            setShowMsg(false);
-            setErrMsg("");
-          }, 3500);
-        });
+            setShowMsg(false)
+            setErrMsg("")
+          }, 3500)
+        })
     }
-    return;
+    return
   }
 
   async function handleReportDelete(
     e: React.MouseEvent<HTMLDivElement>,
-    id: number,
+    id: number
   ) {
-    e.stopPropagation();
-    const ans = await confirmPopOut("確認刪除此報告？", true);
+    e.stopPropagation()
+    const ans = await confirmPopOut("確認刪除此報告？", true)
     if (ans) {
       await deleteReport(id)
         .then(() => setShowMsg(true))
         .catch((err) => setErrMsg(err.data.message))
         .finally(() => {
           return setTimeout(() => {
-            setShowMsg(false);
-            setErrMsg("");
-          }, 3500);
-        });
+            setShowMsg(false)
+            setErrMsg("")
+          }, 3500)
+        })
     }
-    return;
+    return
   }
 
-  const isSuccess = isDeleteReportSuccess || isDeletePostSuccess;
+  const isSuccess = isDeleteReportSuccess || isDeletePostSuccess
 
   useEffect(() => {
     return () => {
-      dispatch(setCurrentTab("post"));
-    };
-  }, [dispatch]);
+      dispatch(setCurrentTab("post"))
+    }
+  }, [dispatch])
 
   return (
     <div className="basis-4/5 h-screen overflow-y-auto flex flex-col items-center space-y-4">
@@ -224,13 +222,13 @@ const MainSector = () => {
                   isFavorite={favoritePostsId?.includes(item.id)}
                   onDelete={handlePostDelete}
                 />
-              );
+              )
             })}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const UserPage = () => {
   return (
@@ -238,7 +236,7 @@ const UserPage = () => {
       <MainSector />
       <Side />
     </div>
-  );
-};
+  )
+}
 
-export default UserPage;
+export default UserPage

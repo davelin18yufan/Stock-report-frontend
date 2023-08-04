@@ -1,84 +1,84 @@
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import { useRef, useState, memo } from "react";
-import { setCurrentTab } from "slices/mainSlice";
-import { useAppDispatch } from "hooks/store";
-import { usePostingMutation } from "services/postService";
-import { usePostReportMutation } from "services/reportService";
+import Button from "@mui/material/Button"
+import TextField from "@mui/material/TextField"
+import Dialog from "@mui/material/Dialog"
+import DialogActions from "@mui/material/DialogActions"
+import DialogContent from "@mui/material/DialogContent"
+import DialogContentText from "@mui/material/DialogContentText"
+import DialogTitle from "@mui/material/DialogTitle"
+import { useRef, useState, memo } from "react"
+import { setCurrentTab } from "slices/mainSlice"
+import { useAppDispatch } from "hooks/store"
+import { usePostingMutation } from "services/postService"
+import { usePostReportMutation } from "services/reportService"
 
 const initialFormState: {
-  title: string;
-  post: string;
-  stock?: number | undefined;
-  from: string;
-  publishDate?: string;
+  title: string
+  post: string
+  stock?: number | undefined
+  from: string
+  publishDate?: string
 } = {
   title: "",
   post: "",
   stock: undefined,
   from: "",
   publishDate: "",
-};
+}
 
 function Modal({
   open,
   setOpen,
   modal,
 }: {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  modal: string;
+  open: boolean
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  modal: string
 }) {
-  const [formState, setFormState] = useState(initialFormState);
+  const [formState, setFormState] = useState(initialFormState)
   // input
-  const [fileSrc, setFileSrc] = useState<string | Blob | File>("");
-  const [previewURL, setPreviewURL] = useState("");
+  const [fileSrc, setFileSrc] = useState<string | Blob | File>("")
+  const [previewURL, setPreviewURL] = useState("")
   // flow control
-  const [showErrorMsg, setShowErrorMsg] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
+  const [showErrorMsg, setShowErrorMsg] = useState(false)
+  const [errorMsg, setErrorMsg] = useState("")
   //initialization
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const dispatch = useAppDispatch();
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const dispatch = useAppDispatch()
   const [createPost, { isLoading: isPostCreating, isError: isPostingError }] =
-    usePostingMutation();
+    usePostingMutation()
   const [
     createReport,
     { isLoading: isReportCreating, isError: isReportError },
-  ] = usePostReportMutation();
+  ] = usePostReportMutation()
 
   const handleClose = () => {
-    setOpen(false);
-    setShowErrorMsg(false);
-    setErrorMsg("");
+    setOpen(false)
+    setShowErrorMsg(false)
+    setErrorMsg("")
     // 清除輸入匡
     if (fileSrc) {
-      if (fileInputRef.current) fileInputRef.current.value = "";
-      setFileSrc("");
+      if (fileInputRef.current) fileInputRef.current.value = ""
+      setFileSrc("")
     }
-  };
+  }
 
   function handleUploadFile(e: React.ChangeEvent<HTMLInputElement>) {
-    const selectedImg = e?.target?.files?.[0];
+    const selectedImg = e?.target?.files?.[0]
     // 轉成網址
     if (selectedImg) {
-      const imgURL = URL.createObjectURL(selectedImg);
-      setPreviewURL(imgURL);
-      setFileSrc(selectedImg);
+      const imgURL = URL.createObjectURL(selectedImg)
+      setPreviewURL(imgURL)
+      setFileSrc(selectedImg)
     }
   }
 
   const handleClear = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+    e.preventDefault()
     // 清除輸入匡
-    setPreviewURL("");
-    setFileSrc("");
-    if (fileInputRef.current) fileInputRef.current.value = "";
-  };
+    setPreviewURL("")
+    setFileSrc("")
+    if (fileInputRef.current) fileInputRef.current.value = ""
+  }
 
   function handleChange({
     target: { name, value },
@@ -86,60 +86,60 @@ function Modal({
     setFormState((prev) => ({
       ...prev,
       [name]: value,
-    }));
+    }))
   }
 
   async function handlePostSubmit() {
-    const { title, post } = formState;
+    const { title, post } = formState
     if (title.trim().length === 0 || post.trim().length === 0) {
-      setShowErrorMsg(true);
-      setErrorMsg("欄位不可空白!");
-      return;
+      setShowErrorMsg(true)
+      setErrorMsg("欄位不可空白!")
+      return
     }
 
     if (title.length > 30 || post.length > 800) {
-      setShowErrorMsg(true);
-      setErrorMsg("字數超過上限!");
-      return;
+      setShowErrorMsg(true)
+      setErrorMsg("字數超過上限!")
+      return
     }
     // 使用 formData格式送出
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("post", post);
-    formData.append("image", fileSrc);
+    const formData = new FormData()
+    formData.append("title", title)
+    formData.append("post", post)
+    formData.append("image", fileSrc)
 
     createPost(formData)
       .unwrap()
       .then(() => {
         // 成功關掉視窗
-        setOpen(false);
-        setShowErrorMsg(false);
-        setErrorMsg("");
-        if (fileInputRef.current) fileInputRef.current.value = "";
-        dispatch(setCurrentTab("post"));
+        setOpen(false)
+        setShowErrorMsg(false)
+        setErrorMsg("")
+        if (fileInputRef.current) fileInputRef.current.value = ""
+        dispatch(setCurrentTab("post"))
       })
-      .catch((err) => setErrorMsg(err.data.message));
+      .catch((err) => setErrorMsg(err.data.message))
   }
 
   async function handleReportSubmit() {
-    const { title, post, publishDate, from, stock } = formState;
+    const { title, post, publishDate, from, stock } = formState
     // error check
     if (title.length === 0 || post.length === 0) {
-      setShowErrorMsg(true);
-      setErrorMsg("標題或是內容空白！");
-      return;
+      setShowErrorMsg(true)
+      setErrorMsg("標題或是內容空白！")
+      return
     }
 
     if (title.length > 100 || post.length > 3000) {
-      setShowErrorMsg(true);
-      setErrorMsg("字數超過上限!");
-      return;
+      setShowErrorMsg(true)
+      setErrorMsg("字數超過上限!")
+      return
     }
 
     if (typeof publishDate === "string" && publishDate.length !== 8) {
-      setShowErrorMsg(true);
-      setErrorMsg("出版日期格式錯誤!");
-      return;
+      setShowErrorMsg(true)
+      setErrorMsg("出版日期格式錯誤!")
+      return
     }
 
     // fetch
@@ -152,12 +152,12 @@ function Modal({
     })
       .unwrap()
       .then(() => {
-        setOpen(false);
-        setShowErrorMsg(false);
-        setErrorMsg("");
-        dispatch(setCurrentTab("report"));
+        setOpen(false)
+        setShowErrorMsg(false)
+        setErrorMsg("")
+        dispatch(setCurrentTab("report"))
       })
-      .catch((err) => setErrorMsg(err.data.message));
+      .catch((err) => setErrorMsg(err.data.message))
   }
 
   return (
@@ -345,7 +345,7 @@ function Modal({
         </DialogActions>
       </Dialog>
     </div>
-  );
+  )
 }
 
-export default memo(Modal);
+export default memo(Modal)

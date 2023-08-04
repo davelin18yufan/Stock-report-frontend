@@ -1,46 +1,44 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Tooltip from "@mui/material/Tooltip";
-import { DarkModeSwitch } from "components";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "hooks/store";
-import { setDarkMode, setMenuToggle } from "slices/mainSlice";
-import { confirmPopOut } from "utilities/confirmPopOut";
-import { logout } from "slices/authSlice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import Tooltip from "@mui/material/Tooltip"
+import { DarkModeSwitch } from "components"
+import FormControlLabel from "@mui/material/FormControlLabel"
+import Swal from "sweetalert2"
+import { useNavigate } from "react-router-dom"
+import { useAppDispatch, useAppSelector } from "hooks/store"
+import { setDarkMode, setMenuToggle } from "slices/mainSlice"
+import { confirmPopOut } from "utilities/confirmPopOut"
+import { logout } from "slices/authSlice"
 import {
   faFaceGrimace,
   faGear,
   faNewspaper,
   faRightFromBracket,
-} from "@fortawesome/free-solid-svg-icons";
+} from "@fortawesome/free-solid-svg-icons"
 
 const AdminNavbar = () => {
-  const go = useNavigate();
-  const dispatch = useAppDispatch();
-  const menuToggle = useAppSelector(
-    (state) => state.mainPageReducer.menuToggle,
-  );
+  const go = useNavigate()
+  const dispatch = useAppDispatch()
+  const menuToggle = useAppSelector((state) => state.mainPageReducer.menuToggle)
 
   const handleSwitch = () => {
-    dispatch(setDarkMode());
-  };
+    dispatch(setDarkMode())
+  }
 
   function handleLogout() {
     confirmPopOut("確定登出？", true).then((result) => {
       if (result) {
-        dispatch(logout());
+        dispatch(logout())
         Swal.fire({
           position: "top",
           title: "登出成功！",
           timer: 1300,
           icon: "success",
           showConfirmButton: false,
-        });
-        go("/login");
+        })
+        go("/login")
       }
-      return;
-    });
+      return
+    })
   }
 
   return (
@@ -108,7 +106,7 @@ const AdminNavbar = () => {
         </Tooltip>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default AdminNavbar;
+export default AdminNavbar

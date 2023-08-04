@@ -1,50 +1,50 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faXmark,
   faBullseye,
   faBookmark as faBookMarkSolid,
-} from "@fortawesome/free-solid-svg-icons";
-import { faBookmark } from "@fortawesome/free-regular-svg-icons";
-import React, { useEffect, memo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { getTimeDiffTransForm, getUploadDate } from "utilities/date";
-import { useAppDispatch, useAppSelector } from "hooks/store";
-import { setCurrentTab, setPostId, setReportId } from "slices/mainSlice";
+} from "@fortawesome/free-solid-svg-icons"
+import { faBookmark } from "@fortawesome/free-regular-svg-icons"
+import React, { useEffect, memo, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { getTimeDiffTransForm, getUploadDate } from "utilities/date"
+import { useAppDispatch, useAppSelector } from "hooks/store"
+import { setCurrentTab, setPostId, setReportId } from "slices/mainSlice"
 import {
   useFavoritePostMutation,
   useDeleteFavoritePostMutation,
-} from "services/postService";
-import { confirmPopOut } from "utilities/confirmPopOut";
-import { Post, Report } from "types/user";
+} from "services/postService"
+import { confirmPopOut } from "utilities/confirmPopOut"
+import { Post, Report } from "types/user"
 
 export const UserImage = ({
   user,
   avatar,
   userId,
 }: {
-  user?: string;
-  avatar?: string;
-  userId?: number;
+  user?: string
+  avatar?: string
+  userId?: number
 }) => {
-  const go = useNavigate();
+  const go = useNavigate()
   return (
     <img
       src={avatar}
       alt={user}
       className="w-[50px] h-[50px] rounded-full object-cover cursor-pointer{"
       onClick={(e) => {
-        e.stopPropagation();
-        go(`/main/user/${userId}`);
+        e.stopPropagation()
+        go(`/main/user/${userId}`)
       }}
     />
-  );
-};
+  )
+}
 
 export const Tab = ({ post, report }: { post: string; report: string }) => {
   const currentTab = useAppSelector(
-    (state) => state.mainPageReducer.currentTab,
-  ) as string;
-  const dispatch = useAppDispatch();
+    (state) => state.mainPageReducer.currentTab
+  ) as string
+  const dispatch = useAppDispatch()
 
   return (
     <div className="flex p-2 text-gray-500 border-b-2 dark:border-b-slate-300/50">
@@ -62,8 +62,8 @@ export const Tab = ({ post, report }: { post: string; report: string }) => {
         {report}
       </button>
     </div>
-  );
-};
+  )
+}
 
 export const PostCard = memo(
   ({
@@ -71,45 +71,45 @@ export const PostCard = memo(
     isFavorite,
     onDelete,
   }: {
-    post: Post;
-    isFavorite?: boolean;
+    post: Post
+    isFavorite?: boolean
     onDelete: (
       e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-      id: number,
-    ) => void;
+      id: number
+    ) => void
   }) => {
-    const [isFavoriteState, setIsFavoriteState] = useState(isFavorite);
-    const dispatch = useAppDispatch();
-    const userId = Number(localStorage.getItem("userId"));
-    const [favoritePost] = useFavoritePostMutation();
-    const [cancelFavorite] = useDeleteFavoritePostMutation();
+    const [isFavoriteState, setIsFavoriteState] = useState(isFavorite)
+    const dispatch = useAppDispatch()
+    const userId = Number(localStorage.getItem("userId"))
+    const [favoritePost] = useFavoritePostMutation()
+    const [cancelFavorite] = useDeleteFavoritePostMutation()
 
     async function handleFavorite(e: React.MouseEvent<HTMLDivElement>) {
-      e.stopPropagation();
+      e.stopPropagation()
       favoritePost(post.id)
         .unwrap()
         .then(() => setIsFavoriteState(true))
-        .catch((err) => confirmPopOut(err?.data?.message, false));
+        .catch((err) => confirmPopOut(err?.data?.message, false))
     }
 
     async function handleCancelFavorite(e: React.MouseEvent<HTMLDivElement>) {
-      e.stopPropagation();
+      e.stopPropagation()
       cancelFavorite(post.id)
         .unwrap()
         .then(() => setIsFavoriteState(false))
-        .catch((err) => confirmPopOut(err?.data.message, false));
+        .catch((err) => confirmPopOut(err?.data.message, false))
     }
 
     // 如果 isFavorite prop 有變動，同步更新 isFavoriteState 狀態
     useEffect(() => {
-      setIsFavoriteState(isFavorite);
-    }, [isFavorite]);
+      setIsFavoriteState(isFavorite)
+    }, [isFavorite])
 
     useEffect(() => {
       return () => {
-        dispatch(setPostId(null)); // 離開頁面時設為 null
-      };
-    }, [dispatch]);
+        dispatch(setPostId(null)) // 離開頁面時設為 null
+      }
+    }, [dispatch])
     return (
       <a
         className="flex pl-6 pr-8 py-3 h-[110px] sm:h-[140px] bg-card dark:bg-slate-800 shadow"
@@ -159,18 +159,18 @@ export const PostCard = memo(
           )}
         </div>
       </a>
-    );
-  },
-);
+    )
+  }
+)
 
 export const TargetCard = ({
   target,
   symbol,
 }: {
-  target?: string;
-  symbol?: number;
+  target?: string
+  symbol?: number
 }) => {
-  const go = useNavigate();
+  const go = useNavigate()
   return (
     <div
       className="max-x-[100px] flex items-center border-2 rounded-full pl-2 text-rose-900"
@@ -181,34 +181,34 @@ export const TargetCard = ({
         {target}
       </p>
     </div>
-  );
-};
+  )
+}
 
 export const ReportCard = ({
   report,
   onDelete,
 }: {
-  report?: Report;
+  report?: Report
   onDelete?: (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    id: number,
-  ) => void;
+    id: number
+  ) => void
 }) => {
-  const userId = Number(localStorage.getItem("userId"));
-  const dispatch = useAppDispatch();
+  const userId = Number(localStorage.getItem("userId"))
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     return () => {
-      dispatch(setReportId(null)); // 離開頁面時設為 null
-    };
-  }, [dispatch]);
+      dispatch(setReportId(null)) // 離開頁面時設為 null
+    }
+  }, [dispatch])
 
   return (
     <a
       className={`flex pl-6 pr-8 py-3 h-[160px] sm:h-[200px] bg-card dark:bg-slate-800 shadow`}
       href="#side"
       onClick={() => {
-        if (report) dispatch(setReportId(report?.id));
+        if (report) dispatch(setReportId(report?.id))
       }}
     >
       <div className="w-full ml-2">
@@ -239,5 +239,5 @@ export const ReportCard = ({
         </div>
       </div>
     </a>
-  );
-};
+  )
+}

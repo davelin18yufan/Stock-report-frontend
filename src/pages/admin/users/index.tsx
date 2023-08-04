@@ -1,8 +1,8 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useGetAllUsersQuery } from "services/adminService";
-import { Loading } from "components";
-import { User } from "types/user";
-import { faCommentDots, faNewspaper } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useGetAllUsersQuery } from "services/adminService"
+import { Loading } from "components"
+import { User } from "types/user"
+import { faCommentDots, faNewspaper } from "@fortawesome/free-solid-svg-icons"
 
 const UserCard = ({ user }: { user: User }) => {
   return (
@@ -33,12 +33,12 @@ const UserCard = ({ user }: { user: User }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 export const UserList = () => {
-  const { data, isLoading } = useGetAllUsersQuery();
-  const users = data?.data;
+  const { data, isLoading } = useGetAllUsersQuery()
+  const users = data?.data
 
   return (
     <div className="w-full flex flex-wrap gap-4 p-4 dark:bg-slate-800 dark:text-white overflow-y-auto h-screen scrollbar-y">
@@ -48,5 +48,5 @@ export const UserList = () => {
         users?.map((user) => <UserCard user={user} key={user.id} />)
       )}
     </div>
-  );
-};
+  )
+}

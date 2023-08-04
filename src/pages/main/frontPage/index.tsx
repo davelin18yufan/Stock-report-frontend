@@ -1,34 +1,34 @@
-import { PostCard, ReportCard, Tab, Loading, Side } from "components";
-import { useState } from "react";
-import { useAppSelector } from "hooks/store";
+import { PostCard, ReportCard, Tab, Loading, Side } from "components"
+import { useState } from "react"
+import { useAppSelector } from "hooks/store"
 import {
   useGetPostsQuery,
   useDeletePostMutation,
   useGetUserFavoritesQuery,
-} from "services/postService";
+} from "services/postService"
 import {
   useGetReportsQuery,
   useDeleteReportMutation,
-} from "services/reportService";
-import { confirmPopOut } from "utilities/confirmPopOut";
+} from "services/reportService"
+import { confirmPopOut } from "utilities/confirmPopOut"
 
 const PostList = ({
   onDelete,
 }: {
-  onDelete: (e: React.MouseEvent<HTMLDivElement>, id: number) => Promise<void>;
+  onDelete: (e: React.MouseEvent<HTMLDivElement>, id: number) => Promise<void>
 }) => {
-  const currentUserId = Number(localStorage.getItem("userId"));
-  const { data: allPosts, error, isLoading } = useGetPostsQuery();
-  const { data: userInfo } = useGetUserFavoritesQuery(currentUserId);
-  const posts = allPosts?.data;
+  const currentUserId = Number(localStorage.getItem("userId"))
+  const { data: allPosts, error, isLoading } = useGetPostsQuery()
+  const { data: userInfo } = useGetUserFavoritesQuery(currentUserId)
+  const posts = allPosts?.data
 
   if (error) {
-    console.error(error);
+    console.error(error)
   }
 
   // check favorite post
-  const favoritePosts = userInfo?.data.FavoritePosts;
-  const favoritePostsId = favoritePosts?.map((item) => item.id);
+  const favoritePosts = userInfo?.data.FavoritePosts
+  const favoritePostsId = favoritePosts?.map((item) => item.id)
 
   return (
     <>
@@ -45,84 +45,82 @@ const PostList = ({
         ))
       )}
     </>
-  );
-};
+  )
+}
 
 const ReportList = ({
   onDelete,
 }: {
-  onDelete: (e: React.MouseEvent<HTMLDivElement>, id: number) => Promise<void>;
+  onDelete: (e: React.MouseEvent<HTMLDivElement>, id: number) => Promise<void>
 }) => {
-  const { data, isLoading, isSuccess, error } = useGetReportsQuery();
-  if (error) console.error(error);
-  const reports = isSuccess ? data.data.slice(0, 30) : [];
+  const { data, isLoading, isSuccess, error } = useGetReportsQuery()
+  if (error) console.error(error)
+  const reports = isSuccess ? data.data.slice(0, 30) : []
   return (
     <>
       {isLoading ? (
         <Loading />
       ) : (
         reports.map((item) => {
-          return <ReportCard report={item} key={item.id} onDelete={onDelete} />;
+          return <ReportCard report={item} key={item.id} onDelete={onDelete} />
         })
       )}
     </>
-  );
-};
+  )
+}
 
 export const MainSector = () => {
-  const currentTab = useAppSelector(
-    (state) => state.mainPageReducer.currentTab,
-  );
-  const [showMsg, setShowMsg] = useState(false);
-  const [errMsg, setErrMsg] = useState("");
+  const currentTab = useAppSelector((state) => state.mainPageReducer.currentTab)
+  const [showMsg, setShowMsg] = useState(false)
+  const [errMsg, setErrMsg] = useState("")
 
   const [deletePost, { isSuccess: isDeletePostSuccess }] =
-    useDeletePostMutation();
+    useDeletePostMutation()
 
   const [deleteReport, { isSuccess: isDeleteReportSuccess }] =
-    useDeleteReportMutation();
+    useDeleteReportMutation()
 
   async function handlePostDelete(
     e: React.MouseEvent<HTMLDivElement>,
-    id: number,
+    id: number
   ) {
-    e.stopPropagation();
-    const ans = await confirmPopOut("確認刪除此貼文？", true);
+    e.stopPropagation()
+    const ans = await confirmPopOut("確認刪除此貼文？", true)
     if (ans) {
       await deletePost(id)
         .then(() => setShowMsg(true))
         .catch((err) => setErrMsg(err.data.message))
         .finally(() => {
           return setTimeout(() => {
-            setShowMsg(false);
-            setErrMsg("");
-          }, 3500);
-        });
+            setShowMsg(false)
+            setErrMsg("")
+          }, 3500)
+        })
     }
-    return;
+    return
   }
 
   async function handleReportDelete(
     e: React.MouseEvent<HTMLDivElement>,
-    id: number,
+    id: number
   ) {
-    e.stopPropagation();
-    const ans = await confirmPopOut("確認刪除此報告？", true);
+    e.stopPropagation()
+    const ans = await confirmPopOut("確認刪除此報告？", true)
     if (ans) {
       await deleteReport(id)
         .then(() => setShowMsg(true))
         .catch((err) => setErrMsg(err.data.message))
         .finally(() => {
           return setTimeout(() => {
-            setShowMsg(false);
-            setErrMsg("");
-          }, 3500);
-        });
+            setShowMsg(false)
+            setErrMsg("")
+          }, 3500)
+        })
     }
-    return;
+    return
   }
 
-  const isSuccess = isDeleteReportSuccess || isDeletePostSuccess;
+  const isSuccess = isDeleteReportSuccess || isDeletePostSuccess
 
   return (
     <main className="border-x-2 border-gray-500 basis-3/5 grow w-full relative ">
@@ -145,8 +143,8 @@ export const MainSector = () => {
         )}
       </div>
     </main>
-  );
-};
+  )
+}
 
 const FrontPage = () => {
   return (
@@ -154,7 +152,7 @@ const FrontPage = () => {
       <MainSector />
       <Side />
     </div>
-  );
-};
+  )
+}
 
-export default FrontPage;
+export default FrontPage

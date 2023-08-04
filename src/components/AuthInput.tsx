@@ -1,5 +1,5 @@
-import { ChangeEventHandler } from "react";
-import { ChildrenProp } from "types/user";
+import { ChangeEventHandler } from "react"
+import { ChildrenProp } from "types/user"
 
 export const AuthContainer = ({ children }: ChildrenProp) => {
   return (
@@ -8,8 +8,8 @@ export const AuthContainer = ({ children }: ChildrenProp) => {
         {children}
       </div>
     </div>
-  );
-};
+  )
+}
 
 export const Logo = () => {
   return (
@@ -18,8 +18,8 @@ export const Logo = () => {
         Momentum
       </h1>
     </div>
-  );
-};
+  )
+}
 
 export const LogoTitle = ({ title }: { title: string }) => {
   return (
@@ -29,8 +29,8 @@ export const LogoTitle = ({ title }: { title: string }) => {
         {title}
       </h2>
     </div>
-  );
-};
+  )
+}
 
 export const InputCard = ({
   label,
@@ -40,12 +40,12 @@ export const InputCard = ({
   onChange,
   disabled,
 }: {
-  label: string;
-  placeholder: string;
-  name: string;
-  type: string;
-  onChange: ChangeEventHandler<HTMLInputElement>;
-  disabled: boolean;
+  label: string
+  placeholder: string
+  name: string
+  type: string
+  onChange: ChangeEventHandler<HTMLInputElement>
+  disabled: boolean
 }) => {
   return (
     <div className="w-4/5 bg-[#F5F8FA] my-4 px-2.5 mx-auto dark:bg-gray-700">
@@ -65,15 +65,15 @@ export const InputCard = ({
         disabled={disabled}
       ></input>
     </div>
-  );
-};
+  )
+}
 
 export const SubmitBtn = ({
   submit,
   onSubmit,
 }: {
-  submit: string;
-  onSubmit: React.MouseEventHandler<HTMLButtonElement>;
+  submit: string
+  onSubmit: React.MouseEventHandler<HTMLButtonElement>
 }) => {
   return (
     <button
@@ -82,5 +82,5 @@ export const SubmitBtn = ({
     >
       {submit}
     </button>
-  );
-};
+  )
+}

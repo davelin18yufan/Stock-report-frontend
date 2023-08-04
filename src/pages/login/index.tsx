@@ -1,22 +1,22 @@
-import { LogoTitle, InputCard, SubmitBtn, AuthContainer } from "components";
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { useAuth } from "hooks/useAuth";
-import { useLoginMutation } from "services/authService";
-import { useAppDispatch } from "hooks/store";
-import Swal from "sweetalert2";
-import { setCredential } from "slices/authSlice";
+import { LogoTitle, InputCard, SubmitBtn, AuthContainer } from "components"
+import { useNavigate } from "react-router-dom"
+import { useState, useEffect } from "react"
+import { useAuth } from "hooks/useAuth"
+import { useLoginMutation } from "services/authService"
+import { useAppDispatch } from "hooks/store"
+import Swal from "sweetalert2"
+import { setCredential } from "slices/authSlice"
 
 const Login = () => {
-  const go = useNavigate();
-  const { user: currentUser } = useAuth();
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [showErrorMsg, setShowErrorMsg] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
-  const [formState, setFormState] = useState({ email: "", password: "" });
+  const go = useNavigate()
+  const { user: currentUser } = useAuth()
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [showErrorMsg, setShowErrorMsg] = useState(false)
+  const [errorMsg, setErrorMsg] = useState("")
+  const [formState, setFormState] = useState({ email: "", password: "" })
 
-  const [login, { isLoading }] = useLoginMutation();
-  const dispatch = useAppDispatch();
+  const [login, { isLoading }] = useLoginMutation()
+  const dispatch = useAppDispatch()
 
   function handleChange({
     target: { name, value },
@@ -24,14 +24,14 @@ const Login = () => {
     setFormState((prev) => ({
       ...prev,
       [name]: value,
-    }));
+    }))
   }
 
   async function handleLogin() {
     if (formState.email.length === 0 || formState.password.length === 0) {
-      setShowErrorMsg(true);
-      setErrorMsg("欄位不可空白!");
-      return;
+      setShowErrorMsg(true)
+      setErrorMsg("欄位不可空白!")
+      return
     }
 
     login(formState)
@@ -43,23 +43,21 @@ const Login = () => {
           timer: 1000,
           icon: "success",
           showConfirmButton: false,
-        });
-        dispatch(setCredential(res.data));
+        })
+        dispatch(setCredential(res.data))
       })
       .catch((error) => {
-        setShowErrorMsg(true);
-        setErrorMsg(
-          error === "Unauthorized" ? "信箱或密碼錯誤" : error.message,
-        );
-      });
+        setShowErrorMsg(true)
+        setErrorMsg(error === "Unauthorized" ? "信箱或密碼錯誤" : error.message)
+      })
   }
 
   // 檢查是否要重新登入
   useEffect(() => {
     if (currentUser) {
-      return isAdmin ? go("/admin/list") : go("/main");
+      return isAdmin ? go("/admin/list") : go("/main")
     }
-  }, [go, currentUser, isAdmin]);
+  }, [go, currentUser, isAdmin])
 
   return (
     <AuthContainer>
@@ -116,7 +114,7 @@ const Login = () => {
         </div>
       )}
     </AuthContainer>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

@@ -1,15 +1,15 @@
-import Swal from "sweetalert2";
+import Swal from "sweetalert2"
 
 export function confirmPopOut(
   msg: string,
-  showCancel: boolean,
+  showCancel: boolean
 ): Promise<boolean> {
   if (!showCancel) {
     return Swal.fire({
       title: msg,
       confirmButtonText: "GOT IT!",
       confirmButtonColor: "green",
-    }).then((result) => result.isConfirmed);
+    }).then((result) => result.isConfirmed)
   }
   return Swal.fire({
     title: msg,
@@ -18,5 +18,5 @@ export function confirmPopOut(
     denyButtonText: "No",
     confirmButtonColor: "green",
     denyButtonColor: "gray",
-  }).then((result) => result.isConfirmed);
+  }).then((result) => result.isConfirmed)
 }

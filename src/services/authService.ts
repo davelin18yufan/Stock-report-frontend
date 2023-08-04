@@ -1,16 +1,16 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { LoginResponse, UserRequest, ApiResponse } from "types/user";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { LoginResponse, UserRequest, ApiResponse } from "types/user"
 
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:5000/api",
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem("authToken");
+      const token = localStorage.getItem("authToken")
       if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
+        headers.set("Authorization", `Bearer ${token}`)
       }
-      return headers;
+      return headers
     },
   }),
   endpoints: (builder) => ({
@@ -31,6 +31,6 @@ export const authApi = createApi({
       transformErrorResponse: (response, meta, arg) => response.data,
     }),
   }),
-});
+})
 
-export const { useLoginMutation, useSignUpMutation } = authApi;
+export const { useLoginMutation, useSignUpMutation } = authApi

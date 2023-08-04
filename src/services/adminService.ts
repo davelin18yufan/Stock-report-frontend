@@ -1,16 +1,16 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { User, Post, Report, ApiResponse } from "types/user";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { User, Post, Report, ApiResponse } from "types/user"
 
 export const adminApi = createApi({
   reducerPath: "adminApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:5000/api/admin/",
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem("authToken");
+      const token = localStorage.getItem("authToken")
       if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
+        headers.set("Authorization", `Bearer ${token}`)
       }
-      return headers;
+      return headers
     },
   }),
   tagTypes: ["Post", "Report", "User"],
@@ -60,7 +60,7 @@ export const adminApi = createApi({
       invalidatesTags: (result, error, id) => [{ type: "Report", id }],
     }),
   }),
-});
+})
 
 export const {
   useGetAllPostsQuery,
@@ -68,4 +68,4 @@ export const {
   useGetAllUsersQuery,
   useDeletePostMutation,
   useDeleteReportMutation,
-} = adminApi;
+} = adminApi

@@ -1,15 +1,15 @@
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom"
 import {
   MainContainer,
   ScrollToTopBtn,
   Footer,
   Header,
   Navbar,
-} from "components";
+} from "components"
 
 const MainPage = () => {
-  const token = localStorage.getItem("authToken");
-  const location = useLocation();
+  const token = localStorage.getItem("authToken")
+  const location = useLocation()
   return (
     <MainContainer>
       <Header />
@@ -24,7 +24,7 @@ const MainPage = () => {
       <Footer />
       <ScrollToTopBtn />
     </MainContainer>
-  );
-};
+  )
+}
 
-export default MainPage;
+export default MainPage

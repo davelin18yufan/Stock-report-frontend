@@ -1,6 +1,6 @@
-import { Outlet } from "react-router-dom";
-import { MainContainer, Footer, Header } from "components";
-import AdminNavbar from "./AdminSidebar";
+import { Outlet } from "react-router-dom"
+import { MainContainer, Footer, Header } from "components"
+import AdminNavbar from "./AdminSidebar"
 
 const Admin = () => {
   return (
@@ -12,7 +12,7 @@ const Admin = () => {
       </div>
       <Footer />
     </MainContainer>
-  );
-};
+  )
+}
 
-export default Admin;
+export default Admin

@@ -1,12 +1,12 @@
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import mainPageReducer from "slices/mainSlice";
-import authReducer from "slices/authSlice";
-import { postApi } from "services/postService";
-import { reportApi } from "services/reportService";
-import { authApi } from "services/authService";
-import { userApi } from "services/userService";
-import { stockApi } from "services/stockSlices";
-import { adminApi } from "services/adminService";
+import { configureStore, combineReducers } from "@reduxjs/toolkit"
+import mainPageReducer from "slices/mainSlice"
+import authReducer from "slices/authSlice"
+import { postApi } from "services/postService"
+import { reportApi } from "services/reportService"
+import { authApi } from "services/authService"
+import { userApi } from "services/userService"
+import { stockApi } from "services/stockSlices"
+import { adminApi } from "services/adminService"
 
 const reducers = combineReducers({
   [postApi.reducerPath]: postApi.reducer,
@@ -17,7 +17,7 @@ const reducers = combineReducers({
   [adminApi.reducerPath]: adminApi.reducer,
   mainPageReducer,
   authReducer,
-});
+})
 
 const store = configureStore({
   reducer: reducers,
@@ -29,10 +29,10 @@ const store = configureStore({
       .concat(authApi.middleware)
       .concat(stockApi.middleware)
       .concat(adminApi.middleware),
-});
+})
 
 // 反推行別
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
 
-export default store;
+export default store
