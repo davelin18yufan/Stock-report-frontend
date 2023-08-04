@@ -1,16 +1,16 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-import { User, Post, Report, ApiResponse, UserRequest } from "types/user"
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { User, Post, Report, ApiResponse, UserRequest } from "types/user";
 
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:5000/api",
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem("authToken")
+      const token = localStorage.getItem("authToken");
       if (token) {
-        headers.set("Authorization", `Bearer ${token}`)
+        headers.set("Authorization", `Bearer ${token}`);
       }
-      return headers
+      return headers;
     },
   }),
   tagTypes: ["User", "Post", "Report"],
@@ -55,11 +55,11 @@ export const userApi = createApi({
           : [{ type: "Report", id: "LIST" }],
     }),
   }),
-})
+});
 
 export const {
   useEditUserMutation,
   useGetUserInfoQuery,
   useGetUserPostsQuery,
   useGetUserReportsQuery,
-} = userApi
+} = userApi;

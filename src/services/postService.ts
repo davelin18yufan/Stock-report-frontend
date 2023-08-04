@@ -1,16 +1,16 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-import { Post, ApiResponse, PostPayload } from "types/user"
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { Post, ApiResponse, PostPayload, User } from "types/user";
 
 export const postApi = createApi({
   reducerPath: "postApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:5000/api",
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem("authToken")
+      const token = localStorage.getItem("authToken");
       if (token) {
-        headers.set("Authorization", `Bearer ${token}`)
+        headers.set("Authorization", `Bearer ${token}`);
       }
-      return headers
+      return headers;
     },
   }),
   tagTypes: ["Post"],
@@ -30,6 +30,11 @@ export const postApi = createApi({
     getPost: builder.query<ApiResponse<Post>, number>({
       query: (id) => `/post/${id}`,
       providesTags: (result, error, id) => [{ type: "Post", id }],
+    }),
+    // 為了讓收藏功能可以觸發invalidation
+    getUserFavorites: builder.query<ApiResponse<User>, number>({
+      query: (id) => `/user/${id}`,
+      providesTags: [{ type: "Post", id: "FList" }],
     }),
     posting: builder.mutation<ApiResponse<Post>, PostPayload<File>>({
       query: (newPost) => ({
@@ -53,25 +58,26 @@ export const postApi = createApi({
     favoritePost: builder.mutation<ApiResponse<Post>, number>({
       query: (id) => ({
         url: `/post/favorite/${id}`,
-        method: "POST"
+        method: "POST",
       }),
-      invalidatesTags: (result, error, id) => [{ type: "Post", id }]
+      invalidatesTags: [{ type: "Post", id: "FList" }],
     }),
     deleteFavoritePost: builder.mutation<ApiResponse<Post>, number>({
       query: (id) => ({
         url: `/post/favorite/${id}`,
-        method: "DELETE"
+        method: "DELETE",
       }),
-      invalidatesTags: (result, error, id) => [{ type: "Post", id}]
-    })
+      invalidatesTags: [{ type: "Post", id: "FList" }],
+    }),
   }),
-})
+});
 
 export const {
   useGetPostsQuery,
   usePostingMutation,
   useGetPostQuery,
+  useGetUserFavoritesQuery,
   useDeletePostMutation,
   useFavoritePostMutation,
-  useDeleteFavoritePostMutation
-} = postApi
+  useDeleteFavoritePostMutation,
+} = postApi;

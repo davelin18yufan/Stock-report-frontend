@@ -1,60 +1,65 @@
-import { LogoTitle, InputCard, SubmitBtn, AuthContainer } from "components"
-import { useNavigate } from "react-router-dom"
-import { useState, useEffect } from "react"
-import { useAuth } from "hooks/useAuth"
-import { useLoginMutation } from "services/authService"
-import { useAppDispatch } from "hooks/store"
-//import { UserRequest } from "types/user"
-import Swal from "sweetalert2"
-import { setCredential } from "slices/authSlice"
+import { LogoTitle, InputCard, SubmitBtn, AuthContainer } from "components";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useAuth } from "hooks/useAuth";
+import { useLoginMutation } from "services/authService";
+import { useAppDispatch } from "hooks/store";
+import Swal from "sweetalert2";
+import { setCredential } from "slices/authSlice";
 
 const Login = () => {
-  const go = useNavigate()
-  const { user: currentUser } = useAuth()
-  const [isAdmin, setIsAdmin] = useState(false)
-  const [showErrorMsg, setShowErrorMsg] = useState(false)
-  const [errorMsg, setErrorMsg] = useState("")
-  const [formState, setFormState] = useState({ email: "", password: "" })
+  const go = useNavigate();
+  const { user: currentUser } = useAuth();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [showErrorMsg, setShowErrorMsg] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [formState, setFormState] = useState({ email: "", password: "" });
 
-  const [login, { isLoading }] = useLoginMutation()
-  const dispatch = useAppDispatch()
+  const [login, { isLoading }] = useLoginMutation();
+  const dispatch = useAppDispatch();
 
-  function handleChange({ target: { name, value } }) {
+  function handleChange({
+    target: { name, value },
+  }: React.ChangeEvent<HTMLInputElement>) {
     setFormState((prev) => ({
       ...prev,
       [name]: value,
-    }))
+    }));
   }
 
   async function handleLogin() {
     if (formState.email.length === 0 || formState.password.length === 0) {
-      setShowErrorMsg(true)
-      setErrorMsg("欄位不可空白!")
+      setShowErrorMsg(true);
+      setErrorMsg("欄位不可空白!");
+      return;
+    }
 
-      return
-    }
-    const { data: res, error } = await login(formState)
-    if (res) {
-      Swal.fire({
-        position: "top",
-        title: "登入成功！",
-        timer: 1000,
-        icon: "success",
-        showConfirmButton: false,
+    login(formState)
+      .unwrap()
+      .then((res) => {
+        Swal.fire({
+          position: "top",
+          title: "登入成功！",
+          timer: 1000,
+          icon: "success",
+          showConfirmButton: false,
+        });
+        dispatch(setCredential(res.data));
       })
-      dispatch(setCredential(res.data))
-    } else if (error) {
-      setShowErrorMsg(true)
-      setErrorMsg(error === "Unauthorized" ? "信箱或密碼錯誤" : error.message)
-    }
+      .catch((error) => {
+        setShowErrorMsg(true);
+        setErrorMsg(
+          error === "Unauthorized" ? "信箱或密碼錯誤" : error.message,
+        );
+      });
   }
 
   // 檢查是否要重新登入
   useEffect(() => {
     if (currentUser) {
-      isAdmin ? go("/admin/list") : go("/main")
+      return isAdmin ? go("/admin/list") : go("/main");
     }
-  }, [go, currentUser, isAdmin])
+  }, [go, currentUser, isAdmin]);
 
   return (
     <AuthContainer>
@@ -111,7 +116,7 @@ const Login = () => {
         </div>
       )}
     </AuthContainer>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

@@ -1,10 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useAuth } from "../../contexts/AuthContext";
 
 //總導引頁
 const HomePage = () => {
-  const { logout } = useAuth();
   const go = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   //決定導向頁面
@@ -31,7 +29,7 @@ const HomePage = () => {
         <div>
           {/* 顯示已登入的內容 */}
           <h1>歡迎回來！</h1>
-          <button onClick={() => logout()}>登出</button>
+          <button>登出</button>
         </div>
       ) : (
         <div>

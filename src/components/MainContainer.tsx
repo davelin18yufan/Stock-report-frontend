@@ -1,8 +1,8 @@
-import { useAppSelector } from "hooks/store"
-import { ChildrenProp } from "types/user"
+import { useAppSelector } from "hooks/store";
+import { ChildrenProp } from "types/user";
 
 export const MainContainer = ({ children }: ChildrenProp) => {
-  const darkMode = useAppSelector((state) => state.mainPageReducer.darkMode)
+  const darkMode = useAppSelector((state) => state.mainPageReducer.darkMode);
 
   return (
     <div
@@ -12,5 +12,5 @@ export const MainContainer = ({ children }: ChildrenProp) => {
     >
       {children}
     </div>
-  )
-}
+  );
+};

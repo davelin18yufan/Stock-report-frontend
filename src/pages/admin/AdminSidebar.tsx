@@ -1,38 +1,46 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import Tooltip from "@mui/material/Tooltip"
-import { DarkModeSwitch } from "components"
-import FormControlLabel from "@mui/material/FormControlLabel"
-import Swal from "sweetalert2"
-import { useNavigate } from "react-router-dom"
-import { useAppDispatch, useAppSelector } from "hooks/store"
-import { setDarkMode, setMenuToggle } from "slices/mainSlice"
-import { confirmPopOut } from "utilities/confirmPopOut"
-import { logout } from "slices/authSlice"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Tooltip from "@mui/material/Tooltip";
+import { DarkModeSwitch } from "components";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "hooks/store";
+import { setDarkMode, setMenuToggle } from "slices/mainSlice";
+import { confirmPopOut } from "utilities/confirmPopOut";
+import { logout } from "slices/authSlice";
+import {
+  faFaceGrimace,
+  faGear,
+  faNewspaper,
+  faRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
 
 const AdminNavbar = () => {
-  const go = useNavigate()
-  const dispatch = useAppDispatch()
-  const menuToggle = useAppSelector((state) => state.mainPageReducer.menuToggle)
+  const go = useNavigate();
+  const dispatch = useAppDispatch();
+  const menuToggle = useAppSelector(
+    (state) => state.mainPageReducer.menuToggle,
+  );
 
   const handleSwitch = () => {
-    dispatch(setDarkMode())
-  }
+    dispatch(setDarkMode());
+  };
 
   function handleLogout() {
     confirmPopOut("確定登出？", true).then((result) => {
       if (result) {
-        dispatch(logout())
+        dispatch(logout());
         Swal.fire({
           position: "top",
           title: "登出成功！",
           timer: 1300,
           icon: "success",
           showConfirmButton: false,
-        })
-        go("/login")
+        });
+        go("/login");
       }
-      return
-    })
+      return;
+    });
   }
 
   return (
@@ -54,7 +62,7 @@ const AdminNavbar = () => {
           onClick={() => go("/admin/list")}
         >
           <Tooltip title="活動清單" placement="right">
-            <FontAwesomeIcon icon="fa-solid fa-newspaper" />
+            <FontAwesomeIcon icon={faNewspaper} />
           </Tooltip>
         </li>
         <li
@@ -64,7 +72,7 @@ const AdminNavbar = () => {
           onClick={() => go("/admin/users")}
         >
           <Tooltip title="使用者清單" placement="right">
-            <FontAwesomeIcon icon="fa-solid fa-face-grimace" />
+            <FontAwesomeIcon icon={faFaceGrimace} />
           </Tooltip>
         </li>
         <li
@@ -73,7 +81,7 @@ const AdminNavbar = () => {
           } hover:text-green-700 dark:hover:text-gray-500 nav-item sm:opacity-100`}
         >
           <Tooltip title="設定" placement="right">
-            <FontAwesomeIcon icon="fa-solid fa-gear" />
+            <FontAwesomeIcon icon={faGear} />
           </Tooltip>
         </li>
         <li
@@ -84,6 +92,7 @@ const AdminNavbar = () => {
           <Tooltip title="夜間模式" placement="right">
             <FormControlLabel
               control={<DarkModeSwitch sx={{ m: 1 }} onChange={handleSwitch} />}
+              label=""
             />
           </Tooltip>
         </li>
@@ -95,11 +104,11 @@ const AdminNavbar = () => {
         onClick={handleLogout}
       >
         <Tooltip title="登出" placement="right">
-          <FontAwesomeIcon icon="fa-solid fa-right-from-bracket" />
+          <FontAwesomeIcon icon={faRightFromBracket} />
         </Tooltip>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default AdminNavbar
+export default AdminNavbar;

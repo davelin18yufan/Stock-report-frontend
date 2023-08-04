@@ -1,18 +1,19 @@
-import { ReportCard, Side, Loading } from "components"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useNavigate, useParams } from "react-router-dom"
-import { useAppDispatch } from "hooks/store"
-import { setCurrentTab } from "slices/mainSlice"
-import { useGetStockQuery } from "services/stockSlices"
+import { ReportCard, Side, Loading } from "components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAppDispatch } from "hooks/store";
+import { setCurrentTab } from "slices/mainSlice";
+import { useGetStockQuery } from "services/stockSlices";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const MainSector = () => {
-  const go = useNavigate()
-  const symbol = Number(useParams().symbol)
-  const dispatch = useAppDispatch()
-  dispatch(setCurrentTab("report"))
+  const go = useNavigate();
+  const symbol = Number(useParams().symbol);
+  const dispatch = useAppDispatch();
+  dispatch(setCurrentTab("report"));
 
-  const { data, isLoading } = useGetStockQuery(symbol)
-  const stock = data?.data
+  const { data, isLoading } = useGetStockQuery(symbol);
+  const stock = data?.data;
 
   return (
     <main className="border-x-2 border-gray-500 basis-3/5 grow w-full">
@@ -22,14 +23,14 @@ const MainSector = () => {
             className="w-fit cursor-pointer hover:opacity-70 "
             onClick={() => go("/main/stock")}
           >
-            <FontAwesomeIcon icon="fa-solid fa-arrow-left" />
+            <FontAwesomeIcon icon={faArrowLeft} />
             <span className="ml-2">回到搜尋頁面</span>
           </div>
         </div>
         <div className=" h-screen overflow-auto scrollbar-y">
           {isLoading ? (
             <Loading />
-          ) : stock[0]?.Reports.id ? (
+          ) : stock?.[0].Reports.id ? (
             stock?.map((item) => (
               <ReportCard report={item.Reports} key={item.Reports.id} />
             ))
@@ -41,8 +42,8 @@ const MainSector = () => {
         </div>
       </div>
     </main>
-  )
-}
+  );
+};
 
 const SingleStockPage = () => {
   return (
@@ -50,7 +51,7 @@ const SingleStockPage = () => {
       <MainSector />
       <Side />
     </div>
-  )
-}
+  );
+};
 
-export default SingleStockPage
+export default SingleStockPage;

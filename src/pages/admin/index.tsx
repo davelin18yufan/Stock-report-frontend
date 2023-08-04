@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { MainContainer, Footer, Header } from "../../components";
+import { MainContainer, Footer, Header } from "components";
 import AdminNavbar from "./AdminSidebar";
 
 const Admin = () => {

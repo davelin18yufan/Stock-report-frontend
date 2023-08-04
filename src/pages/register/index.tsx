@@ -1,100 +1,96 @@
-import {
-  LogoTitle,
-  InputCard,
-  SubmitBtn,
-  AuthContainer,
-} from "components"
-import { useNavigate } from "react-router-dom"
-import { useState, useEffect } from "react"
-import Swal from "sweetalert2"
-import { useSignUpMutation } from "services/authService" 
-import { useAuth } from "hooks/useAuth"
+import { LogoTitle, InputCard, SubmitBtn, AuthContainer } from "components";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
+import { useSignUpMutation } from "services/authService";
+import { useAuth } from "hooks/useAuth";
 
 const initialFormState = {
   name: "",
   email: "",
   password: "",
   passwordCheck: "",
-}
+};
 
 const Register = () => {
-  const go = useNavigate()
-  const {user:currentUser} = useAuth()
-  const [showErrorMsg, setShowErrorMsg] = useState(false)
-  const [errorMsg, setErrorMsg] = useState("")
-  const [formState, setFormState] = useState(initialFormState)
-  const [signUp, { isLoading }] = useSignUpMutation()
+  const go = useNavigate();
+  const { user: currentUser } = useAuth();
+  const [showErrorMsg, setShowErrorMsg] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [formState, setFormState] = useState(initialFormState);
+  const [signUp, { isLoading }] = useSignUpMutation();
 
-  function handleChange({ target: { name, value } }) {
+  function handleChange({
+    target: { name, value },
+  }: React.ChangeEvent<HTMLInputElement>) {
     setFormState((prev) => ({
       ...prev,
       [name]: value,
-    }))
+    }));
   }
 
-   async function handleSignUp() {
-    const {name, password, email,passwordCheck} = formState
+  async function handleSignUp() {
+    const { name, password, email, passwordCheck } = formState;
     // 前端檢查輸入
     if (
       name.length === 0 ||
       password.length === 0 ||
       email.length === 0 ||
-      passwordCheck.length === 0 
+      passwordCheck.length === 0
     ) {
-      setShowErrorMsg(true)
-      setErrorMsg("欄位不可空白!")
-      return
+      setShowErrorMsg(true);
+      setErrorMsg("欄位不可空白!");
+      return;
     }
     // 密碼輸入不一致
     if (password.trim() !== passwordCheck.trim()) {
-      setShowErrorMsg(true)
-      setErrorMsg("密碼輸入不一致!")
-      return
+      setShowErrorMsg(true);
+      setErrorMsg("密碼輸入不一致!");
+      return;
     }
     // 長度超出上限
     if (name.trim().length > 15) {
-      setShowErrorMsg(true)
-      setErrorMsg("暱稱輸入超過上限15")
-      return
+      setShowErrorMsg(true);
+      setErrorMsg("暱稱輸入超過上限15");
+      return;
     }
     if (password.trim().length > 15 || passwordCheck.trim().length > 15) {
-      setShowErrorMsg(true)
-      setErrorMsg("密碼輸入超過上限15")
-      return
+      setShowErrorMsg(true);
+      setErrorMsg("密碼輸入超過上限15");
+      return;
     }
 
-    const { data, error } = await signUp(formState)
-
-    if(data){
-      Swal.fire({
-        position: "top",
-        title: "註冊成功！請重新登入",
-        icon: "success",
-        showConfirmButton: true,
-        confirmButtonColor: "green",
+    signUp(formState)
+      .unwrap()
+      .then((res) => {
+        Swal.fire({
+          position: "top",
+          title: "註冊成功！請重新登入",
+          icon: "success",
+          showConfirmButton: true,
+          confirmButtonColor: "green",
+        });
+        return go("/login");
       })
-      return go("/login")
-      
-    }else if(error){
-      setShowErrorMsg(true)
-      setErrorMsg(error.message)
-      return
-    }
-   }
+      .catch((error) => {
+        setShowErrorMsg(true);
+        setErrorMsg(error.message);
+      });
+  }
 
   // 離開頁面清除
   useEffect(() => {
     return () => {
-      setErrorMsg("")
-      setShowErrorMsg(false)
-    }
-  }, [])
+      setErrorMsg("");
+      setShowErrorMsg(false);
+    };
+  }, []);
 
   useEffect(() => {
     if (currentUser) {
-      go("/main")
+      go("/main");
     }
-  }, [go, currentUser])
+  }, [go, currentUser]);
 
   return (
     <AuthContainer>
@@ -157,7 +153,7 @@ const Register = () => {
         </p>
       </div>
     </AuthContainer>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;

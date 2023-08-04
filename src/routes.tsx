@@ -30,7 +30,7 @@ const routes: RouteObject[] = [
       {
         path: "/main",
         element: <FrontPage />,
-        children: []
+        children: [],
       },
       {
         path: "/main/setting",

@@ -1,16 +1,16 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-import { Report, ApiResponse, ReportPayload } from "types/user"
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { Report, ApiResponse, ReportPayload } from "types/user";
 
 export const reportApi = createApi({
   reducerPath: "ReportApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:5000/api",
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem("authToken")
+      const token = localStorage.getItem("authToken");
       if (token) {
-        headers.set("Authorization", `Bearer ${token}`)
+        headers.set("Authorization", `Bearer ${token}`);
       }
-      return headers
+      return headers;
     },
   }),
   tagTypes: ["Report"],
@@ -45,7 +45,11 @@ export const reportApi = createApi({
       invalidatesTags: (result, error, id) => [{ type: "Report", id }],
     }),
   }),
-})
+});
 
-export const { useGetReportsQuery, useGetReportQuery, usePostReportMutation, useDeleteReportMutation } =
-  reportApi
+export const {
+  useGetReportsQuery,
+  useGetReportQuery,
+  usePostReportMutation,
+  useDeleteReportMutation,
+} = reportApi;

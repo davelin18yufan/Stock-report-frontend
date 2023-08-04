@@ -1,18 +1,23 @@
-import {
-  InputCard,
-  SubmitBtn,
-} from "components"
-import { useState, useRef, useEffect } from "react"
-import { useEditUserMutation } from "services/userService"
+import { InputCard, SubmitBtn } from "components";
+import { useState, useRef, useEffect } from "react";
+import { useEditUserMutation } from "services/userService";
 
 const initialFormState = {
   name: "",
   email: "",
   password: "",
   passwordCheck: "",
-}
+};
 
-const PreviewAvatar = ({ previewURL, setFileSrc, fileInputRef, size }) => {
+const PreviewAvatar = ({
+  previewURL,
+  onClear,
+  size,
+}: {
+  previewURL: string;
+  size: number;
+  onClear: () => void;
+}) => {
   return (
     <div>
       <img
@@ -22,100 +27,113 @@ const PreviewAvatar = ({ previewURL, setFileSrc, fileInputRef, size }) => {
       />
       <button
         className="text-sky-600 rounded-lg bg-gray-300 w-full mt-2 py-0.5 cursor-pointer hover:bg-gray-400"
-        onClick={() => {
-          setFileSrc(null)
-          fileInputRef.current.value = ""
-        }}
+        onClick={onClear}
       >
         清除
       </button>
     </div>
-  )
-}
+  );
+};
 
 const Setting = () => {
-  const [formState, setFormState] = useState(initialFormState)
-  const [fileSrc, setFileSrc] = useState(null)
-  const [previewURL, setPreviewURL] = useState("")
-  const [showErrorMsg, setShowErrorMsg] = useState(false)
-  const [showSuccessMsg, setShowSuccessMsg] = useState(false)
-  const [errorMsg, setErrorMsg] = useState("")
-  const fileInputRef = useRef(null)
-  const id = Number(localStorage.getItem("userId"))
+  const [formState, setFormState] = useState(initialFormState);
+  const [fileSrc, setFileSrc] = useState<string | Blob | File>("");
+  const [previewURL, setPreviewURL] = useState("");
+  const [showErrorMsg, setShowErrorMsg] = useState(false);
+  const [showSuccessMsg, setShowSuccessMsg] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const id = Number(localStorage.getItem("userId"));
 
-  const [editUser, { isLoading }] = useEditUserMutation()
+  const [editUser, { isLoading }] = useEditUserMutation();
 
-  function handleChange({ target: { name, value } }) {
+  function handleChange({
+    target: { name, value },
+  }: React.ChangeEvent<HTMLInputElement>) {
     setFormState((prev) => ({
       ...prev,
       [name]: value,
-    }))
+    }));
   }
 
-  const handleUpload = (e) => {
-    const selectedImg = e.target.files[0]
-    const imgURL = URL.createObjectURL(selectedImg)
-    setFileSrc(selectedImg)
-    setPreviewURL(imgURL)
+  function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const selectedImg = e?.target?.files?.[0];
+    if (selectedImg) {
+      const imgURL = URL.createObjectURL(selectedImg);
+      setFileSrc(selectedImg);
+      setPreviewURL(imgURL);
+    }
+  }
+
+  function fileClear() {
+    setFileSrc("");
+    if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
   async function handleSubmit() {
-    const { name, email, password, passwordCheck } = formState
+    const { name, email, password, passwordCheck } = formState;
 
     // 密碼輸入不一致
     if (password.trim() !== passwordCheck.trim()) {
-      setShowErrorMsg(true)
-      setErrorMsg("密碼輸入不一致!")
-      return
+      setShowErrorMsg(true);
+      setErrorMsg("密碼輸入不一致!");
+      return;
     }
     // 長度超出上限
     if (name.trim().length > 15) {
-      setShowErrorMsg(true)
-      setErrorMsg("暱稱輸入超過上限15")
-      return
+      setShowErrorMsg(true);
+      setErrorMsg("暱稱輸入超過上限15");
+      return;
     }
 
     if (password.trim().length > 15 || passwordCheck.trim().length > 15) {
-      setShowErrorMsg(true)
-      setErrorMsg("密碼輸入超過上限15")
-      return
+      setShowErrorMsg(true);
+      setErrorMsg("密碼輸入超過上限15");
+      return;
     }
 
     // 使用 formData格式送出
-    const formData = new FormData()
-    formData.append("name", name)
-    formData.append("email", email)
-    formData.append("password", password)
-    formData.append("passwordCheck", passwordCheck)
-    formData.append("avatar", fileSrc)
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("passwordCheck", passwordCheck);
+    formData.append("avatar", fileSrc);
 
-    const { data, error } = await editUser({id, body:formData})
-
-    if(data){
-      console.log(data)
-      setShowSuccessMsg(true)
-        setShowErrorMsg(false)
-        setErrorMsg("修改成功！")
-        fileInputRef.current.value = ""
+    editUser({ id, body: formData })
+      .unwrap()
+      .then(() => {
+        setShowSuccessMsg(true);
+        setShowErrorMsg(false);
+        setErrorMsg("修改成功！");
+        fileClear();
         return setTimeout(() => {
-          setShowSuccessMsg(false)
-        }, 3500)
-    }else if(error){
-      setShowErrorMsg(true)
-      setShowSuccessMsg(false)
-      setErrorMsg(error?.data.message)
-    }
-
+          setShowSuccessMsg(false);
+        }, 3500);
+      })
+      .catch((error) => {
+        setShowErrorMsg(true);
+        setShowSuccessMsg(false);
+        setErrorMsg(error?.data.message);
+      })
+      .finally(() => {
+        return setTimeout(() => {
+          setErrorMsg("");
+          setShowErrorMsg(false);
+          setShowSuccessMsg(false);
+        }, 3500);
+      });
   }
 
   // 離開頁面清除
   useEffect(() => {
     return () => {
-      setErrorMsg("")
-      setShowErrorMsg(false)
-      setShowSuccessMsg(false)
-    }
-  }, [])
+      setErrorMsg("");
+      setShowErrorMsg(false);
+      setShowSuccessMsg(false);
+      fileClear();
+    };
+  }, []);
 
   return (
     <>
@@ -130,7 +148,13 @@ const Setting = () => {
               loop
               mode="normal"
               src="https://lottie.host/f2cbb1f7-338b-48ca-a553-c6bee18975eb/fsTMxuEo6D.json"
-              style={{ width: "150px", height: "150px", position:"absolute", left:"40%", top:"10%" }}
+              style={{
+                width: "150px",
+                height: "150px",
+                position: "absolute",
+                left: "40%",
+                top: "10%",
+              }}
             ></lottie-player>
           )}
           {showErrorMsg ? (
@@ -194,9 +218,8 @@ const Setting = () => {
               {fileSrc ? (
                 <PreviewAvatar
                   previewURL={previewURL}
-                  setFileSrc={setFileSrc}
-                  fileInputRef={fileInputRef}
                   size={24}
+                  onClear={fileClear}
                 />
               ) : null}
             </div>
@@ -212,9 +235,8 @@ const Setting = () => {
           <>
             <PreviewAvatar
               previewURL={previewURL}
-              setFileSrc={setFileSrc}
-              fileInputRef={fileInputRef}
               size={40}
+              onClear={fileClear}
             />
             <lottie-player
               autoplay
@@ -227,7 +249,7 @@ const Setting = () => {
         ) : null}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Setting
+export default Setting;

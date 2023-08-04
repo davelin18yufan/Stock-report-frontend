@@ -1,17 +1,17 @@
-import { UserImage, TargetCard } from "./Card"
-import { getDateTransform } from "../utilities/date"
-import { useGetPostQuery } from "services/postService"
-import { useGetReportQuery } from "services/reportService"
-import { useAppSelector } from "hooks/store"
-import Loading from "components/Loading"
+import { UserImage, TargetCard } from "./Card";
+import { getDateTransform } from "../utilities/date";
+import { useGetPostQuery } from "services/postService";
+import { useGetReportQuery } from "services/reportService";
+import { useAppSelector } from "hooks/store";
+import Loading from "components/Loading";
 
 export const PostSide = () => {
   const id = useAppSelector(
-    (state) => state.mainPageReducer.postCardId
-  ) as number
-  const { data, isLoading, error } = useGetPostQuery(id)
-  if (error) console.error("get post failed", error)
-  const post = data?.data 
+    (state) => state.mainPageReducer.postCardId,
+  ) as number;
+  const { data, isLoading, error } = useGetPostQuery(id);
+  if (error) console.error("get post failed", error);
+  const post = data?.data;
   return isLoading ? (
     <Loading />
   ) : (
@@ -43,16 +43,16 @@ export const PostSide = () => {
         </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export const ReportSide = () => {
   const id = useAppSelector(
-    (state) => state.mainPageReducer.reportCardId
-  ) as number
-  const { data, isLoading, error } = useGetReportQuery(id)
-  if (error) console.error("get report failed", error)
-  const report = data?.data 
+    (state) => state.mainPageReducer.reportCardId,
+  ) as number;
+  const { data, isLoading, error } = useGetReportQuery(id);
+  if (error) console.error("get report failed", error);
+  const report = data?.data;
 
   return isLoading ? (
     <Loading />
@@ -65,7 +65,10 @@ export const ReportSide = () => {
         出版時間：{report?.publish_date}
       </p>
       <div className="flex flex-wrap py-2 gap-1">
-        <TargetCard target={report?.Stock?.name} symbol={report?.Stock?.symbol} />
+        <TargetCard
+          target={report?.Stock?.name}
+          symbol={report?.Stock?.symbol}
+        />
       </div>
       <div className="mt-4">
         <p className="antialiased font-sans leading-6 text-[#333333] dark:text-neutral-300 whitespace-pre-line">
@@ -73,8 +76,8 @@ export const ReportSide = () => {
         </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export const DefaultSide = () => {
   return (
@@ -95,19 +98,23 @@ export const DefaultSide = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export const Side = () => {
-  const postCardId = useAppSelector((state) => state.mainPageReducer.postCardId)
+  const postCardId = useAppSelector(
+    (state) => state.mainPageReducer.postCardId,
+  );
   const reportCardId = useAppSelector(
-    (state) => state.mainPageReducer.reportCardId
-  )
-  const currentTab = useAppSelector((state) => state.mainPageReducer.currentTab)
+    (state) => state.mainPageReducer.reportCardId,
+  );
+  const currentTab = useAppSelector(
+    (state) => state.mainPageReducer.currentTab,
+  );
 
   // 確保它們只有在有值時為 true，沒有值時為 false。
-  const hasPostCardClicked = !!postCardId
-  const hasReportCardClicked = !!reportCardId
+  const hasPostCardClicked = !!postCardId;
+  const hasReportCardClicked = !!reportCardId;
 
   // 沒被點擊先渲染預設畫面
   if (
@@ -119,7 +126,7 @@ export const Side = () => {
       <aside className="basis-2/5 grow border-x-2 dark:bg-slate-800 dark:border-slate-300/25 w-full h-screen ">
         <DefaultSide />
       </aside>
-    )
+    );
   }
   return (
     <aside
@@ -128,5 +135,5 @@ export const Side = () => {
     >
       {currentTab === "report" ? <ReportSide /> : <PostSide />}
     </aside>
-  )
-}
+  );
+};

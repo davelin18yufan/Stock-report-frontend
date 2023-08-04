@@ -1,14 +1,16 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faBars } from "@fortawesome/free-solid-svg-icons"
-import { ReactComponent as Logo } from "assets/images/logo.svg"
-import { ReactComponent as LogoDark } from "assets/images/logoDark.svg"
-import { useAppDispatch, useAppSelector } from "hooks/store"
-import { setMenuToggle } from "slices/mainSlice"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { ReactComponent as Logo } from "assets/images/logo.svg";
+import { ReactComponent as LogoDark } from "assets/images/logoDark.svg";
+import { useAppDispatch, useAppSelector } from "hooks/store";
+import { setMenuToggle } from "slices/mainSlice";
 
 const Header = () => {
-  const dispatch = useAppDispatch()
-  const menuToggle = useAppSelector((state) => state.mainPageReducer.menuToggle)
-  const darkMode = useAppSelector((state) => state.mainPageReducer.darkMode)
+  const dispatch = useAppDispatch();
+  const menuToggle = useAppSelector(
+    (state) => state.mainPageReducer.menuToggle,
+  );
+  const darkMode = useAppSelector((state) => state.mainPageReducer.darkMode);
 
   return (
     <header className="bg-dark-green dark:bg-slate-900 text-light-green dark:text-slate-200 h-[70px] flex justify-between items-center overflow-hidden">
@@ -78,7 +80,7 @@ const Header = () => {
         </div>
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

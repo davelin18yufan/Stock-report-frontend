@@ -9,7 +9,7 @@ const Footer = () => {
         Dave
       </a>
     </footer>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;
