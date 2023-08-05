@@ -1,5 +1,5 @@
 import { PostCard, ReportCard, Side, Tab, Loading } from "components"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { useParams } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "hooks/store"
 import { setCurrentTab } from "slices/mainSlice"
@@ -97,45 +97,45 @@ const MainSector = () => {
   const [deleteReport, { isSuccess: isDeleteReportSuccess }] =
     useDeleteReportMutation()
 
-  async function handlePostDelete(
-    e: React.MouseEvent<HTMLDivElement>,
-    id: number
-  ) {
-    e.stopPropagation()
-    const ans = await confirmPopOut("確認刪除此貼文？", true)
-    if (ans) {
-      await deletePost(id)
-        .then(() => setShowMsg(true))
-        .catch((err) => setErrMsg(err.data.message))
-        .finally(() => {
-          return setTimeout(() => {
-            setShowMsg(false)
-            setErrMsg("")
-          }, 3500)
-        })
-    }
-    return
-  }
+ const handlePostDelete = useCallback(
+   async (e: React.MouseEvent<HTMLDivElement>, id: number) => {
+     e.stopPropagation()
+     const ans = await confirmPopOut("確認刪除此貼文？", true)
+     if (ans) {
+       await deletePost(id)
+         .then(() => setShowMsg(true))
+         .catch((err) => setErrMsg(err.data.message))
+         .finally(() => {
+           return setTimeout(() => {
+             setShowMsg(false)
+             setErrMsg("")
+           }, 3500)
+         })
+     }
+     return
+   },
+   [deletePost]
+ )
 
-  async function handleReportDelete(
-    e: React.MouseEvent<HTMLDivElement>,
-    id: number
-  ) {
-    e.stopPropagation()
-    const ans = await confirmPopOut("確認刪除此報告？", true)
-    if (ans) {
-      await deleteReport(id)
-        .then(() => setShowMsg(true))
-        .catch((err) => setErrMsg(err.data.message))
-        .finally(() => {
-          return setTimeout(() => {
-            setShowMsg(false)
-            setErrMsg("")
-          }, 3500)
-        })
-    }
-    return
-  }
+  const handleReportDelete = useCallback(
+    async (e: React.MouseEvent<HTMLDivElement>, id: number) => {
+      e.stopPropagation()
+      const ans = await confirmPopOut("確認刪除此報告？", true)
+      if (ans) {
+        await deleteReport(id)
+          .then(() => setShowMsg(true))
+          .catch((err) => setErrMsg(err.data.message))
+          .finally(() => {
+            return setTimeout(() => {
+              setShowMsg(false)
+              setErrMsg("")
+            }, 3500)
+          })
+      }
+      return
+    },
+    [deleteReport]
+  )
 
   const isSuccess = isDeleteReportSuccess || isDeletePostSuccess
 
