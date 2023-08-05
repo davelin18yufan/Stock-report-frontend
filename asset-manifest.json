@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/Stock-report-frontend/static/css/main.c8e94df7.css",
-    "main.js": "/Stock-report-frontend/static/js/main.0ca5b59f.js",
+    "main.js": "/Stock-report-frontend/static/js/main.42ba405b.js",
     "static/media/bg-stocks.jpeg": "/Stock-report-frontend/static/media/bg-stocks.e1edf0324e3f51ba1fe9.jpeg",
     "static/media/工商.png": "/Stock-report-frontend/static/media/工商.6aa4df6a9e013ae3257a.png",
     "static/media/logo.svg": "/Stock-report-frontend/static/media/logo.867a46db8ecaea403f8a86203bc6030a.svg",
     "static/media/logoDark.svg": "/Stock-report-frontend/static/media/logoDark.c15dd9ddd48c9a3a3fa08cf726e1427a.svg",
     "index.html": "/Stock-report-frontend/index.html",
     "main.c8e94df7.css.map": "/Stock-report-frontend/static/css/main.c8e94df7.css.map",
-    "main.0ca5b59f.js.map": "/Stock-report-frontend/static/js/main.0ca5b59f.js.map"
+    "main.42ba405b.js.map": "/Stock-report-frontend/static/js/main.42ba405b.js.map"
   },
   "entrypoints": [
     "static/css/main.c8e94df7.css",
-    "static/js/main.0ca5b59f.js"
+    "static/js/main.42ba405b.js"
   ]
 }
